@@ -14,37 +14,37 @@
 
 .OptionsMenu {
   grid-area: Options-Menu;
-  background-color: rgba(29, 247, 244, 0.37);
+  /* background-color: rgba(29, 247, 244, 0.37); */
   border: 5px solid rgba(29, 247, 244, 0.37);
 }
 
 .CircuitBuilder {
   grid-area: Circuit-Builder;
-  background-color: rgba(232, 14, 213);
+  /* background-color: rgba(232, 14, 213); */
   border: 5px solid rgba(232, 14, 213);
 }
 
 .Output {
   grid-area: Output;
-  background-color: rgba(14, 232, 21, 0.939);
+  /* background-color: rgba(14, 232, 21, 0.939); */
   border: 5px solid rgba(14, 232, 21, 0.939);
 }
 
 .Code {
   grid-area: Code;
-  background-color: rgba(14, 228, 232, 0.939);
+  /* background-color: rgba(14, 228, 232, 0.939); */
   border: 5px solid rgba(14, 228, 232, 0.939);
 }
 
 .FaveGatesMenu {
   grid-area: Fave-Menu;
-  background-color: rgba(242, 141, 18, 0.939);
+  /* background-color: rgba(242, 141, 18, 0.939); */
   border: 5px solid rgba(242, 141, 18, 0.939);
 
 }
 
 .AllGatesMenu {
   grid-area: All-Gates;
-  background-color: rgba(234, 21, 21, 0.939);
+  /* background-color: rgba(234, 21, 21, 0.939); */
   border: 5px solid rgba(234, 21, 21, 0.939);
 }
