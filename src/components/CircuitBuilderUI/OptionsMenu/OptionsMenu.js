@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from '../../CircuitBuilder.module.css'
 
-export default function OptionsMenu ({setView}) {
-
-    return (
-        <div className = {styles.OptionsMenu}>
-            Options Menu
-            <button onClick = {() => setView()  }> Test Button </button>
-        </div>
-    )
+export default function OptionsMenu ({optionsView}) {
+    if(optionsView === true) {
+        return <div className = {styles.OptionsMenu}>
+                Output
+            </div>
+    } else {
+        return <div style = {{display: "none"}}/>
+    }
 }
