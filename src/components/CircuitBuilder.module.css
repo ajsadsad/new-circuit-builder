@@ -1,14 +1,15 @@
 .container {
   display: grid;
-  grid-template-columns: 0.6fr 1.9fr 0.9fr 0.6fr;
-  grid-template-rows: 0.6fr 1.2fr 0.8fr 0.1fr;
+  grid-template-columns: 0.1fr 0.6fr 1.9fr 0.9fr 0.6fr 0.1fr;
+  grid-template-rows: 0.1fr 0.6fr 1.2fr 0.8fr 0.1fr;
   gap: 0px 0px;
   grid-auto-flow: column;
   grid-template-areas:
-    "Options-Menu All-Gates All-Gates Fave-Menu"
-    "Options-Menu Circuit-Builder Code Fave-Menu"
-    "Options-Menu Output Output Fave-Menu"
-    "UITabs UITabs UITabs UITabs";
+    "UITabs3 UITabs3 UITabs3 UITabs3 UITabs3 UITabs4"
+    "UITabs2 Options-Menu All-Gates All-Gates Fave-Menu UITabs4"
+    "UITabs2 Options-Menu Circuit-Builder Code Fave-Menu UITabs4"
+    "UITabs2 Options-Menu Output Code Fave-Menu UITabs4"
+    "UITabs1 UITabs1 UITabs1 UITabs1 UITabs1 UITabs1";
   height: 93vh;
 }
 
@@ -22,6 +23,33 @@
   grid-area: Circuit-Builder;
   /* background-color: rgba(232, 14, 213); */
   border: 5px solid rgba(232, 14, 213);
+}
+.CircuitBuilderNoAllGatesMenuNoOutput {
+  grid-row: 2 / span 3;
+}
+.CircuitBuilderNoAllGatesMenuWithOutput {
+  grid-row: 2 / span 2;
+}
+.CircuitBuilderNoOutputConsoleWithAllGates {
+  grid-row: 3 / span 2;
+}
+.CircuitBuilderNoCodeNoOptionWithFaveMenu {
+  grid-column: 2 / span 3;
+}
+.CircuitBuilderNoFaveMenuNoCodeNoOption {
+  grid-column: 2 / span 4;
+}
+.CircuitBuilderNoCodeNoFaveMenuWithOption {
+  grid-column: 3 / span 3;
+}
+.CircuitBuilderNoOptionNoCodeWithFave {
+  grid-column: 2 / span 3;
+}
+.CircuitBuilderNoOptionWithCode {
+  grid-column: 2 / span 2;
+}
+.CircuitBuilderNoOptionNoCodeNoFave {
+  grid-column: 2 / span 4;
 }
 
 .Output {
@@ -47,4 +75,9 @@
   grid-area: All-Gates;
   /* background-color: rgba(234, 21, 21, 0.939); */
   border: 5px solid rgba(234, 21, 21, 0.939);
+}
+
+.BottomPageTabs {
+  grid-area: UITabs1;
+  border: 5px solid rgba(250, 216, 81, 0.939);
 }
