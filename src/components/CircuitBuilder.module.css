@@ -57,18 +57,35 @@
   /* background-color: rgba(14, 232, 21, 0.939); */
   border: 5px solid rgba(14, 232, 21, 0.939);
 }
+.OutputNoOptionWithCode {
+  grid-column: 2 / span 2;
+}
+.OutputNoOptionNoCodeNoFave {
+  grid-column: 2 / span 4;
+}
+.OutputNoCodeWithOption {
+  grid-column: 3 / span 3;
+}
+.OutputNoOptionNoCodeWithFave {
+  grid-column: 2 / span 3;
+}
 
 .Code {
   grid-area: Code;
   /* background-color: rgba(14, 228, 232, 0.939); */
   border: 5px solid rgba(14, 228, 232, 0.939);
 }
+.CodeNoAllGates {
+  grid-row: 2 / span 3;
+}
+.CodeNoFaveMenu {
+  grid-column: 4 / span 2;
+}
 
 .FaveGatesMenu {
   grid-area: Fave-Menu;
   /* background-color: rgba(242, 141, 18, 0.939); */
   border: 5px solid rgba(242, 141, 18, 0.939);
-
 }
 
 .AllGatesMenu {
@@ -76,6 +93,16 @@
   /* background-color: rgba(234, 21, 21, 0.939); */
   border: 5px solid rgba(234, 21, 21, 0.939);
 }
+.AllGatesMenuNoOptionNoFave {
+  grid-column: 2 / span 4;
+}
+.AllGatesMenuWithOptionNoFave {
+  grid-column: 3 / span 3;
+}
+.AllGatesMenuNoOptionWithFave {
+  grid-column: 2 / span 3;
+}
+
 
 .BottomPageTabs {
   grid-area: UITabs1;

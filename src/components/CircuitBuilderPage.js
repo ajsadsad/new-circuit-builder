@@ -59,9 +59,14 @@ export default function CircuitBuilderPage () {
             />
             <Output
                 outputView = { outputViewable }
+                codeView = { circuitCodeViewable }
+                faveGatesView = { faveGatesViewable }
+                optionsView = { optionViewable }
             />
             <CircuitCode
                 codeView = { circuitCodeViewable }
+                faveGatesView = { faveGatesViewable }
+                allGatesView = { allGatesViewable }
             />
             <FaveGatesMenu
                 faveGatesView = { faveGatesViewable }
@@ -81,21 +86,3 @@ export default function CircuitBuilderPage () {
         </div>
     )
 }
-
-/* maybe use a switch to add elements to the css to address the UI needs.
-   For example:
-    IF we hide output we would add elements to Circuit Builder and Code css.
-        grid-row: span 2;
-    So that it takes up the space that Output took up.
-*/
-
-/*
- instead of stuff being made up of divs you can use components and hide and show components.
-
- Probably would still have to use CSS to show and hide stuff.
-*/
-
-/*
-    When adding stuff to the circuit it doesn't really matter until you have to export it.
-    Maybe just wait to do backend stuff when user wants to run the circuit
-*/
