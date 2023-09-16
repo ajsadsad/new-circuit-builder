@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../../CircuitBuilder.module.css'
-export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, setAllGatesView, setCodeView, setOutputView}) {
+import Button from 'react-bootstrap/Button';
+
+export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, setAllGatesView, setCodeView, setOutputView, faveGatesView, optionsView}) {
 
     return (
         <div className = { styles.BottomPageTabs }>
-            Bottom Page Tabs
-            <button onClick = { setOptionMenuView }> Option Menu Switch </button>
-            <button onClick = { setFaveGateView }> Fave Gates Menu Switch </button>
-            <button onClick = { setAllGatesView }> All Gate Menu Switch </button>
-            <button onClick = { setCodeView }> Code Console Switch </button>
-            <button onClick = { setOutputView}> Output Console Switch </button>
+            <Button onClick = { setOptionMenuView }
+            aria-controls="optionMenu"
+            aria-expanded={ optionsView }> Options Menu </Button>
+            <Button onClick = { setFaveGateView }
+            aria-controls="faveMenu"
+            aria-expanded={faveGatesView}> Fave Gates Menu </Button>
+            <button onClick = { setAllGatesView }> All Gate Menu </button>
+            <button onClick = { setCodeView }> Code Console </button>
+            <button onClick = { setOutputView}> Output Console </button>
         </div>
     )
 }

@@ -8,7 +8,6 @@ import OptionsMenu from './CircuitBuilderUI/OptionsMenu/OptionsMenu';
 import Output from './CircuitBuilderUI/Output/Output';
 import BottomPageTabs from './CircuitBuilderUI/BottomPageTabs/BottomPageTabs';
 import ReactiveCircuitBuilderUI from './CircuitBuilderUI/CircuitBuilder/ReactiveCircuitBuilderUI';
-
 export default function CircuitBuilderPage () {
 
     const [optionViewable, setOptionView] = useState(false);
@@ -70,6 +69,7 @@ export default function CircuitBuilderPage () {
             />
             <FaveGatesMenu
                 faveGatesView = { faveGatesViewable }
+                setFaveGateView={ updateFaveGatesView }
             />
             <AllGatesMenu
                 optionsView = { optionViewable }
@@ -78,7 +78,9 @@ export default function CircuitBuilderPage () {
             />
             <BottomPageTabs
                 setOptionMenuView={ updateOptionView }
+                optionsView = { optionViewable }
                 setFaveGateView={ updateFaveGatesView }
+                faveGatesView = { faveGatesViewable }
                 setAllGatesView = { updateAllGatesMenuView }
                 setCodeView =  { updateCircuitCodeView }
                 setOutputView = { updateOutputView }

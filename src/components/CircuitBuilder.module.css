@@ -15,8 +15,10 @@
 
 .OptionsMenu {
   grid-area: Options-Menu;
+  display: block;
   /* background-color: rgba(29, 247, 244, 0.37); */
   border: 5px solid rgba(29, 247, 244, 0.37);
+  animation-delay: 250ms;
 }
 
 .CircuitBuilder {
@@ -83,9 +85,13 @@
 }
 
 .FaveGatesMenu {
+  display: block;
   grid-area: Fave-Menu;
   /* background-color: rgba(242, 141, 18, 0.939); */
   border: 5px solid rgba(242, 141, 18, 0.939);
+  margin-left: auto;
+  margin-right: 0;
+  width: 100%;
 }
 
 .AllGatesMenu {
