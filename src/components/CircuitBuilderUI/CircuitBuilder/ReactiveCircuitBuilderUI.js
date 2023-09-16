@@ -1,285 +1,369 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilder.module.css'
 
 export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView }) {
+
+    const refContainer = useRef();
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+    useEffect(() => {
+        if (refContainer.current) {
+            setDimensions({
+                width: refContainer.current.offsetWidth,
+                height: refContainer.current.offsetHeight,
+            });
+        }
+    }, [optionsView, faveGatesView, codeView, outputView, allGatesView]);
+
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
        return <div className = {
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoOptionWithCode }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionWithCode }` }
+                 ref = { refContainer }>
+                width : {dimensions.width}
+                height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
-        return <div className = { `${ styles.CircuitBuilder }` }>
-                Circuit Builder:
+        return <div className = { `${ styles.CircuitBuilder }` }
+                ref = { refContainer }>
+                width : {dimensions.width}
+                height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === false ) {
         return <div className = {
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === false && outputView === true ){
         return <div className = {
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }
-                 ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoFaveMenuNoCodeNoOption}
-                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput}
-                 ${ styles.CircuitBuilderNoOptionWithCode }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionWithCode }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === true && outputView === true){
         //have to fix fave menu showing and moving everything to the left.
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput  }
-                 ${ styles.CircuitBuilderNoOptionWithCode }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionWithCode }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === true && outputView === true){
         // have to fix this so that everything moves to the left. or everything starts to the right until the menu opens?
         return <div className ={
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoOptionWithCode }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionWithCode }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }
-                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === false && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoFaveMenuNoCodeNoOption }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoFaveMenuNoCodeNoOption }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === false && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }
-                 ${ styles.CircuitBuilderNoOptionNoCodeNoFave}` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionNoCodeNoFave}` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
-                 ${ styles.CircuitBuilderNoOptionNoCodeNoFave }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionNoCodeNoFave }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === true && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }
-                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu}
-                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === true && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
-                 ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === true && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoOptionNoCodeWithFave }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionNoCodeWithFave }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }
-                 ${ styles.CircuitBuilderNoOutputConsole }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOutputConsole }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
-                 ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === true && faveGatesView === false && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoAllGatesMenuWithOutput}` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoAllGatesMenuWithOutput}` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
-                 ${ styles.CircuitBuilderNoOptionWithCode }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoOptionWithCode }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
                 Options Menu - OFF
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === true && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoAllGatesMenuNoOutput}` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoAllGatesMenuNoOutput}` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - OFF
+                Output Console - OFF */}
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === true && faveGatesView === false && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
-                 ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption}` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption}` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === true && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu }
-                 ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
                 Options Menu - OFF
                 Fave menu - ON
-                Output Console - ON
+                Output Console - ON */}
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === true && faveGatesView === false && outputView === true){
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }
-                 ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }` }>
-                Circuit Builder:
+                 ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }` }
+                 ref = { refContainer }>
+                 width : {dimensions.width}
+                 height : {dimensions.height}
+                {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
                 Options Menu - ON
                 Fave menu - OFF
-                Output Console - ON
+                Output Console - ON */}
             </div>
     }
 }
