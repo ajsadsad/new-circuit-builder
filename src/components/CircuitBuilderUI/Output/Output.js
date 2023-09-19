@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styles from '../../CircuitBuilder.module.css'
+import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 
 export default function Output ({ outputView, codeView, faveGatesView, optionsView }) {
     const refContainer = useRef();
@@ -19,7 +19,7 @@ export default function Output ({ outputView, codeView, faveGatesView, optionsVi
                         `${ styles.Output }
                          ${ styles.OutputNoOptionWithCode }` }
                         ref = { refContainer }>
-                    Code Console
+                    Output Window
                      width : {dimensions.width}
                      height : {dimensions.height}
                     </div>
@@ -28,7 +28,7 @@ export default function Output ({ outputView, codeView, faveGatesView, optionsVi
                         `${ styles.Output }
                          ${ styles.OutputNoOptionNoCodeWithFave }` }
                         ref = { refContainer }>
-                    Code Console
+                    Output Window
                      width : {dimensions.width}
                      height : {dimensions.height}
                     </div>
@@ -37,7 +37,7 @@ export default function Output ({ outputView, codeView, faveGatesView, optionsVi
                         `${ styles.Output }
                          ${ styles.OutputNoOptionWithCode }` }
                         ref = { refContainer }>
-                    Code Console
+                    Output Window
                      width : {dimensions.width}
                      height : {dimensions.height}
                     </div>
@@ -46,7 +46,7 @@ export default function Output ({ outputView, codeView, faveGatesView, optionsVi
                         `${ styles.Output }
                          ${ styles.OutputNoOptionNoCodeNoFave }` }
                         ref = { refContainer }>
-                    Code Console
+                    Output Window
                      width : {dimensions.width}
                      height : {dimensions.height}
                     </div>
@@ -55,7 +55,7 @@ export default function Output ({ outputView, codeView, faveGatesView, optionsVi
                         `${ styles.Output }
                          ${ styles.OutputNoCodeWithOption }` }
                         ref = { refContainer }>
-                    Code Console
+                    Output Window
                     width : {dimensions.width}
                     height : {dimensions.height}
                     </div>
@@ -63,7 +63,7 @@ export default function Output ({ outputView, codeView, faveGatesView, optionsVi
             return <div className = {
                         `${ styles.Output }` }
                         ref = { refContainer }>
-                    Code Console
+                    Output Window
                     width : {dimensions.width}
                     height : {dimensions.height}
                     </div>

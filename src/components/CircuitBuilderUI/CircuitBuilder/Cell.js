@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../CircuitBuilder.module.css'
+import styles from '../../CircuitBuilder.module.scss'
 
 export default function Cell ({ }) {
 

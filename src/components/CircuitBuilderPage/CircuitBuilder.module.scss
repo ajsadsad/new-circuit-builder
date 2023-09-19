@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 0.1fr 0.6fr 1.9fr 0.9fr 0.6fr 0.1fr;
+  grid-template-columns: 0.1fr 0.6fr 2.3fr 0.7fr 0.6fr 0.1fr;
   grid-template-rows: 0.1fr 0.6fr 1.2fr 0.8fr 0.1fr;
   gap: 0px 0px;
   grid-auto-flow: column;
@@ -16,9 +16,10 @@
 .OptionsMenu {
   grid-area: Options-Menu;
   display: block;
-  /* background-color: rgba(29, 247, 244, 0.37); */
-  border: 5px solid rgba(29, 247, 244, 0.37);
-  animation-delay: 250ms;
+  background-color: rgba(29, 247, 244, 0.37);
+  /* border: solid rgba(29, 247, 244, 0.37); */
+  width: 100%;
+  height: 100%;
 }
 
 .CircuitBuilder {
@@ -87,12 +88,13 @@
 .FaveGatesMenu {
   display: block;
   grid-area: Fave-Menu;
-  /* background-color: rgba(242, 141, 18, 0.939); */
-  border: 5px solid rgba(242, 141, 18, 0.939);
+  background-color: rgba(242, 141, 18, 0.939);
   margin-left: auto;
   margin-right: 0;
   width: 100%;
+  height: 100%;
 }
+
 
 .AllGatesMenu {
   grid-area: All-Gates;

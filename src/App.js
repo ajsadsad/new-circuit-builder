@@ -1,5 +1,5 @@
 import './App.css';
-import CircuitBuilderPage from './components/CircuitBuilderPage';
+import CircuitBuilderPage from './components/CircuitBuilderPage/CircuitBuilderPage';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from './components/Header/Header.tsx';
 

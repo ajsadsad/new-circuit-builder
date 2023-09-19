@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styles from '../../CircuitBuilder.module.css'
+import React from 'react'
+import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Button from 'react-bootstrap/Button';
 
 export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, setAllGatesView, setCodeView, setOutputView, faveGatesView, optionsView}) {
@@ -11,7 +11,7 @@ export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, set
             aria-expanded={ optionsView }> Options Menu </Button>
             <Button onClick = { setFaveGateView }
             aria-controls="faveMenu"
-            aria-expanded={faveGatesView}> Fave Gates Menu </Button>
+            aria-expanded={ faveGatesView }> Fave Gates Menu </Button>
             <button onClick = { setAllGatesView }> All Gate Menu </button>
             <button onClick = { setCodeView }> Code Console </button>
             <button onClick = { setOutputView}> Output Console </button>

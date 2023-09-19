@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {NavLink, useNavigate} from 'react-router-dom';
+import React from 'react';
+import {NavLink} from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from '../../assets/logo.svg'
 import account_icon from '../../assets/account_icon.svg';
@@ -21,7 +21,7 @@ const Header = () => {
                 <div className={styles.accountMenu}>
                     {
                             <div className={styles.loginNavLink}>
-                                <img src={account_icon} />
+                                <img src={account_icon} alt = ""/>
                                 <NavLink to="/login">Login/Create Account</NavLink>
 
                             </div>

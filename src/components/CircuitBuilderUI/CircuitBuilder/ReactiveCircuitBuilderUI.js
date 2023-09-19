@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styles from '../../CircuitBuilder.module.css'
-import NestedGrid from './CircuitGrid';
+import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 
 export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView }) {
 
@@ -152,10 +151,10 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - ON */}
-                {/* {/* <NestedGrid
+                {/* {/* {/* <NestedGrid
                      circuitBuilderDimensions = { dimensions }
-                />
-            </div>
+                />*/}
+                </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
                 `${ styles.CircuitBuilder }
@@ -438,7 +437,6 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 {/* {/* {/* {/* <NestedGrid
                      circuitBuilderDimensions = { dimensions }
                 /> */}
- */}
             </div>
     }
 }
