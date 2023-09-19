@@ -1,12 +1,18 @@
 import React from 'react'
-import styles from '../../CircuitBuilder.module.css'
+import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+// import Card from 'react-bootstrap/Card';
+import Collapse from 'react-bootstrap/Collapse';
 
-export default function FaveGatesMenu ( { faveGatesView } ) {
-    if(faveGatesView === true) {
-        return <div className = {styles.FaveGatesMenu}>
-                Fave Gates
-            </div>
-    } else {
-        return <div style = {{display: "none"}}/>
-    }
+export default function FaveGatesMenu ( { faveGatesView } )  {
+    return (
+
+            <Collapse in = { faveGatesView } dimension = "width">
+                <div className = {styles.FaveGatesMenu} id="faveMenu">
+                    <div style = {{width: '300px'}}>
+                        Faves Menu
+                    </div>
+                </div>
+            </Collapse>
+
+    )
 }

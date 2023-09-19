@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styles from '../../CircuitBuilder.module.css'
+import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 
 export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView }) {
 
