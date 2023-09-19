@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+//import useAllGatesMenuViewController from './useAllGatesMenuViewController';
+import data from '../../../assets/standardGates.json'
 
 export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView }) {
 
@@ -14,6 +16,17 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
         }
     }, [optionsView, faveGatesView, allGatesView]);
 
+
+    const gates = data.Gates.map(gate =>
+        <img
+            id = { gate.ID }
+            key = { gate.gateName }
+            description = { gate.description }
+            src = { require(`../../../assets/${gate.img}`)}
+        >
+        </img>
+    );
+
     if(allGatesView === true) {
         if(optionsView === false && faveGatesView === false) {
             return <div className = {
@@ -23,6 +36,9 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
                     All Gates Menu
                      width : {dimensions.width}
                      height : {dimensions.height}
+                     {
+                       gates
+                     }
                     </div>
          } else if(optionsView === true && faveGatesView === false) {
             return <div className = {
@@ -32,6 +48,9 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
                     All Gates Menu
                      width : {dimensions.width}
                      height : {dimensions.height}
+                     {
+                       gates
+                     }
                     </div>
          } else if(optionsView === false && faveGatesView === true) {
             return <div className = {
@@ -41,6 +60,9 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
                     All Gates Menu
                      width : {dimensions.width}
                      height : {dimensions.height}
+                     {
+                       gates
+                     }
                     </div>
          }
     } else {

@@ -1,0 +1,58 @@
+{
+"Gates": [
+    {
+        "gateName": "Pauli X gate",
+        "ID": "x",
+        "description": "Pauli X gate (π rotation over X-axis) classical computing equivalent: \"NOT\" gate.",
+        "img" : "x_gate.svg"
+    },
+    {
+        "gateName": "Pauli Y gate",
+        "ID": "y",
+        "description": "Pauli Y gate (π rotation over Y-axis) classical computing equivalent: \"NOT\" gate.",
+        "img" : "y_gate.svg"
+    },
+    {
+        "gateName": "Pauli Z gate",
+        "ID": "z",
+        "description": "Pauli Z gate (π rotation over Z-axis) classical computing equivalent: \"NOT\" gate.",
+        "img" : "z_gate.svg"
+    },
+    {
+        "gateName": "Rotated Pauli X gate",
+        "ID": "rx",
+        "description": "RX (Rotated Pauli X gate) is a single-qubit rotation through an angle of π/2 around the x-axis.",
+        "img" : "rx_gate.svg"
+    },
+    {
+        "gateName": "Rotated Pauli Y gate",
+        "ID": "ry",
+        "description": "RY (Rotated Pauli Y gate) is a single-qubit rotation through an angle of π/2 around the y-axis.",
+        "img" : "ry_gate.svg"
+    },
+    {
+        "gateName": "Rotated Pauli Z gate",
+        "ID": "rz",
+        "description": "RZ (Rotated Pauli Z gate) is a single-qubit rotation through an angle of π/2 around the z-axis.",
+        "img" : "rz_gate.svg"
+    },
+    {
+        "gateName": "Hadamard gate",
+        "ID": "h",
+        "description": "One qubit rotation, mapping the two qubit- basis states to two superposition states.",
+        "img" : "h_gate.svg"
+    },
+    {
+        "gateName": "Controlled NOT gate",
+        "ID": "cnot",
+        "description": "CNOT or (Controlled Pauli-X) acts on 2 or more qubits.",
+        "img" : "cnot_gate.svg"
+    },
+    {
+        "gateName": "Measurement gate",
+        "ID": "measure",
+        "description": "Used to observe the quantum state.",
+        "img" : "measure_gate.svg"
+    }
+]
+}
