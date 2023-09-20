@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
-import CircuitGrid from './CircuitGrid';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 
 export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setDraggingGate, draggingGate }) {
 
@@ -14,6 +14,13 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
 
     // }
 
+    /*When resizing probably have to check if it is smaller or larger than the current size. 
+      IF its bigger then you would have to append more of an empty at the end. 
+      If its smaller maybe don't let it resize or compress more or just hide overflow? IDK
+      -- Need to store state of grid to ensure that when it is rerendered/resized that the same grid is reproduced. 
+        probably have to add elements to it to hold more information on each cell or whatever iDK 
+    */
+
     useEffect(() => {
         if (refContainer.current) {
             setDimensions({
@@ -23,6 +30,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         }
     }, [optionsView, faveGatesView, codeView, outputView, allGatesView]);
 
+    let windowHeight = Math.floor(dimensions.height/48); 
+    let windowWidth = Math.floor(dimensions.width/48);
+
+    let fullGrid = Array(windowHeight).fill(0).map(row => new Array(windowWidth).fill(false)) 
+    
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
        return <div className = {
                 `${ styles.CircuitBuilder }
@@ -39,34 +51,36 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 {/* {/* {/* <NestedGrid
                      circuitBuilderDimensions = { dimensions }
                 /> */}
-                <Row>
+                {/* <Row>
                     <Col
                         id = {"1"}
                         onDragEnter = {(e) => { e.preventDefault(); console.log(draggingGate)}}
                         onDrop = {(e) => { e.preventDefault(); console.log("AHAHAHHA")}} 
                     > hehe drop
                     </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                    <Col> hehe </Col>
-                </Row>
+                </Row> */}
+                <Container>
+                {
+                    fullGrid.map((column, index) => 
+                        <Row
+                            key = { index }
+                            className = { styles.row }
+                            
+                        >
+                            {
+                                column.map((index) => 
+                                    <Col
+                                        className = { styles.col }
+                                        key = { index }
+                                    > 
+                                        h
+                                    </Col>
+                                )
+                            }
+                        </Row>
+                    )
+                }
+                </Container>
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
         return <div className = { `${ styles.CircuitBuilder }` }

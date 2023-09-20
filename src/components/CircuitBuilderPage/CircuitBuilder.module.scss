@@ -13,6 +13,18 @@
   height: 90vh; 
 }
 
+.row {
+  height: 48px; 
+  background-color: pink;
+  border: 1px solid black; 
+}
+
+.col {
+  height: 48px; 
+  width: 48px; 
+  border: 1px solid black; 
+}
+
 .OptionsMenu {
   grid-area: Options-Menu;
   display: block;

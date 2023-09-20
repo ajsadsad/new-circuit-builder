@@ -7,12 +7,14 @@ const CircuitGrid = ( { dimensions }) => {
 
     const [gridRows, setGridRows] = useState([(dimensions /48)]);
 
-    let hehe = [...gridRows, gridRows.map(index =>
+    let hehe = [...gridRows, gridRows.fill(
         <Row>
            <Col> hehe </Col>
         </Row>
     )];
 
+    setGridRows(hehe); 
+    
     return (
         {
             hehe
