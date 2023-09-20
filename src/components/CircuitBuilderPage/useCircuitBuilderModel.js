@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import data from '../../assets/standardGates.json'
 
-const useCircuitBuilderModel =  () => {
-    const [gates, setGates] = useState(null);
+const useCircuitBuilderModel = () => {
 
     return {
-        gates
+        gates : data
     }
 }
 

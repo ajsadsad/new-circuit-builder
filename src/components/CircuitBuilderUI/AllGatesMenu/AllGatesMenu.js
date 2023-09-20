@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
-//import useAllGatesMenuViewController from './useAllGatesMenuViewController';
-import data from '../../../assets/standardGates.json'
 
-export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView, setDraggingGate }) {
+export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView, standardGates }) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -16,18 +14,6 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
         }
     }, [optionsView, faveGatesView, allGatesView]);
 
-    const gates = data.Gates.map(gate =>
-        <img
-            id = { gate.ID }
-            key = { gate.gateName }
-            description = { gate.description }
-            src = { require(`../../../assets/${gate.img}`)}
-            draggable = { true }
-            onDrag = {(e) => { e.preventDefault(); setDraggingGate(e.target.id)}}
-        >
-        </img>
-    );
-
     if(allGatesView === true) {
         if(optionsView === false && faveGatesView === false) {
             return <div className = {
@@ -38,7 +24,7 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
                      width : {dimensions.width}
                      height : {dimensions.height}
                      {
-                       gates
+                        standardGates
                      }
                     </div>
          } else if(optionsView === true && faveGatesView === false) {
@@ -50,7 +36,7 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
                      width : {dimensions.width}
                      height : {dimensions.height}
                      {
-                       gates
+                       standardGates
                      }
                     </div>
          } else if(optionsView === false && faveGatesView === true) {
@@ -62,7 +48,7 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
                      width : {dimensions.width}
                      height : {dimensions.height}
                      {
-                       gates
+                       standardGates
                      }
                     </div>
          }
