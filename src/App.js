@@ -3,6 +3,8 @@ import CircuitBuilderPage from './components/CircuitBuilderPage/CircuitBuilderPa
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from './components/Header/Header.tsx';
 import LoginCreateAccView from './components/LoginCreateAccPage/LoginCreateAccView';
+import About from './components/AboutPage/About.tsx'; 
+import Setup from './components/SetupPage/Setup.tsx';
 
 function App() {
   return (
@@ -13,10 +15,19 @@ function App() {
         </nav>
         <Routes>
             <Route path={``} element={
-                <CircuitBuilderPage/>
+                <About/>
             }/>
             <Route path = {"/login"} element = {
               <LoginCreateAccView/>
+            }/>
+            <Route path = {"/about"} element = {
+              <About/>
+            }/>
+            <Route path = {"/setup"} element = {
+              <Setup/>
+            }/>
+            <Route path = {"/circuitBuilder"} element = {
+              <CircuitBuilderPage/>
             }/>
         </Routes>
       </BrowserRouter>

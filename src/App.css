@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  height: 100%;
+  width: 100%;
+  background: white;
+  font-family: 'Lato', 'sans-serif';
+  overflow: hidden;
 }
 
 .App-logo {

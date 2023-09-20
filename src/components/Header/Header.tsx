@@ -29,7 +29,7 @@ const Header = () => {
                 </div>
                 <div className={styles.navButtons}>
                     <NavLink to="/About">About</NavLink>
-                    <NavLink to="/login">Setup Quokka</NavLink>
+                    <NavLink to="/Setup">Setup Quokka</NavLink>
                     <NavLink to="/CircuitBuilder">Circuit Builder</NavLink>
                     <NavLink to="/CircuitOutput">Circuit Output</NavLink>
                 </div>
