@@ -1,10 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+import CircuitGrid from './CircuitGrid';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setDraggingGate, draggingGate }) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+    // const [droppedGates, setDroppedGates] = useState([]); 
+
+    // const onDrop = () => {
+
+    // }
+
     useEffect(() => {
         if (refContainer.current) {
             setDimensions({
@@ -30,7 +39,34 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 {/* {/* {/* <NestedGrid
                      circuitBuilderDimensions = { dimensions }
                 /> */}
-
+                <Row>
+                    <Col
+                        id = {"1"}
+                        onDragEnter = {(e) => { e.preventDefault(); console.log(draggingGate)}}
+                        onDrop = {(e) => { e.preventDefault(); console.log("AHAHAHHA")}} 
+                    > hehe drop
+                    </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                    <Col> hehe </Col>
+                </Row>
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
         return <div className = { `${ styles.CircuitBuilder }` }

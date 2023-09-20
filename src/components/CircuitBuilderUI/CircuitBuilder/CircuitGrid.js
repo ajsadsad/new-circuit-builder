@@ -1,53 +1,23 @@
-// import React, { useEffect } from 'react';
-// import uniqid from 'uniqid';
+import React, { useEffect, useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: 'center',
-//   color: theme.palette.text.secondary,
-// }));
+const CircuitGrid = ( { dimensions }) => {
 
+    const [gridRows, setGridRows] = useState([(dimensions /48)]);
 
-// function FormRow({ circuitBuilderDimensions, id }) {
-//     var gridColumn = Array(Math.floor(circuitBuilderDimensions.width / 48)).fill(uniqid())
-//   return (
-//     <React.Fragment key = {uniqid()}>
-//         {
-//             gridColumn.map((data, index) => {
-//                 return (
-//                     <Grid container spacing = {0}  key = { uniqid(data+'-', id) }>
-//                         <Item key = {uniqid(index+'-', undefined)}>Test</Item>
-//                     </Grid>
-//                 )
-//             })
-//         }
-//     </React.Fragment>
-//   );
-// }
+    let hehe = [...gridRows, gridRows.map(index =>
+        <Row>
+           <Col> hehe </Col>
+        </Row>
+    )];
 
-// export default function NestedGrid( { circuitBuilderDimensions } ) {
-//     var gridRow = Array(Math.floor(circuitBuilderDimensions.height / 48)).fill(uniqid())
+    return (
+        {
+            hehe
+        }
+    )
+}
 
-//     useEffect(() => {
-//         return;
-//     }, [circuitBuilderDimensions]);
-
-//   return (
-//     <Box sx={{ flexGrow: 1 }} key = {uniqid()}>
-//         {
-//             gridRow.map((data, index) => {
-//                 return (
-//                     <Grid container spacing={0} id = { uniqid(data+'-', index) }>
-//                         <FormRow
-//                             circuitBuilderDimensions = { circuitBuilderDimensions }
-//                             key = {uniqid(index+'-', undefined)}
-//                         />
-//                     </Grid>
-//                 )
-//             })
-//         }
-//     </Box>
-//   );
-// }
+export default CircuitGrid

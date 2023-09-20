@@ -1,8 +1,8 @@
-:root {
+/* :root {
     --logo-size: 96;
-}
+} */
 
-/* .CircuitGrid {
+.CircuitGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 0px 0px;
@@ -11,4 +11,4 @@
       "+ grid";
     width: 95%;
     height: 95%;
-} */
+}

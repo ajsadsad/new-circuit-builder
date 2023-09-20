@@ -8,6 +8,7 @@ const useCircuitBuilderViewController = () => {
     const [allGatesViewable, setAllGatesView] = useState(true);
     const [faveGatesViewable, setFaveGatesView] = useState(false);
     const [circuitCodeViewable, setCircuitCodeView] = useState(true);
+    const [draggingGate, setDraggingGate] = useState(""); 
 
     const { gates } = useCircuitBuilderViewModel();
     //  If option menu is opened then faveMenu has to be closed. Same way the other way round.
@@ -38,11 +39,13 @@ const useCircuitBuilderViewController = () => {
     }
 
     return {
+        draggingGate,
         optionViewable,
         outputViewable,
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
+        setDraggingGate,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,

@@ -3,7 +3,7 @@ import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 //import useAllGatesMenuViewController from './useAllGatesMenuViewController';
 import data from '../../../assets/standardGates.json'
 
-export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView }) {
+export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView, setDraggingGate }) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -16,13 +16,14 @@ export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView
         }
     }, [optionsView, faveGatesView, allGatesView]);
 
-
     const gates = data.Gates.map(gate =>
         <img
             id = { gate.ID }
             key = { gate.gateName }
             description = { gate.description }
             src = { require(`../../../assets/${gate.img}`)}
+            draggable = { true }
+            onDrag = {(e) => { e.preventDefault(); setDraggingGate(e.target.id)}}
         >
         </img>
     );
