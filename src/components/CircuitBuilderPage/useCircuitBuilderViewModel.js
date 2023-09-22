@@ -14,12 +14,14 @@ const useCircuitBuilderViewModel = () => {
 
     const standardGates = gates.Gates.map(gate =>
             <img
-                id = { gate.ID }
-                key = { gate.gateName }
+                qid = { gate.qid }
+                qasmid = { gate.qasmid }
+                key = { gate.qid }
+                alt = { gate.gateName }
                 description = { gate.description }
                 src = { require(`../../assets/${gate.img}`)}
                 draggable = { true }
-                onDragStart = {(e) => { setDraggingGate(e.target.id) }}
+                onDragStart = {(e) => { setDraggingGate(e.target) }}
             >
             </img>
     );
