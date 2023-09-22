@@ -7,7 +7,7 @@ import OptionsMenu from '../CircuitBuilderUI/OptionsMenu/OptionsMenu';
 import Output from '../CircuitBuilderUI/Output/Output';
 import BottomPageTabs from '../CircuitBuilderUI/BottomPageTabs/BottomPageTabs';
 import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/CircuitBuilder/ReactiveCircuitBuilderUI';
-import useCircuitBuilderViewController from './useCircuitBuilderViewController';
+import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 
 export default function CircuitBuilderPage () {
 
@@ -18,13 +18,14 @@ export default function CircuitBuilderPage () {
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
+        standardGates,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
         updateCircuitCodeView,
         setDraggingGate,
-    } = useCircuitBuilderViewController();
+    } = useCircuitBuilderViewModel();
 
     return (
         <div className = { styles.container }>
@@ -58,6 +59,7 @@ export default function CircuitBuilderPage () {
             />
             <AllGatesMenu
                 setDraggingGate = { setDraggingGate }
+                standardGates = { standardGates }
                 optionsView = { optionViewable }
                 faveGatesView = { faveGatesViewable }
                 allGatesView = { allGatesViewable }

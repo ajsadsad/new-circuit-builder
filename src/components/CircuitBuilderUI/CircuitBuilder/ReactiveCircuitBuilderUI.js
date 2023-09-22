@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
+import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setDraggingGate, draggingGate }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGate }) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-    // const [droppedGates, setDroppedGates] = useState([]); 
+    // const [droppedGates, setDroppedGates] = useState([]);
 
     // const onDrop = () => {
 
     // }
 
-    /*When resizing probably have to check if it is smaller or larger than the current size. 
-      IF its bigger then you would have to append more of an empty at the end. 
+    /*When resizing probably have to check if it is smaller or larger than the current size.
+      IF its bigger then you would have to append more of an empty at the end.
       If its smaller maybe don't let it resize or compress more or just hide overflow? IDK
-      -- Need to store state of grid to ensure that when it is rerendered/resized that the same grid is reproduced. 
-        probably have to add elements to it to hold more information on each cell or whatever iDK 
+      -- Need to store state of grid to ensure that when it is rerendered/resized that the same grid is reproduced.
+        probably have to add elements to it to hold more information on each cell or whatever iDK
     */
 
     useEffect(() => {
@@ -30,11 +28,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         }
     }, [optionsView, faveGatesView, codeView, outputView, allGatesView]);
 
-    let windowHeight = Math.floor(dimensions.height/48); 
-    let windowWidth = Math.floor(dimensions.width/48);
 
-    let fullGrid = Array(windowHeight).fill(0).map(row => new Array(windowWidth).fill(false)) 
-    
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
        return <div className = {
                 `${ styles.CircuitBuilder }
@@ -48,39 +42,10 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
-                {/* <Row>
-                    <Col
-                        id = {"1"}
-                        onDragEnter = {(e) => { e.preventDefault(); console.log(draggingGate)}}
-                        onDrop = {(e) => { e.preventDefault(); console.log("AHAHAHHA")}} 
-                    > hehe drop
-                    </Col>
-                </Row> */}
-                <Container>
-                {
-                    fullGrid.map((column, index) => 
-                        <Row
-                            key = { index }
-                            className = { styles.row }
-                            
-                        >
-                            {
-                                column.map((index) => 
-                                    <Col
-                                        className = { styles.col }
-                                        key = { index }
-                                    > 
-                                        h
-                                    </Col>
-                                )
-                            }
-                        </Row>
-                    )
-                }
-                </Container>
+                <CircuitGrid
+                    dimensions = { dimensions }
+                    draggingGate = { draggingGate }
+                />
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
         return <div className = { `${ styles.CircuitBuilder }` }
