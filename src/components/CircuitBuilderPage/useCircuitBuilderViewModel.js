@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
+import styles from './CircuitBuilder.module.scss'
 
 const useCircuitBuilderViewModel = () => {
 
@@ -14,14 +15,12 @@ const useCircuitBuilderViewModel = () => {
 
     const standardGates = gates.Gates.map(gate =>
             <img
-                qid = { gate.qid }
-                qasmid = { gate.qasmid }
+                className = { styles.GateImg }
                 key = { gate.qid }
-                alt = { gate.gateName }
-                description = { gate.description }
+                gate = { gate }
                 src = { require(`../../assets/${gate.img}`)}
                 draggable = { true }
-                onDragStart = {(e) => { setDraggingGate(e.target) }}
+                onDragStart = {(e) => { setDraggingGate(e.target.cloneNode()); }}
             >
             </img>
     );

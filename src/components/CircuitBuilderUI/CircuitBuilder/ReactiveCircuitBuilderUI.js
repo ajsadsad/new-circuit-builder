@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGate }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGate, setDraggingGate }) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -45,6 +45,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 <CircuitGrid
                     dimensions = { dimensions }
                     draggingGate = { draggingGate }
+                    setDraggingGate = { setDraggingGate }
                 />
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {

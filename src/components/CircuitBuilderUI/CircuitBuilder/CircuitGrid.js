@@ -4,17 +4,18 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { useState } from 'react';
 
-export default function CircuitGrid ({ dimensions, draggingGate }) {
+export default function CircuitGrid ({ dimensions, draggingGate, setDraggingGate }) {
     let windowHeight = Math.floor(dimensions.height/48);
     let windowWidth = Math.floor(dimensions.width/48);
 
-    const [qubitStates, setQubitOp] = useState(Array.from({length: windowHeight},()=> Array.from({length: windowWidth}, () => [{hasGate : false, gate: null}])));
+    const [qubitStates, setQubitOp] = useState(Array.from({length: windowHeight},()=> Array.from({length: windowWidth}, () => [{ hasGate : false, gate: null}])));
     const handleChange = (e) => {
+        e.preventDefault();
         let copy = [...qubitStates];
         copy[e.currentTarget.parentNode.id][e.target.id].hasGate = true;
-        copy[e.currentTarget.parentNode.id][e.target.id].gate = draggingGate;
+        copy[e.currentTarget.parentNode.id][e.target.id].gate = draggingGate.gate;
         setQubitOp(copy);
-        console.log(qubitStates)
+        console.log(qubitStates);
         e.target.appendChild(draggingGate);
     }
 
@@ -34,8 +35,9 @@ export default function CircuitGrid ({ dimensions, draggingGate }) {
                                 id = { index }
                                 onDragEnter = {(e) => { e.preventDefault();}}
                                 onDragOver = {(e) => { e.preventDefault(); }}
-                                onDrop = {(e) => { e.preventDefault(); handleChange(e); }}
+                                onDrop = {(e) => { handleChange(e); }}
                                 className = { styles.col }
+                                onDragStart = {(e) => { setDraggingGate(e.target); }}
                             >
                             </Col>
                         )

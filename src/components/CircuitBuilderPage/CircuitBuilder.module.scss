@@ -10,19 +10,26 @@
     "UITabs2 Options-Menu Circuit-Builder Code Fave-Menu UITabs4"
     "UITabs2 Options-Menu Output Code Fave-Menu UITabs4"
     "UITabs1 UITabs1 UITabs1 UITabs1 UITabs1 UITabs1";
-  height: 90vh; 
+  height: 90vh;
 }
 
 .row {
-  height: 48px; 
+  height: 48px;
   background-color: pink;
-  border: 1px solid black; 
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
 
 .col {
-  height: 48px; 
-  width: 48px; 
-  border: 1px solid black; 
+  height: 48px;
+  width: 48px;
+  overflow: hidden;
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
 
 .OptionsMenu {
@@ -121,6 +128,11 @@
 }
 .AllGatesMenuNoOptionWithFave {
   grid-column: 2 / span 3;
+}
+.GateImg {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 

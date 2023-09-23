@@ -15,6 +15,7 @@ export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, set
             <button onClick = { setAllGatesView }> All Gate Menu </button>
             <button onClick = { setCodeView }> Code Console </button>
             <button onClick = { setOutputView}> Output Console </button>
+            <button> Create QASM JSON </button>
         </div>
     )
 }
