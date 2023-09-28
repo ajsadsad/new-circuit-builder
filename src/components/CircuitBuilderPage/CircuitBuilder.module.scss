@@ -11,6 +11,7 @@
     "UITabs2 Options-Menu Output Code Fave-Menu UITabs4"
     "UITabs1 UITabs1 UITabs1 UITabs1 UITabs1 UITabs1";
   height: 90vh;
+  align-items: center;
 }
 
 .row {
@@ -26,7 +27,7 @@
   height: 48px;
   width: 48px;
   overflow: hidden;
-  border: 1px solid black;
+  border: 0.5px solid black;
   margin: 0;
   padding: 0;
   align-items: center;
@@ -51,6 +52,9 @@
   grid-area: Circuit-Builder;
   /* background-color: rgba(232, 14, 213); */
   border: 5px solid rgba(232, 14, 213);
+  width: 100%;
+  height: 100%;
+  align-items: center;
 }
 .CircuitBuilderNoAllGatesMenuNoOutput {
   grid-row: 2 / span 3;
@@ -84,6 +88,8 @@
   grid-area: Output;
   /* background-color: rgba(14, 232, 21, 0.939); */
   border: 5px solid rgba(14, 232, 21, 0.939);
+  width: 100%;
+  height: 100%;
 }
 .OutputNoOptionWithCode {
   grid-column: 2 / span 2;
@@ -102,6 +108,8 @@
   grid-area: Code;
   /* background-color: rgba(14, 228, 232, 0.939); */
   border: 5px solid rgba(14, 228, 232, 0.939);
+  width: 100%;
+  height: 100%;
 }
 .CodeNoAllGates {
   grid-row: 2 / span 3;
@@ -125,6 +133,8 @@
   grid-area: All-Gates;
   /* background-color: rgba(234, 21, 21, 0.939); */
   border: 5px solid rgba(234, 21, 21, 0.939);
+  width: 100%;
+  height: 100%;
 }
 .AllGatesMenuNoOptionNoFave {
   grid-column: 2 / span 4;

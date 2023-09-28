@@ -2,26 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGateNode, setDraggingGateNode, draggingGate, setDraggingGate, gates }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit}) {
 
     const refContainer = useRef();
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-    // const [droppedGates, setDroppedGates] = useState([]);
-
-    // const onDrop = () => {
-
-    // }
-
-    /*When resizing probably have to check if it is smaller or larger than the current size.
-      IF its bigger then you would have to append more of an empty at the end.
-      If its smaller maybe don't let it resize or compress more or just hide overflow? IDK
-      -- Need to store state of grid to ensure that when it is rerendered/resized that the same grid is reproduced.
-        probably have to add elements to it to hold more information on each cell or whatever iDK
-    */
 
     useEffect(() => {
         if (refContainer.current) {
-            setDimensions({
+            setCBDimensions({
                 width: refContainer.current.offsetWidth,
                 height: refContainer.current.offsetHeight,
             });
@@ -43,11 +30,9 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Fave menu - OFF
                 Output Console - ON */}
                 <CircuitGrid
-                    dimensions = { dimensions }
-                    draggingGateNode = { draggingGateNode }
-                    setDraggingGateNode = { setDraggingGateNode }
-                    draggingGate = { draggingGate }
-                    setDraggingGate= { setDraggingGate }
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
                 />
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {

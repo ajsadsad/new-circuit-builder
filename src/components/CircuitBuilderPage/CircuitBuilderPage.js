@@ -12,6 +12,7 @@ import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 export default function CircuitBuilderPage () {
 
     const {
+        standardGates,
         draggingGateNode,
         draggingGate,
         optionViewable,
@@ -19,15 +20,19 @@ export default function CircuitBuilderPage () {
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
-        standardGates,
-        gates,
+        qubitStates,
+        gateFromQubit,
+        circuitBuilderDimensions,
+        setCBDimensions,
+        handleChange,
+        moveGateFromQubit,
+        updateDraggingGate,
+        setDraggingGateNode,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
-        updateCircuitCodeView,
-        setDraggingGateNode,
-        setDraggingGate,
+        updateCircuitCodeView
     } = useCircuitBuilderViewModel();
 
     return (
@@ -36,16 +41,17 @@ export default function CircuitBuilderPage () {
             optionsView = { optionViewable }
             />
             <ReactiveCircuitBuilderUI
-
-                draggingGateNode = { draggingGateNode }
-                setDraggingGateNode = { setDraggingGateNode }
-                draggingGate = { draggingGate }
-                setDraggingGate = { setDraggingGate }
+                setCBDimensions = { setCBDimensions }
+                dimensions = { circuitBuilderDimensions }
                 optionsView = { optionViewable }
                 faveGatesView = { faveGatesViewable }
                 codeView = { circuitCodeViewable }
                 outputView = { outputViewable }
                 allGatesView = { allGatesViewable }
+                qubitStates = { qubitStates }
+                gateFromQubit = { gateFromQubit }
+                handleChange = { handleChange }
+                moveGateFromQubit = { moveGateFromQubit }
             />
             <Output
                 outputView = { outputViewable }

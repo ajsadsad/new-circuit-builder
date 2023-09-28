@@ -11,42 +11,56 @@ const useCircuitBuilderViewModel = () => {
     const [faveGatesViewable, setFaveGatesView] = useState(false);
     const [circuitCodeViewable, setCircuitCodeView] = useState(true);
     const [draggingGate, setDraggingGate] = useState(undefined);
-    const [draggingGateNode, setDraggingGateNode] = useState("");
+    const [draggingGateNode, setDraggingGateNode] = useState(undefined);
+    const [gateFromQubit, setGateFromQubit] = useState(false);
+    const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
+    const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})))
+
     const { gates } = useCircuitBuilderModel();
 
-    const updateDraggingGate = (gate) => {
+    function handleChange(e) {
+        e.preventDefault();
+
+        //if gate is being dragged from circuit
+        if(gateFromQubit) {
+            let copy = [...qubitStates];
+            copy[draggingGateNode.target.parentElement.parentElement.id][draggingGateNode.target.parentElement.id] = { hasGate : false, gate : null};
+            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate };
+            e.target.appendChild(draggingGateNode.target);
+            setGateFromQubit(!gateFromQubit);
+        } else {
+            let copy = [...qubitStates];
+            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate };
+            setQubitOp(copy);
+            e.target.appendChild(draggingGateNode.target.cloneNode());
+        }
+        console.log(qubitStates);
+    }
+
+    function moveGateFromQubit(e) {
+        setDraggingGateNode(e);
+        setDraggingGate(JSON.parse(e.target.getAttribute("gate")));
+        let copy = [...qubitStates];
+        copy[e.target.parentNode.parentNode.id][e.target.parentNode.id] = { hasGate : false, gate : null};
+        setQubitOp(copy);
+        setGateFromQubit(!gateFromQubit);
+    }
+
+    function updateDraggingGate(gate) {
         setDraggingGate(gate);
     }
 
-    const [standardGates, setStandardGates] = useState(gates.Gates.map((gate) => {
+    const standardGates = useState(gates.Gates.map((gate) => {
         return(
         <img
             className = { styles.GateImg }
             key = { gate.qid }
-            gate = { gate }
+            gate = { JSON.stringify(gate) }
             src = { require(`../../assets/${gate.img}`)}
             draggable = { true }
             onDragStart = {(e) => { setDraggingGateNode(e); updateDraggingGate(gate); }}
         />
     )}))
-
-    // const standardGates = gates.Gates.map((gate) => {
-    //         <img
-    //             className = { styles.GateImg }
-    //             key = { gate.qid }
-    //             gate = { gate }
-    //             src = { require(`../../assets/${gate.img}`)}
-    //             draggable = { true }
-    //             onDragStart = {(e) => { setDraggingGateNode(e.target.cloneNode()); setDraggingGate(gate)}}
-    //         >
-    //         </img>
-    // });
-
-    // let draggingGate = useRef("");
-    // function setDraggingGate(gate) {
-    //     draggingGate.current = gate;
-    //     console.log("Dragging Gate useRef(): " + draggingGate.current.gateName);
-    // }
 
     //  If option menu is opened then faveMenu has to be closed. Same way the other way round.
     function updateOptionView() {
@@ -79,14 +93,19 @@ const useCircuitBuilderViewModel = () => {
         standardGates,
         draggingGateNode,
         draggingGate,
-        updateDraggingGate,
         optionViewable,
         outputViewable,
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
+        qubitStates,
+        gateFromQubit,
+        circuitBuilderDimensions,
+        setCBDimensions,
+        handleChange,
+        moveGateFromQubit,
+        updateDraggingGate,
         setDraggingGateNode,
-        setDraggingGate,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
