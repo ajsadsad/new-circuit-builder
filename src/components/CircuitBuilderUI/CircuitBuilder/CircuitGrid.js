@@ -4,19 +4,22 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { useState } from 'react';
 
-export default function CircuitGrid ({ dimensions, draggingGate, setDraggingGate }) {
-    let windowHeight = Math.floor(dimensions.height/48);
-    let windowWidth = Math.floor(dimensions.width/48);
+export default function CircuitGrid ({ draggingGateNode , setDraggingGateNode, dimensions, draggingGate, setDraggingGate,}) {
 
-    const [qubitStates, setQubitOp] = useState(Array.from({length: windowHeight},()=> Array.from({length: windowWidth}, () => [{ hasGate : false, gate: null}])));
+    let windowWidth = Math.floor(dimensions.width/48) - 1;
+    let windowHeight = Math.floor(dimensions.height/48) - 1;
+
+    const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: windowHeight}, () => [{ hasGate : false, gate : null}])))
+
     const handleChange = (e) => {
         e.preventDefault();
         let copy = [...qubitStates];
-        copy[e.currentTarget.parentNode.id][e.target.id].hasGate = true;
-        copy[e.currentTarget.parentNode.id][e.target.id].gate = draggingGate.gate;
+        copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate }
         setQubitOp(copy);
         console.log(qubitStates);
-        e.target.appendChild(draggingGate);
+        console.log("draggingGate: e " + draggingGate);
+        console.log("drop: e " + e.target.getAttribute("gooogaaa"));
+        e.target.appendChild(draggingGateNode.target.cloneNode());
     }
 
     return(
@@ -30,16 +33,28 @@ export default function CircuitGrid ({ dimensions, draggingGate, setDraggingGate
                 >
                     {
                         column.map((row, index) =>
-                            <Col
+                        {
+                            if(index === 0) {
+                                return(<Col
+                                key = { rowIndex + "." + index }
+                                id = { index }
+                                className = { styles.qubitNum }
+                                >
+                                </Col>)
+                            } else {
+                                return (<Col
                                 key = { rowIndex + "." + index }
                                 id = { index }
                                 onDragEnter = {(e) => { e.preventDefault();}}
                                 onDragOver = {(e) => { e.preventDefault(); }}
-                                onDrop = {(e) => { handleChange(e); }}
+                                onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
                                 className = { styles.col }
-                                onDragStart = {(e) => { setDraggingGate(e.target); }}
-                            >
-                            </Col>
+                                onDragStart = {(e) => { setDraggingGateNode(e.target); handleChange(e); }}
+                                gooogaaa = "Gee gee boo"
+                                >
+                                </Col>)
+                            }
+                        }
                         )
                     }
                 </Row>

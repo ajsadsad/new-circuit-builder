@@ -32,6 +32,12 @@
   align-items: center;
 }
 
+.qubitNum {
+  height: 48px;
+  width: 48px;
+  background-color: lightblue;
+}
+
 .OptionsMenu {
   grid-area: Options-Menu;
   display: block;

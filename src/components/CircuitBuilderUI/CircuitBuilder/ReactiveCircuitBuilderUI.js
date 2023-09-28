@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGate, setDraggingGate }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGateNode, setDraggingGateNode, draggingGate, setDraggingGate, gates }) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -26,7 +26,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 height: refContainer.current.offsetHeight,
             });
         }
-    }, [optionsView, faveGatesView, codeView, outputView, allGatesView]);
+    }, [optionsView, faveGatesView, codeView, outputView, allGatesView,]);
 
 
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
@@ -44,8 +44,10 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Output Console - ON */}
                 <CircuitGrid
                     dimensions = { dimensions }
+                    draggingGateNode = { draggingGateNode }
+                    setDraggingGateNode = { setDraggingGateNode }
                     draggingGate = { draggingGate }
-                    setDraggingGate = { setDraggingGate }
+                    setDraggingGate= { setDraggingGate }
                 />
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {

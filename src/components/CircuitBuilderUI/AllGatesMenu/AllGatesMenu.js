@@ -1,18 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
-import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
+import useCircuitBuilderViewModel from '../../CircuitBuilderPage/useCircuitBuilderViewModel';
 
-export default function AllGatesMenu ({ optionsView, faveGatesView, allGatesView, standardGates }) {
+export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, standardGates }  ) {
+
+    // const { optionsView, faveGatesView, allGatesView, gates, standardGates } = useCircuitBuilderViewModel();
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-    useEffect(() => {
-        if (refContainer.current) {
-            setDimensions({
-                width: refContainer.current.offsetWidth,
-                height: refContainer.current.offsetHeight,
-            });
-        }
-    }, [optionsView, faveGatesView, allGatesView]);
 
     if(allGatesView === true) {
         if(optionsView === false && faveGatesView === false) {
