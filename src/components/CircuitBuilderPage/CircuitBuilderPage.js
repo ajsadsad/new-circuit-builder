@@ -23,6 +23,7 @@ export default function CircuitBuilderPage () {
         qubitStates,
         gateFromQubit,
         circuitBuilderDimensions,
+        processCircuit,
         setCBDimensions,
         handleChange,
         moveGateFromQubit,
@@ -82,6 +83,7 @@ export default function CircuitBuilderPage () {
                 setAllGatesView = { updateAllGatesMenuView }
                 setCodeView =  { updateCircuitCodeView }
                 setOutputView = { updateOutputView }
+                processCircuit = { processCircuit }
             />
         </div>
     )

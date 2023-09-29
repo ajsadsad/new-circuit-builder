@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Button from 'react-bootstrap/Button';
 
-export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, setAllGatesView, setCodeView, setOutputView, faveGatesView, optionsView}) {
+export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, setAllGatesView, setCodeView, setOutputView, faveGatesView, optionsView, processCircuit}) {
 
     return (
         <div className = { styles.BottomPageTabs }>
@@ -15,7 +15,7 @@ export default function BottomPageTabs ({setFaveGateView, setOptionMenuView, set
             <button onClick = { setAllGatesView }> All Gate Menu </button>
             <button onClick = { setCodeView }> Code Console </button>
             <button onClick = { setOutputView}> Output Console </button>
-            <button> Create QASM JSON </button>
+            <button onClick = { processCircuit }> Create QASM JSON </button>
         </div>
     )
 }

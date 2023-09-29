@@ -16,7 +16,7 @@ const useCircuitBuilderViewModel = () => {
     const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
     const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})))
 
-    const { gates } = useCircuitBuilderModel();
+    const { gates, sendCircuitData } = useCircuitBuilderModel();
 
     function handleChange(e) {
         e.preventDefault();
@@ -50,7 +50,7 @@ const useCircuitBuilderViewModel = () => {
         setDraggingGate(gate);
     }
 
-    const standardGates = useState(gates.Gates.map((gate) => {
+    const standardGates = gates.Gates.map((gate) => {
         return(
         <img
             className = { styles.GateImg }
@@ -60,7 +60,20 @@ const useCircuitBuilderViewModel = () => {
             draggable = { true }
             onDragStart = {(e) => { setDraggingGateNode(e); updateDraggingGate(gate); }}
         />
-    )}))
+    )});
+
+    // The docs say that the quokka is fed this with a bunch of JSON files so it might not have to be one big JSON file.
+    function processCircuit() {
+        let json = [];
+        json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
+        qubitStates.map((row, rowIndex) => row.map((v, i) => {
+            if(v.hasGate) {
+                json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
+            }
+        }));
+        json.push({'operation' : 'destroy_circuit'});
+        sendCircuitData(json);
+    }
 
     //  If option menu is opened then faveMenu has to be closed. Same way the other way round.
     function updateOptionView() {
@@ -101,6 +114,7 @@ const useCircuitBuilderViewModel = () => {
         qubitStates,
         gateFromQubit,
         circuitBuilderDimensions,
+        processCircuit,
         setCBDimensions,
         handleChange,
         moveGateFromQubit,

@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
-import useCircuitBuilderViewModel from '../../CircuitBuilderPage/useCircuitBuilderViewModel';
 
-export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, standardGates }  ) {
-
-    // const { optionsView, faveGatesView, allGatesView, gates, standardGates } = useCircuitBuilderViewModel();
+export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, standardGates }  ) {
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -15,9 +12,9 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         `${ styles.AllGatesMenu }
                          ${ styles.AllGatesMenuNoOptionNoFave }` }
                         ref = { refContainer }>
-                    All Gates Menu
+                    {/* All Gates Menu
                      width : {dimensions.width}
-                     height : {dimensions.height}
+                     height : {dimensions.height} */}
                      {
                         standardGates
                      }
@@ -27,9 +24,9 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         `${ styles.AllGatesMenu }
                          ${ styles.AllGatesMenuWithOptionNoFave }` }
                         ref = { refContainer }>
-                    All Gates Menu
+                    {/* All Gates Menu
                      width : {dimensions.width}
-                     height : {dimensions.height}
+                     height : {dimensions.height} */}
                      {
                        standardGates
                      }
@@ -39,9 +36,9 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         `${ styles.AllGatesMenu }
                          ${ styles.AllGatesMenuNoOptionWithFave }` }
                         ref = { refContainer }>
-                    All Gates Menu
+                    {/* All Gates Menu
                      width : {dimensions.width}
-                     height : {dimensions.height}
+                     height : {dimensions.height} */}
                      {
                        standardGates
                      }
