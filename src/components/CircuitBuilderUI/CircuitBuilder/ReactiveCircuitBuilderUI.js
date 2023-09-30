@@ -2,31 +2,18 @@ import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, draggingGate }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit}) {
 
     const refContainer = useRef();
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-    // const [droppedGates, setDroppedGates] = useState([]);
-
-    // const onDrop = () => {
-
-    // }
-
-    /*When resizing probably have to check if it is smaller or larger than the current size.
-      IF its bigger then you would have to append more of an empty at the end.
-      If its smaller maybe don't let it resize or compress more or just hide overflow? IDK
-      -- Need to store state of grid to ensure that when it is rerendered/resized that the same grid is reproduced.
-        probably have to add elements to it to hold more information on each cell or whatever iDK
-    */
 
     useEffect(() => {
         if (refContainer.current) {
-            setDimensions({
+            setCBDimensions({
                 width: refContainer.current.offsetWidth,
                 height: refContainer.current.offsetHeight,
             });
         }
-    }, [optionsView, faveGatesView, codeView, outputView, allGatesView]);
+    }, [optionsView, faveGatesView, codeView, outputView, allGatesView,]);
 
 
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
@@ -43,8 +30,10 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Fave menu - OFF
                 Output Console - ON */}
                 <CircuitGrid
-                    dimensions = { dimensions }
-                    draggingGate = { draggingGate }
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                    addQubit = { addQubit }
                 />
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
@@ -58,9 +47,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === false ) {
         return <div className = {
@@ -75,9 +66,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === false && outputView === true ){
         return <div className = {
@@ -93,9 +86,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
@@ -111,9 +106,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
@@ -129,9 +126,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - OFF */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === true && outputView === true){
         //have to fix fave menu showing and moving everything to the left.
@@ -148,9 +147,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - ON */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === true && outputView === true){
         // have to fix this so that everything moves to the left. or everything starts to the right until the menu opens?
@@ -166,9 +167,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - ON */}
-                {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                />*/}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
                 </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
@@ -184,9 +187,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === false && outputView === true){
         return <div className ={
@@ -201,9 +206,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === false && outputView === true){
         return <div className ={
@@ -219,9 +226,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                  Output Console - ON */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
@@ -237,9 +246,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === true && faveGatesView === false && outputView === false){
         return <div className ={
@@ -255,9 +266,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
@@ -273,9 +286,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === true && faveGatesView === false && outputView === false){
         return <div className ={
@@ -291,9 +306,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === false && faveGatesView === true && outputView === true){
         return <div className ={
@@ -308,9 +325,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - ON */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
@@ -326,9 +345,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === true && outputView === false){
         return <div className ={
@@ -344,9 +365,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === true && faveGatesView === false && outputView === true){
         return <div className ={
@@ -361,9 +384,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === false && faveGatesView === false && outputView === false){
         return <div className ={
@@ -379,9 +404,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === true && optionsView === true && faveGatesView === false && outputView === false){
         return <div className ={
@@ -396,9 +423,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - OFF */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === true && codeView === false && optionsView === true && faveGatesView === false && outputView === true){
         return <div className ={
@@ -413,9 +442,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === false && faveGatesView === true && outputView === true){
         return <div className ={
@@ -431,9 +462,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - OFF
                 Fave menu - ON
                 Output Console - ON */}
-                {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     } else if(allGatesView === false && codeView === false && optionsView === true && faveGatesView === false && outputView === true){
         return <div className ={
@@ -449,9 +482,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Options Menu - ON
                 Fave menu - OFF
                 Output Console - ON */}
-                {/* {/* {/* {/* <NestedGrid
-                     circuitBuilderDimensions = { dimensions }
-                /> */}
+                <CircuitGrid
+                    qubitStates = {qubitStates }
+                    handleChange = { handleChange }
+                    moveGateFromQubit = { moveGateFromQubit }
+                />
             </div>
     }
 }
