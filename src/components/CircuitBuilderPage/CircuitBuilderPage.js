@@ -23,6 +23,7 @@ export default function CircuitBuilderPage () {
         qubitStates,
         gateFromQubit,
         circuitBuilderDimensions,
+        addQubit,
         processCircuit,
         setCBDimensions,
         handleChange,
@@ -42,6 +43,7 @@ export default function CircuitBuilderPage () {
             optionsView = { optionViewable }
             />
             <ReactiveCircuitBuilderUI
+                addQubit = { addQubit }
                 setCBDimensions = { setCBDimensions }
                 dimensions = { circuitBuilderDimensions }
                 optionsView = { optionViewable }

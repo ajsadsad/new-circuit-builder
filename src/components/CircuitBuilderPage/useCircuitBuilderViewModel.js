@@ -63,6 +63,7 @@ const useCircuitBuilderViewModel = () => {
     )});
 
     // The docs say that the quokka is fed this with a bunch of JSON files so it might not have to be one big JSON file.
+    // Can maybe pass the operation down as a prop into this function instead.
     function processCircuit() {
         let json = [];
         json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
@@ -73,6 +74,19 @@ const useCircuitBuilderViewModel = () => {
         }));
         json.push({'operation' : 'destroy_circuit'});
         sendCircuitData(json);
+    }
+
+    function addQubit() {
+        if(qubitStates.length < 33) {
+            console.log("Qubit Add!!");
+            let copy = [...qubitStates];
+            copy.push(Array(qubitStates[0].length));
+            copy[qubitStates.length].fill({hasGate : false, gate : null});
+            setQubitOp(copy);
+            console.log(qubitStates);
+        } else {
+            alert("Cannot add more than 32 qubits");
+        }
     }
 
     //  If option menu is opened then faveMenu has to be closed. Same way the other way round.
@@ -114,6 +128,7 @@ const useCircuitBuilderViewModel = () => {
         qubitStates,
         gateFromQubit,
         circuitBuilderDimensions,
+        addQubit,
         processCircuit,
         setCBDimensions,
         handleChange,

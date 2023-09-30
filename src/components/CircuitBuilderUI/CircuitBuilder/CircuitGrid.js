@@ -2,9 +2,11 @@ import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQubit }) {
+export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQubit, addQubit }) {
+
+    //have to figure out how to keep gates inside of grid on rerender. Probably a turnary operation in this map function.
 
     return(
         <Container>
@@ -23,7 +25,9 @@ export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQu
                                 key = { rowIndex + "." + index }
                                 id = { index }
                                 className = { styles.qubitNum }
+                                onClick = { addQubit }
                                 >
+                                    +
                                 </Col>)
                             } else {
                                 return (<Col
