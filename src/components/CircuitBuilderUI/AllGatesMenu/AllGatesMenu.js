@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {useRef} from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, standardGates }  ) {
 
     const refContainer = useRef();
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     if(allGatesView === true) {
         if(optionsView === false && faveGatesView === false) {
