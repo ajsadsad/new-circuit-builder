@@ -2,21 +2,11 @@ import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-export default function CircuitGrid ({ dimensions, draggingGate }) {
-    let windowHeight = Math.floor(dimensions.height/48);
-    let windowWidth = Math.floor(dimensions.width/48);
+export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQubit, addQubit }) {
 
-    const [qubitStates, setQubitOp] = useState(Array.from({length: windowHeight},()=> Array.from({length: windowWidth}, () => [{hasGate : false, gate: null}])));
-    const handleChange = (e) => {
-        let copy = [...qubitStates];
-        copy[e.currentTarget.parentNode.id][e.target.id].hasGate = true;
-        copy[e.currentTarget.parentNode.id][e.target.id].gate = draggingGate;
-        setQubitOp(copy);
-        console.log(qubitStates)
-        e.target.appendChild(draggingGate);
-    }
+    //have to figure out how to keep gates inside of grid on rerender. Probably a turnary operation in this map function.
 
     return(
         <Container>
@@ -29,15 +19,30 @@ export default function CircuitGrid ({ dimensions, draggingGate }) {
                 >
                     {
                         column.map((row, index) =>
-                            <Col
+                        {
+                            if(index === 0) {
+                                return(<Col
+                                key = { rowIndex + "." + index }
+                                id = { index }
+                                className = { styles.qubitNum }
+                                onClick = { addQubit }
+                                >
+                                    +
+                                </Col>)
+                            } else {
+                                return (<Col
                                 key = { rowIndex + "." + index }
                                 id = { index }
                                 onDragEnter = {(e) => { e.preventDefault();}}
                                 onDragOver = {(e) => { e.preventDefault(); }}
-                                onDrop = {(e) => { e.preventDefault(); handleChange(e); }}
+                                onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
                                 className = { styles.col }
-                            >
-                            </Col>
+                                draggable = { true }
+                                onDragStart = {(e) => { {moveGateFromQubit(e)}; }}
+                                >
+                                </Col>)
+                            }
+                        }
                         )
                     }
                 </Row>
@@ -46,9 +51,3 @@ export default function CircuitGrid ({ dimensions, draggingGate }) {
         </Container>
     )
 }
-/*
-    - Would probably have to do an ondrag check to see if the gate is currently inside a qubit to remove it from the qubit before moving to another qubit.
-    - I thought there was an onLeave listener but maybe I made that up, look it up in the morning.
-    - Have to fix the grid moving around when placing a gate inside of it. Might be due to the padding and margins within the image itself forcing the grid to move.
-    - Completely verify what data requirements are needed to use the QASM system.
-*/

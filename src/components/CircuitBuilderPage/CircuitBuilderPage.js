@@ -12,35 +12,49 @@ import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 export default function CircuitBuilderPage () {
 
     const {
+        standardGates,
+        draggingGateNode,
         draggingGate,
         optionViewable,
         outputViewable,
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
-        standardGates,
+        qubitStates,
+        gateFromQubit,
+        circuitBuilderDimensions,
+        addQubit,
+        processCircuit,
+        setCBDimensions,
+        handleChange,
+        moveGateFromQubit,
+        updateDraggingGate,
+        setDraggingGateNode,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
-        updateCircuitCodeView,
-        setDraggingGate,
+        updateCircuitCodeView
     } = useCircuitBuilderViewModel();
 
     return (
         <div className = { styles.container }>
             <OptionsMenu
-                optionsView = { optionViewable }
+            optionsView = { optionViewable }
             />
             <ReactiveCircuitBuilderUI
-
-                draggingGate = { draggingGate }
-                setDraggingGate = { setDraggingGate }
+                addQubit = { addQubit }
+                setCBDimensions = { setCBDimensions }
+                dimensions = { circuitBuilderDimensions }
                 optionsView = { optionViewable }
                 faveGatesView = { faveGatesViewable }
                 codeView = { circuitCodeViewable }
                 outputView = { outputViewable }
                 allGatesView = { allGatesViewable }
+                qubitStates = { qubitStates }
+                gateFromQubit = { gateFromQubit }
+                handleChange = { handleChange }
+                moveGateFromQubit = { moveGateFromQubit }
             />
             <Output
                 outputView = { outputViewable }
@@ -57,12 +71,11 @@ export default function CircuitBuilderPage () {
                 faveGatesView = { faveGatesViewable }
                 setFaveGateView={ updateFaveGatesView }
             />
-            <AllGatesMenu
-                setDraggingGate = { setDraggingGate }
-                standardGates = { standardGates }
+             <AllGatesMenu
                 optionsView = { optionViewable }
                 faveGatesView = { faveGatesViewable }
                 allGatesView = { allGatesViewable }
+                standardGates = { standardGates }
             />
             <BottomPageTabs
                 setOptionMenuView={ updateOptionView }
@@ -72,6 +85,7 @@ export default function CircuitBuilderPage () {
                 setAllGatesView = { updateAllGatesMenuView }
                 setCodeView =  { updateCircuitCodeView }
                 setOutputView = { updateOutputView }
+                processCircuit = { processCircuit }
             />
         </div>
     )
