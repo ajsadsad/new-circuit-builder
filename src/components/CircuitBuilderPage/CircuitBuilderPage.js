@@ -8,13 +8,13 @@ import Output from '../CircuitBuilderUI/Output/Output';
 import BottomPageTabs from '../CircuitBuilderUI/BottomPageTabs/BottomPageTabs';
 import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/CircuitBuilder/ReactiveCircuitBuilderUI';
 import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
+import ThetaModal from '../Modals/ThetaModal'
+import NoParamModal from '../Modals/NoParamModal';
 
 export default function CircuitBuilderPage () {
 
     const {
         standardGates,
-        draggingGateNode,
-        draggingGate,
         optionViewable,
         outputViewable,
         allGatesViewable,
@@ -23,13 +23,20 @@ export default function CircuitBuilderPage () {
         qubitStates,
         gateFromQubit,
         circuitBuilderDimensions,
+        gateClickedName,
+        gateClickedDesc,
+        thetaModal,
+        noParamModal,
+        setGateClicked,
+        showNoParamModal,
+        updateSlider,
+        showThetaModal,
         addQubit,
         processCircuit,
         setCBDimensions,
         handleChange,
+        handleClick,
         moveGateFromQubit,
-        updateDraggingGate,
-        setDraggingGateNode,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
@@ -55,6 +62,21 @@ export default function CircuitBuilderPage () {
                 gateFromQubit = { gateFromQubit }
                 handleChange = { handleChange }
                 moveGateFromQubit = { moveGateFromQubit }
+                handleClick = { handleClick }
+                setGateClicked = { setGateClicked }
+            />
+            <ThetaModal
+                    thetaModal = { thetaModal }
+                    showThetaModal = { showThetaModal }
+                    gateClickedName = { gateClickedName }
+                    gateClickedDesc = { gateClickedDesc }
+                    updateSlider = { updateSlider }
+            />
+            <NoParamModal
+                    gateClickedName = { gateClickedName }
+                    gateClickedDesc = { gateClickedDesc }
+                    noParamModal = { noParamModal }
+                    showNoParamModal = { showNoParamModal}
             />
             <Output
                 outputView = { outputViewable }

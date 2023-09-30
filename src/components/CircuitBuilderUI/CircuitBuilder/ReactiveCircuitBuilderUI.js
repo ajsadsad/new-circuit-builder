@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit}) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, Modal, handleClick, setGateClicked}) {
 
     const refContainer = useRef();
 
@@ -30,10 +30,12 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 Fave menu - OFF
                 Output Console - ON */}
                 <CircuitGrid
-                    qubitStates = {qubitStates }
+                    qubitStates = { qubitStates }
                     handleChange = { handleChange }
                     moveGateFromQubit = { moveGateFromQubit }
                     addQubit = { addQubit }
+                    handleClick = { handleClick }
+                    setGateClicked = { setGateClicked }
                 />
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
