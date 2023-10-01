@@ -6,6 +6,7 @@
  * @param {function} setDraggingGate - Function used to track state of current gate being dragged from menu.
  * @param {function} setDraggingGateNode - Function used to track state of current gate being dragged from menu as a HTML Node.
  */
+
 import React, {useRef} from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
 

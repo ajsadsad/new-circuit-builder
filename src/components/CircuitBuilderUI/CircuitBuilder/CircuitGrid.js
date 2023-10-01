@@ -52,6 +52,7 @@ export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQu
                                         onDragEnter = {(e) => { e.preventDefault();}}
                                         onDragOver = {(e) => { e.preventDefault(); }}
                                         onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
+                                        onDrop = {(e) => { e.preventDefault(); console.log(e.target.id); handleChange(e);  }}
                                         draggable = { true }
                                         onDragStart = {(e) =>  { moveGateFromQubit(e) } }
                                         onClick = {(e) => { handleClick(e); }}
