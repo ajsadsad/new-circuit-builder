@@ -1,3 +1,16 @@
+/**
+ * This component is responsible for the generation of the circuit grid displayed within the circuit builder component.
+ * @param {array[row][col]} qubitStates - 2d array used to represent the circuit grid. Each qubit is made up of a row that holds individual cells that holds an object of format { hasGate : bool, gate : gateObj }.
+ *
+ * @param {function} handleChange - triggered when gate is dropped within the circuit and called from CircuitBuilderViewModel.
+ *
+ * @param {function} moveGateFromQubit - triggered when gate is dragged from CircuitGrid and called from CircuitBuilderViewModel.
+ *
+ * @param {function} addQubit - triggered when cell with '+' is clicked and adds a new qubit to the circuit. Called from CircuitBuidlerViewModel.
+ *
+ * @param {function} handleClick - triggered when cell in grid is clicked. Called from CircuitBuilderViewModel.
+ *
+ */
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -38,7 +51,7 @@ export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQu
                                         className = { styles.col }
                                         onDragEnter = {(e) => { e.preventDefault();}}
                                         onDragOver = {(e) => { e.preventDefault(); }}
-                                        onDrop = {(e) => { e.preventDefault(); console.log(e.target.id); handleChange(e);  }}
+                                        onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
                                         draggable = { true }
                                         onDragStart = {(e) =>  { moveGateFromQubit(e) } }
                                         onClick = {(e) => { handleClick(e); }}

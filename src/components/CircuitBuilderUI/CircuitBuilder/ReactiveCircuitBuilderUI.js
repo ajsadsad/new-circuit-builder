@@ -1,8 +1,25 @@
+/**
+ * This component is reponsible for reshaping the area of which the quantum circuit builder takes up within the circuit builder page. Props are passed into this component from the CircuitBuilderPage component.
+ * @param {boolean} optionsView - True if options menu is viewable.
+ * @param {boolean} faveGatesView - True if fave gates menu is viewable.
+ * @param {boolean} codeView - True if code console is viewable.
+ * @param {boolean} outputView - True if output console is viewable.
+ * @param {boolean} allGatesView - True if all gates menu is vieable.
+ * @param {function} setCBDimensions - Function that updates and sets current dimensions of circuit div.
+ * @param {object} dimensions - object that stores the current width and height of the circuit builder {width : number, height : number}
+ * @param {array[][]} qubitStates - 2D array used to represent how gates are stored in app. Passed in as a prop to CircuitGrid component to generate the are of which gates can be placed into.
+ * @param {function} handleChange - function is passed as a prop to CircuitGrid and is triggered by onDrop event within the CircuitGrid.
+ * @param {function} moveGateFromQubit - function passed in as a prop to CircuitGrid and triggered by onDragStart event when gate is moved from qubit.
+ * @param {function} addQubit - function passed in as a prop to CircuitGrid to handle the addition of a qubit.
+ * @param {function} handleClick - function passed in as a prop to CircuitGrid to hand the event of when a gate is clicked within the circuit.
+ * @param {function} setGateClicked - function passed in as a prop to CircuitGrid to help keep track of current gate being actioned upon.
+ */
+
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, Modal, handleClick, setGateClicked}) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked}) {
 
     const refContainer = useRef();
 

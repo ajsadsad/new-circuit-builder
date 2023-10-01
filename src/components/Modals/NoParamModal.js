@@ -1,3 +1,11 @@
+/**
+ *  Modal to be shown when user clicks on gate within the circuit and no values can be adjusted for the gate.
+ *
+ *  @param {string} gateClickedName - name of gate that was clicked to display this modal.
+ *  @param {string} gateClickedDesc - Description of gate that was clicked to display this modal.
+ *  @param {boolean} noParamModal - True if modal is to be shown.
+ *  @param {function} showNoParamModal - Set state of noParamModal.
+ */
 import React from 'react'
 import Modal from 'react-bootstrap/Modal';
 
