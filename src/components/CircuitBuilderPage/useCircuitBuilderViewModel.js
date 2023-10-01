@@ -1,3 +1,18 @@
+/**
+ * Receives updates from Circuit Builder Page components and updates Circuit Builder Page components based on update.
+ * @function handleClick - called when gate is clicked within a qubit. On click it parses the string stored within gate attribute of the image back into a JSON object and gateClickedName and gateClickedDesc is set to gate that was clicked. If gate is a gate that holds a theta value the modal shown is one where theta can be adjusted, otherwise normal modal with gate name and desc is displayed.
+ *  @param {event} e - onClick event when gate is clicked within circuit grid.
+ *
+ * @function handleChange - triggered by onDrop event for when gate is dropped into the circuit. Differentiates if gate is being moved from menu or from circuit based on gateFromQubitState. Location of where gate is dropped is dervied based on event object passed into function. e.target.parentElement.parentElemtn.parentElement.id returns the row of the qubit and e.target.parentElement.id returns the column.
+ *  @param {event} e - onDrop event when gate is dropped within the circuit.
+ *
+ * @function moveGateFromQubit - triggered by on dragStart event that is generated within qubit cell element. Updates gateFromQubit to be tue and updates current object stored in qubitStates to represent that there is no longer a gate.
+ *  @param {event} e - onDragStart event when gate is dragged from within the circuit grid.
+ *
+ * @function updateSlider - triggered by onChange event within ThetaModal when slider is moved to represent theta value of gate. Theta value of gate is then updated within qubitStates array.
+ * @param {number} value - value that slider is currently at.
+ *
+ */
 import { useState } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 

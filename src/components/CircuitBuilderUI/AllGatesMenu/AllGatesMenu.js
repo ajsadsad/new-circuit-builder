@@ -1,3 +1,12 @@
+/**
+ * @param {boolean} optionsView - True if options menu is viewable.
+ * @param {boolean} faveGatesView - True if fave gates menu is viewable.
+ * @param {boolean} allGatesView - True if all gates menu is viewable.
+ * @param {array[]} gates - Array of standard gates.
+ * @param {function} setDraggingGate - Function used to track state of current gate being dragged from menu.
+ * @param {function} setDraggingGateNode - Function used to track state of current gate being dragged from menu as a HTML Node.
+ */
+
 import React, {useRef} from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
 

@@ -1,6 +1,8 @@
+/**
+ * @param {boolean} faveGatesView - True if fave gates menu is viewable.
+ */
 import React from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
-// import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 
 export default function FaveGatesMenu ( { faveGatesView } )  {

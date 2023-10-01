@@ -1,3 +1,8 @@
+/**
+ *  View of the quantum circuit that is made up of five different components.
+ *  Options Menu, All Gates Menu, Circuit Code, Circuit Output, and all Modals required.
+ *  Calls useCircuitBuilderViewModel to access and update states.
+ */
 import React from 'react';
 import styles from './CircuitBuilder.module.scss';
 import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu/AllGatesMenu';
