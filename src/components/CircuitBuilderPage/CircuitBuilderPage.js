@@ -32,7 +32,7 @@ export default function CircuitBuilderPage () {
         setDraggingGateNode,
         showNoParamModal,
         updateSlider,
-        showThetaModal,
+        updateThetaModal,
         addQubit,
         processCircuit,
         setCBDimensions,
@@ -69,7 +69,7 @@ export default function CircuitBuilderPage () {
             />
             <ThetaModal
                 thetaModal = { thetaModal }
-                showThetaModal = { showThetaModal }
+                updateThetaModal = { updateThetaModal }
                 gateClickedName = { gateClickedName }
                 gateClickedDesc = { gateClickedDesc }
                 updateSlider = { updateSlider }
