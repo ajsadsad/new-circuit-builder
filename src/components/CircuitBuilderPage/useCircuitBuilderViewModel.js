@@ -67,34 +67,6 @@ const useCircuitBuilderViewModel = () => {
         val.textContent = value;
     }
 
-    const standardGates = gates.Gates.map((gate) => {
-            if(gate.qid === "xrot") {
-                return (
-                    <img
-                    className = { styles.GateImg }
-                    key = { gate.qid }
-                    id = { gate.qid }
-                    gate = { JSON.stringify(gate) }
-                    src = { require(`../../assets/${gate.img}`)}
-                    draggable = { true }
-                    onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
-                    />
-                )
-            } else {
-                return (
-                    <img
-                    className = { styles.GateImg }
-                    key = { gate.qid }
-                    id = { gate.qid }
-                    gate = { JSON.stringify(gate) }
-                    src = { require(`../../assets/${gate.img}`)}
-                    draggable = { true }
-                    onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
-                    />
-                )
-            }
-    });
-
     // The docs say that the quokka is fed this with a bunch of JSON files so it might not have to be one big JSON file.
     // Can maybe pass the operation down as a prop into this function instead.
     function processCircuit() {
@@ -150,7 +122,8 @@ const useCircuitBuilderViewModel = () => {
     }
 
     return {
-        standardGates,
+        // standardGates,
+        gates,
         draggingGateNode,
         draggingGate,
         optionViewable,
