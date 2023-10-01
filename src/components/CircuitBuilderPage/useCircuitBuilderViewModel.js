@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
-import styles from './CircuitBuilder.module.scss'
-import FormRange from 'react-bootstrap/FormRange'
-import Modal from 'react-bootstrap/Modal';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -19,24 +16,24 @@ const useCircuitBuilderViewModel = () => {
     const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
     const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})))
     const [thetaModal, showThetaModal] = useState(false);
-    const [gateClickedName, setGateClickedName] = useState([]);
-    const [gateClickedDesc, setGateClickedDesc] = useState([]);
+    const [gateClickedName, setGateClickedName] = useState();
+    const [gateClickedDesc, setGateClickedDesc] = useState();
+    const [gateClicked, setGateClicked] = useState(undefined);
     const [noParamModal, showNoParamModal] = useState(false);
 
     function handleClick(e) {
         let gate = JSON.parse(e.target.getAttribute("gate"));
         setGateClickedName(gate.gateName);
         setGateClickedDesc(gate.description);
+        setGateClicked(e);
         if(e.target.id === 'xrot' || e.target.id === 'yrot' || e.target.id === 'zrot') {
             showThetaModal(true);
         } else {
             showNoParamModal(true);
         }
-
     }
 
     function handleChange(e) {
-        e.preventDefault();
         //if gate is being dragged from circuit
         if(gateFromQubit) {
             let copy = [...qubitStates];
@@ -65,36 +62,16 @@ const useCircuitBuilderViewModel = () => {
     function updateSlider(value) {
         const val = document.querySelector("#theta");
         val.textContent = value;
+        let updateGate = JSON.parse(gateClicked.target.getAttribute("gate"));
+        updateGate.theta = value;
+        let copy = [...qubitStates];
+        copy[gateClicked.target.parentNode.parentNode.id][gateClicked.target.parentNode.id] = { hasGate : true, gate : updateGate};
+        setQubitOp(copy);
     }
 
-    const standardGates = gates.Gates.map((gate) => {
-            if(gate.qid === "xrot") {
-                return (
-                    <img
-                    className = { styles.GateImg }
-                    key = { gate.qid }
-                    id = { gate.qid }
-                    gate = { JSON.stringify(gate) }
-                    src = { require(`../../assets/${gate.img}`)}
-                    draggable = { true }
-                    onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
-                    />
-                )
-            } else {
-                return (
-                    <img
-                    className = { styles.GateImg }
-                    key = { gate.qid }
-                    id = { gate.qid }
-                    gate = { JSON.stringify(gate) }
-                    src = { require(`../../assets/${gate.img}`)}
-                    draggable = { true }
-                    onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
-                    />
-                )
-            }
-    });
-
+    function updateThetaModal() {
+        showThetaModal(false);
+    }
     // The docs say that the quokka is fed this with a bunch of JSON files so it might not have to be one big JSON file.
     // Can maybe pass the operation down as a prop into this function instead.
     function processCircuit() {
@@ -102,8 +79,15 @@ const useCircuitBuilderViewModel = () => {
         json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
         qubitStates.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
-                json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
+                if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
+                    json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
+                } else if(v.gate.id === 'cnot') {
+                    json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : v.gate.q_control, 'q_target' : v.gate.q_target})
+                } else {
+                    json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
+                }
             }
+            return json
         }));
         json.push({'operation' : 'destroy_circuit'});
         sendCircuitData(json);
@@ -111,7 +95,6 @@ const useCircuitBuilderViewModel = () => {
 
     function addQubit() {
         if(qubitStates.length < 33) {
-            console.log("Qubit Add!!");
             let copy = [...qubitStates];
             copy.push(Array(qubitStates[0].length));
             copy[qubitStates.length].fill({hasGate : false, gate : null});
@@ -150,7 +133,7 @@ const useCircuitBuilderViewModel = () => {
     }
 
     return {
-        standardGates,
+        gates,
         draggingGateNode,
         draggingGate,
         optionViewable,
@@ -165,9 +148,11 @@ const useCircuitBuilderViewModel = () => {
         noParamModal,
         gateClickedName,
         gateClickedDesc,
+        gateClicked,
+        showThetaModal,
         showNoParamModal,
         updateSlider,
-        showThetaModal,
+        updateThetaModal,
         handleClick,
         addQubit,
         processCircuit,

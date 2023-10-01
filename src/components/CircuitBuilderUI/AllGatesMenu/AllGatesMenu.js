@@ -1,9 +1,41 @@
 import React, {useRef} from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
 
-export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, standardGates }  ) {
+export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
 
     const refContainer = useRef();
+
+    const standardGates = gates.map((index) => {
+        return(JSON.parse([index]));
+    })
+
+    const gateImgs = standardGates.map((gate) => {
+        if(gate.qid === "xrot") {
+            return (
+                <img
+                className = { styles.GateImg }
+                key = { gate.qid }
+                id = { gate.qid }
+                gate = { JSON.stringify(gate) }
+                src = { require(`../../../assets/${gate.img}`)}
+                draggable = { true }
+                onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
+                />
+            )
+        } else {
+            return (
+                <img
+                className = { styles.GateImg }
+                key = { gate.qid }
+                id = { gate.qid }
+                gate = { JSON.stringify(gate) }
+                src = { require(`../../../assets/${gate.img}`)}
+                draggable = { true }
+                onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
+                />
+            )
+        }
+    });
 
     if(allGatesView === true) {
         if(optionsView === false && faveGatesView === false) {
@@ -15,7 +47,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                      width : {dimensions.width}
                      height : {dimensions.height} */}
                      {
-                        standardGates
+                        gateImgs
                      }
                     </div>
          } else if(optionsView === true && faveGatesView === false) {
@@ -27,7 +59,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                      width : {dimensions.width}
                      height : {dimensions.height} */}
                      {
-                       standardGates
+                       gateImgs
                      }
                     </div>
          } else if(optionsView === false && faveGatesView === true) {
@@ -39,7 +71,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                      width : {dimensions.width}
                      height : {dimensions.height} */}
                      {
-                       standardGates
+                       gateImgs
                      }
                     </div>
          }

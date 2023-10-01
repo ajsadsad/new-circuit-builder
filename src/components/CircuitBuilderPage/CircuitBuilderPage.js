@@ -14,7 +14,7 @@ import NoParamModal from '../Modals/NoParamModal';
 export default function CircuitBuilderPage () {
 
     const {
-        standardGates,
+        gates,
         optionViewable,
         outputViewable,
         allGatesViewable,
@@ -28,9 +28,11 @@ export default function CircuitBuilderPage () {
         thetaModal,
         noParamModal,
         setGateClicked,
+        setDraggingGate,
+        setDraggingGateNode,
         showNoParamModal,
         updateSlider,
-        showThetaModal,
+        updateThetaModal,
         addQubit,
         processCircuit,
         setCBDimensions,
@@ -66,17 +68,17 @@ export default function CircuitBuilderPage () {
                 setGateClicked = { setGateClicked }
             />
             <ThetaModal
-                    thetaModal = { thetaModal }
-                    showThetaModal = { showThetaModal }
-                    gateClickedName = { gateClickedName }
-                    gateClickedDesc = { gateClickedDesc }
-                    updateSlider = { updateSlider }
+                thetaModal = { thetaModal }
+                updateThetaModal = { updateThetaModal }
+                gateClickedName = { gateClickedName }
+                gateClickedDesc = { gateClickedDesc }
+                updateSlider = { updateSlider }
             />
             <NoParamModal
-                    gateClickedName = { gateClickedName }
-                    gateClickedDesc = { gateClickedDesc }
-                    noParamModal = { noParamModal }
-                    showNoParamModal = { showNoParamModal}
+                gateClickedName = { gateClickedName }
+                gateClickedDesc = { gateClickedDesc }
+                noParamModal = { noParamModal }
+                showNoParamModal = { showNoParamModal}
             />
             <Output
                 outputView = { outputViewable }
@@ -97,7 +99,9 @@ export default function CircuitBuilderPage () {
                 optionsView = { optionViewable }
                 faveGatesView = { faveGatesViewable }
                 allGatesView = { allGatesViewable }
-                standardGates = { standardGates }
+                setDraggingGate = { setDraggingGate }
+                setDraggingGateNode = { setDraggingGateNode }
+                gates = { gates }
             />
             <BottomPageTabs
                 setOptionMenuView={ updateOptionView }

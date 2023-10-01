@@ -2,14 +2,14 @@ import FormRange from 'react-bootstrap/FormRange'
 import Modal from 'react-bootstrap/Modal';
 import React, { useEffect } from 'react';
 
-export default function ThetaModal( { thetaModal, showThetaModal, gateClickedName, gateClickedDesc, updateSlider }) {
+export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedName, gateClickedDesc, updateSlider }) {
 
     return (
     <>
         <Modal
         size="sm"
         show={thetaModal}
-        onHide={() => showThetaModal(false)}
+        onHide={() => updateThetaModal()}
         aria-labelledby="example-modal-sizes-title-sm"
         centered
         >
@@ -22,7 +22,7 @@ export default function ThetaModal( { thetaModal, showThetaModal, gateClickedNam
             { gateClickedDesc }
         <FormRange
             min = "0"
-            max = "1"
+            max = "3"
             step = "0.01"
             onChange = {(e) => { updateSlider(e.target.value) } }
 

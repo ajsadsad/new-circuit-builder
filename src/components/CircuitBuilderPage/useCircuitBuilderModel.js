@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import data from '../../assets/standardGates.json'
 
 const useCircuitBuilderModel = () => {
@@ -6,8 +7,13 @@ const useCircuitBuilderModel = () => {
         console.log(test);
     }
 
+    const gates = data.Gates.map((gateInfo) => {
+        let gateData = JSON.stringify(gateInfo);
+        return gateData
+    });
+
     return {
-        gates : data,
+        gates,
         sendCircuitData,
     }
 }
