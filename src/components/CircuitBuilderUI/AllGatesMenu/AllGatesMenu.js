@@ -9,8 +9,12 @@
 
 import React, {useRef} from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
+import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
+
+    const collapseElementList = document.querySelectorAll('.collapse')
+    const collapseList = [...collapseElementList].map(collapseEl => new Collapse(collapseEl))
 
     const refContainer = useRef();
 
@@ -21,70 +25,123 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
     const gateImgs = standardGates.map((gate) => {
         if(gate.qid === "xrot") {
             return (
-                <img
-                className = { styles.GateImg }
-                key = { gate.qid }
-                id = { gate.qid }
-                gate = { JSON.stringify(gate) }
-                src = { require(`../../../assets/${gate.img}`)}
-                draggable = { true }
-                onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
-                />
+                <div class="col" style={{ minHeight: 120 }}>
+                    <img
+                        className={styles.GateImg}
+                        key={gate.qid}
+                        id={gate.qid}
+                        gate={JSON.stringify(gate)}
+                        src={require(`../../../assets/${gate.img}`)}
+                        draggable={true}
+                        onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
+                    />
+                </div>
+                
+                
             )
         } else {
             return (
-                <img
-                className = { styles.GateImg }
-                key = { gate.qid }
-                id = { gate.qid }
-                gate = { JSON.stringify(gate) }
-                src = { require(`../../../assets/${gate.img}`)}
-                draggable = { true }
-                onDragStart = {(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
-                />
+                <div class="col" style={{ minHeight: 120 }}>
+                    <img
+                        className={styles.GateImg}
+                        key={gate.qid}
+                        id={gate.qid}
+                        gate={JSON.stringify(gate)}
+                        src={require(`../../../assets/${gate.img}`)}
+                        draggable={true}
+                        onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
+                    />
+
+                </div>
+                
             )
         }
     });
 
-    if(allGatesView === true) {
-        if(optionsView === false && faveGatesView === false) {
-            return <div className = {
-                        `${ styles.AllGatesMenu }
-                         ${ styles.AllGatesMenuNoOptionNoFave }` }
-                        ref = { refContainer }>
-                    {/* All Gates Menu
-                     width : {dimensions.width}
-                     height : {dimensions.height} */}
-                     {
-                        gateImgs
-                     }
+    return(
+        
+        <div class="accordion" id="accordionExample" ref={refContainer} >
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                       Gate Menu
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {/* All Gates Menu
+        width : {dimensions.width}
+        height : {dimensions.height} */}
+                        <div class="container text-center">
+                            <div class="row">
+                                
+                                
+                        {gateImgs}
+                            </div>
+                        </div>
+
                     </div>
-         } else if(optionsView === true && faveGatesView === false) {
-            return <div className = {
-                        `${ styles.AllGatesMenu }
-                         ${ styles.AllGatesMenuWithOptionNoFave }` }
-                        ref = { refContainer }>
-                    {/* All Gates Menu
-                     width : {dimensions.width}
-                     height : {dimensions.height} */}
-                     {
-                       gateImgs
-                     }
-                    </div>
-         } else if(optionsView === false && faveGatesView === true) {
-            return <div className = {
-                        `${ styles.AllGatesMenu }
-                         ${ styles.AllGatesMenuNoOptionWithFave }` }
-                        ref = { refContainer }>
-                    {/* All Gates Menu
-                     width : {dimensions.width}
-                     height : {dimensions.height} */}
-                     {
-                       gateImgs
-                     }
-                    </div>
-         }
-    } else {
-        return <div style = {{display: "none"}}/>
-    }
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        
+
+    );
+
+
+    // if (allGatesView === true) {
+    //     if (optionsView === false && faveGatesView === false) {
+    //         return [
+                // <div className={`${styles.AllGatesMenu} ${styles.AllGatesMenuNoOptionNoFave}`} ref={refContainer} >
+
+                //     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                //         Button with data-bs-target
+                //     </button>
+                //     <div class="collapse" id="collapseExample">
+                        
+                //         {gateImgs}
+                        
+                //         </div>
+                //         {/* All Gates Menu
+                //     width : {dimensions.width}
+                //     height : {dimensions.height} */}
+
+                  
+
+                // </div>
+    //         ]
+    //      } else if(optionsView === true && faveGatesView === false) {
+    //         return <div className = {
+    //                     `${ styles.AllGatesMenu }
+    //                      ${ styles.AllGatesMenuWithOptionNoFave }` }
+    //                     ref = { refContainer }>
+    //                 {/* All Gates Menu
+    //                  width : {dimensions.width}
+    //                  height : {dimensions.height} */}
+    //                  {
+    //                    gateImgs
+    //                  }
+    //                 </div>
+    //      } else if(optionsView === false && faveGatesView === true) {
+    //         return <div className = {
+    //                     `${ styles.AllGatesMenu }
+    //                      ${ styles.AllGatesMenuNoOptionWithFave }` }
+    //                     ref = { refContainer }>
+    //                 {/* All Gates Menu
+    //                  width : {dimensions.width}
+    //                  height : {dimensions.height} */}
+    //                  {
+    //                    gateImgs
+    //                  }
+    //                 </div>
+    //      }
+    // } else {
+    //     return <div style = {{display: "none"}}/>
+    // }
 }

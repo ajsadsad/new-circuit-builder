@@ -52,72 +52,134 @@ export default function CircuitBuilderPage () {
     } = useCircuitBuilderViewModel();
 
     return (
-        <div className = { styles.container }>
-            <OptionsMenu
-            optionsView = { optionViewable }
-            />
-            <ReactiveCircuitBuilderUI
-                addQubit = { addQubit }
-                setCBDimensions = { setCBDimensions }
-                dimensions = { circuitBuilderDimensions }
-                optionsView = { optionViewable }
-                faveGatesView = { faveGatesViewable }
-                codeView = { circuitCodeViewable }
-                outputView = { outputViewable }
-                allGatesView = { allGatesViewable }
-                qubitStates = { qubitStates }
-                gateFromQubit = { gateFromQubit }
-                handleChange = { handleChange }
-                moveGateFromQubit = { moveGateFromQubit }
-                handleClick = { handleClick }
-                setGateClicked = { setGateClicked }
-            />
-            <ThetaModal
-                thetaModal = { thetaModal }
-                updateThetaModal = { updateThetaModal }
-                gateClickedName = { gateClickedName }
-                gateClickedDesc = { gateClickedDesc }
-                updateSlider = { updateSlider }
-            />
-            <NoParamModal
-                gateClickedName = { gateClickedName }
-                gateClickedDesc = { gateClickedDesc }
-                noParamModal = { noParamModal }
-                showNoParamModal = { showNoParamModal}
-            />
-            <Output
-                outputView = { outputViewable }
-                codeView = { circuitCodeViewable }
-                faveGatesView = { faveGatesViewable }
-                optionsView = { optionViewable }
-            />
-            <CircuitCode
-                codeView = { circuitCodeViewable }
-                faveGatesView = { faveGatesViewable }
-                allGatesView = { allGatesViewable }
-            />
-            <FaveGatesMenu
-                faveGatesView = { faveGatesViewable }
-                setFaveGateView={ updateFaveGatesView }
-            />
-             <AllGatesMenu
-                optionsView = { optionViewable }
-                faveGatesView = { faveGatesViewable }
-                allGatesView = { allGatesViewable }
-                setDraggingGate = { setDraggingGate }
-                setDraggingGateNode = { setDraggingGateNode }
-                gates = { gates }
-            />
-            <BottomPageTabs
-                setOptionMenuView={ updateOptionView }
-                optionsView = { optionViewable }
-                setFaveGateView={ updateFaveGatesView }
-                faveGatesView = { faveGatesViewable }
-                setAllGatesView = { updateAllGatesMenuView }
-                setCodeView =  { updateCircuitCodeView }
-                setOutputView = { updateOutputView }
-                processCircuit = { processCircuit }
-            />
+        <div>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <OptionsMenu
+                            optionsView={optionViewable} />
+                    </div>
+                    <div class="col-10">
+                        <AllGatesMenu
+                            optionsView={optionViewable}
+                            faveGatesView={faveGatesViewable}
+                            allGatesView={allGatesViewable}
+                            setDraggingGate={setDraggingGate}
+                            setDraggingGateNode={setDraggingGateNode}
+                            gates={gates} />
+                    </div>
+                </div>
+            </div>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-10">
+                        <ReactiveCircuitBuilderUI
+                            addQubit={addQubit}
+                            setCBDimensions={setCBDimensions}
+                            dimensions={circuitBuilderDimensions}
+                            optionsView={optionViewable}
+                            faveGatesView={faveGatesViewable}
+                            codeView={circuitCodeViewable}
+                            outputView={outputViewable}
+                            allGatesView={allGatesViewable}
+                            qubitStates={qubitStates}
+                            gateFromQubit={gateFromQubit}
+                            handleChange={handleChange}
+                            moveGateFromQubit={moveGateFromQubit}
+                            handleClick={handleClick}
+                            setGateClicked={setGateClicked}
+                        />
+                    </div>
+                    {/* <div class="col">
+                        <p>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                                
+                            </button>
+                        </p>
+                        <div style={{ minHeight: 120 }}>
+                            <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                                <div class="card card-body" style={{ width: 300 }}>
+                                    This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
+                </div>
+
+
+            </div>
+
         </div>
+       
+
+        
+        
+        // <div className = { styles.container }>
+            // <OptionsMenu
+            // optionsView = { optionViewable }
+            // />
+            // <ReactiveCircuitBuilderUI
+            //     addQubit = { addQubit }
+            //     setCBDimensions = { setCBDimensions }
+            //     dimensions = { circuitBuilderDimensions }
+            //     optionsView = { optionViewable }
+            //     faveGatesView = { faveGatesViewable }
+            //     codeView = { circuitCodeViewable }
+            //     outputView = { outputViewable }
+            //     allGatesView = { allGatesViewable }
+            //     qubitStates = { qubitStates }
+            //     gateFromQubit = { gateFromQubit }
+            //     handleChange = { handleChange }
+            //     moveGateFromQubit = { moveGateFromQubit }
+            //     handleClick = { handleClick }
+            //     setGateClicked = { setGateClicked }
+            // />
+            // <ThetaModal
+            //     thetaModal = { thetaModal }
+            //     updateThetaModal = { updateThetaModal }
+            //     gateClickedName = { gateClickedName }
+            //     gateClickedDesc = { gateClickedDesc }
+            //     updateSlider = { updateSlider }
+            // />
+            // <NoParamModal
+            //     gateClickedName = { gateClickedName }
+            //     gateClickedDesc = { gateClickedDesc }
+            //     noParamModal = { noParamModal }
+            //     showNoParamModal = { showNoParamModal}
+            // />
+        //     <Output
+        //         outputView = { outputViewable }
+        //         codeView = { circuitCodeViewable }
+        //         faveGatesView = { faveGatesViewable }
+        //         optionsView = { optionViewable }
+        //     />
+            // <CircuitCode
+            //     codeView = { circuitCodeViewable }
+            //     faveGatesView = { faveGatesViewable }
+            //     allGatesView = { allGatesViewable }
+            // />
+        //     <FaveGatesMenu
+        //         faveGatesView = { faveGatesViewable }
+        //         setFaveGateView={ updateFaveGatesView }
+        //     />
+            //  <AllGatesMenu
+            //     optionsView = { optionViewable }
+            //     faveGatesView = { faveGatesViewable }
+            //     allGatesView = { allGatesViewable }
+            //     setDraggingGate = { setDraggingGate }
+            //     setDraggingGateNode = { setDraggingGateNode }
+            //     gates = { gates }
+            // />
+        //     <BottomPageTabs
+        //         setOptionMenuView={ updateOptionView }
+        //         optionsView = { optionViewable }
+        //         setFaveGateView={ updateFaveGatesView }
+        //         faveGatesView = { faveGatesViewable }
+        //         setAllGatesView = { updateAllGatesMenuView }
+        //         setCodeView =  { updateCircuitCodeView }
+        //         setOutputView = { updateOutputView }
+        //         processCircuit = { processCircuit }
+        //     />
+        // </div>
     )
 }
