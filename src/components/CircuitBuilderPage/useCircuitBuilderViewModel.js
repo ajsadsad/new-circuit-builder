@@ -35,7 +35,8 @@ const useCircuitBuilderViewModel = () => {
     const [gateClickedDesc, setGateClickedDesc] = useState();
     const [gateClicked, setGateClicked] = useState(undefined);
     const [noParamModal, showNoParamModal] = useState(false);
-
+    const [hasMeasure, showMeasModal] = useState(false);
+ 
     function handleClick(e) {
         let gate = JSON.parse(e.target.getAttribute("gate"));
         setGateClickedName(gate.gateName);
@@ -90,22 +91,41 @@ const useCircuitBuilderViewModel = () => {
     // The docs say that the quokka is fed this with a bunch of JSON files so it might not have to be one big JSON file.
     // Can maybe pass the operation down as a prop into this function instead.
     function processCircuit() {
-        let json = [];
-        json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
+        if(checkMeasurementGate()) {
+            let json = [];
+            json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
+            qubitStates.map((row, rowIndex) => row.map((v, i) => {
+                if(v.hasGate) {
+                    if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
+                        json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
+                    } else if(v.gate.id === 'cnot') {
+                        json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : v.gate.q_control, 'q_target' : v.gate.q_target})
+                    } else {
+                        json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
+                    }
+                }
+                return json
+            }));
+            json.push({'operation' : 'destroy_circuit'});
+            sendCircuitData(json);
+        } else {showMeasModal(true)};
+    }
+
+    function checkMeasurementGate() {
+        
+        let hasMeasure = false;
         qubitStates.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
-                if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
-                    json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
-                } else if(v.gate.id === 'cnot') {
-                    json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : v.gate.q_control, 'q_target' : v.gate.q_target})
-                } else {
-                    json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
-                }
+                if(v.gate.qid === 'measure') {
+                    console.log("hasGate")
+                    hasMeasure = true;
+                    
+                } 
+
             }
-            return json
+            
         }));
-        json.push({'operation' : 'destroy_circuit'});
-        sendCircuitData(json);
+        return hasMeasure
     }
 
     function addQubit() {
@@ -161,6 +181,8 @@ const useCircuitBuilderViewModel = () => {
         circuitBuilderDimensions,
         thetaModal,
         noParamModal,
+        hasMeasure,
+        showMeasModal,
         gateClickedName,
         gateClickedDesc,
         gateClicked,
