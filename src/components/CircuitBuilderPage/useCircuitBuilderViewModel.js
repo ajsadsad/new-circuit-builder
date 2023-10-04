@@ -91,21 +91,27 @@ const useCircuitBuilderViewModel = () => {
     // Can maybe pass the operation down as a prop into this function instead.
     function processCircuit() {
         let json = [];
+        let vcode = [];
         json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
+        vcode.push("qubits " + qubitStates.length)
         qubitStates.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
                     json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
+                    vcode.push(v.gate.qasmid + "[" + i + "]")
                 } else if(v.gate.id === 'cnot') {
                     json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : v.gate.q_control, 'q_target' : v.gate.q_target})
+                    vcode.push(v.gate.qasmid + "[" + i + "]")
                 } else {
                     json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
+                    vcode.push(v.gate.qasmid + "[" + i + "]")
                 }
             }
             return json
         }));
         json.push({'operation' : 'destroy_circuit'});
         sendCircuitData(json);
+        sendCircuitData(vcode);
     }
 
     function addQubit() {
