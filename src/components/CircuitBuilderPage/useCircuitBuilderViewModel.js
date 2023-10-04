@@ -118,12 +118,9 @@ const useCircuitBuilderViewModel = () => {
             if(v.hasGate) {
                 if(v.gate.qid === 'measure') {
                     console.log("hasGate")
-                    hasMeasure = true;
-                    
+                    hasMeasure = true;    
                 } 
-
-            }
-            
+            }           
         }));
         return hasMeasure
     }
