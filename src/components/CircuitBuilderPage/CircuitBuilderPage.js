@@ -51,6 +51,8 @@ export default function CircuitBuilderPage () {
         updateCircuitCodeView
     } = useCircuitBuilderViewModel();
 
+
+
     return (
         <div>
             <div class="container text-center">
@@ -68,11 +70,14 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
+                    
                 </div>
+
+
             </div>
             <div class="container text-center">
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col">
                         <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             setCBDimensions={setCBDimensions}

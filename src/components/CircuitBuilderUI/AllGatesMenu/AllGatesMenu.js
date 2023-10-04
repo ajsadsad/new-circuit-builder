@@ -13,9 +13,7 @@ import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
 
-    const collapseElementList = document.querySelectorAll('.collapse')
-    const collapseList = [...collapseElementList].map(collapseEl => new Collapse(collapseEl))
-
+  
     const refContainer = useRef();
 
     const standardGates = gates.map((index) => {
@@ -58,39 +56,30 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
         }
     });
 
-    return(
-        
-        <div class="accordion" id="accordionExample" ref={refContainer} >
-
+    return (
+        <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                       Gate Menu
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        Accordion Item #1
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         {/* All Gates Menu
-        width : {dimensions.width}
-        height : {dimensions.height} */}
+                        width : {dimensions.width}
+                        height : {dimensions.height} */}
                         <div class="container text-center">
                             <div class="row">
-                                
-                                
-                        {gateImgs}
+                                {gateImgs}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
-        
+
+
 
     );
 
