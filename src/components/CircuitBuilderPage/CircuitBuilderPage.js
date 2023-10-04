@@ -110,9 +110,98 @@ export default function CircuitBuilderPage () {
                         </div>
                     </div> */}
                 </div>
+                <ThetaModal
+                    thetaModal = { thetaModal }
+                    updateThetaModal = { updateThetaModal }
+                    gateClickedName = { gateClickedName }
+                    gateClickedDesc = { gateClickedDesc }
+                    updateSlider = { updateSlider }
+                />
+                <NoParamModal
+                    gateClickedName = { gateClickedName }
+                    gateClickedDesc = { gateClickedDesc }
+                    noParamModal = { noParamModal }
+                    showNoParamModal = { showNoParamModal}
+                />
 
+                <BottomPageTabs
+                    setOptionMenuView={ updateOptionView }
+                    optionsView = { optionViewable }
+                    setFaveGateView={ updateFaveGatesView }
+                    faveGatesView = { faveGatesViewable }
+                    setAllGatesView = { updateAllGatesMenuView }
+                    setCodeView =  { updateCircuitCodeView }
+                    setOutputView = { updateOutputView }
+                    processCircuit = { processCircuit }
+                /> 
 
             </div>
+{/* 
+            // <OptionsMenu
+            // optionsView = { optionViewable }
+            // />
+            // <ReactiveCircuitBuilderUI
+            //     addQubit = { addQubit }
+            //     setCBDimensions = { setCBDimensions }
+            //     dimensions = { circuitBuilderDimensions }
+            //     optionsView = { optionViewable }
+            //     faveGatesView = { faveGatesViewable }
+            //     codeView = { circuitCodeViewable }
+            //     outputView = { outputViewable }
+            //     allGatesView = { allGatesViewable }
+            //     qubitStates = { qubitStates }
+            //     gateFromQubit = { gateFromQubit }
+            //     handleChange = { handleChange }
+            //     moveGateFromQubit = { moveGateFromQubit }
+            //     handleClick = { handleClick }
+            //     setGateClicked = { setGateClicked }
+            // />
+            // <ThetaModal
+            //     thetaModal = { thetaModal }
+            //     updateThetaModal = { updateThetaModal }
+            //     gateClickedName = { gateClickedName }
+            //     gateClickedDesc = { gateClickedDesc }
+            //     updateSlider = { updateSlider }
+            // />
+            // <NoParamModal
+            //     gateClickedName = { gateClickedName }
+            //     gateClickedDesc = { gateClickedDesc }
+            //     noParamModal = { noParamModal }
+            //     showNoParamModal = { showNoParamModal}
+            // />
+        //     <Output
+        //         outputView = { outputViewable }
+        //         codeView = { circuitCodeViewable }
+        //         faveGatesView = { faveGatesViewable }
+        //         optionsView = { optionViewable }
+        //     />
+            // <CircuitCode
+            //     codeView = { circuitCodeViewable }
+            //     faveGatesView = { faveGatesViewable }
+            //     allGatesView = { allGatesViewable }
+            // />
+        //     <FaveGatesMenu
+        //         faveGatesView = { faveGatesViewable }
+        //         setFaveGateView={ updateFaveGatesView }
+        //     />
+            //  <AllGatesMenu
+            //     optionsView = { optionViewable }
+            //     faveGatesView = { faveGatesViewable }
+            //     allGatesView = { allGatesViewable }
+            //     setDraggingGate = { setDraggingGate }
+            //     setDraggingGateNode = { setDraggingGateNode }
+            //     gates = { gates }
+            // />
+        //     <BottomPageTabs
+        //         setOptionMenuView={ updateOptionView }
+        //         optionsView = { optionViewable }
+        //         setFaveGateView={ updateFaveGatesView }
+        //         faveGatesView = { faveGatesViewable }
+        //         setAllGatesView = { updateAllGatesMenuView }
+        //         setCodeView =  { updateCircuitCodeView }
+        //         setOutputView = { updateOutputView }
+        //         processCircuit = { processCircuit }
+        //     /> */}
 
         </div>
        
