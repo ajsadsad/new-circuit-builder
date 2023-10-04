@@ -15,6 +15,7 @@ import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/CircuitBuilder/Reactiv
 import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
+import MeasurementModal from '../Modals/MeasurementModal';
 
 export default function CircuitBuilderPage () {
 
@@ -32,6 +33,8 @@ export default function CircuitBuilderPage () {
         gateClickedDesc,
         thetaModal,
         noParamModal,
+        hasMeasure,
+        showMeasModal,
         setGateClicked,
         setDraggingGate,
         setDraggingGateNode,
@@ -94,6 +97,7 @@ export default function CircuitBuilderPage () {
                             handleClick={handleClick}
                             setGateClicked={setGateClicked}
                         />
+
                     </div>
                     {/* <div class="col">
                         <p>
@@ -122,6 +126,11 @@ export default function CircuitBuilderPage () {
                     gateClickedDesc = { gateClickedDesc }
                     noParamModal = { noParamModal }
                     showNoParamModal = { showNoParamModal}
+                />
+
+                <MeasurementModal
+                    hasMeasure = { hasMeasure }
+                    showMeasModal = { showMeasModal}
                 />
 
                 <BottomPageTabs
