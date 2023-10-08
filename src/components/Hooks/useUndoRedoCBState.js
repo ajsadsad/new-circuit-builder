@@ -7,25 +7,26 @@ export default function useUndoRedoCBState(initialCBState, setQubitOp) {
 
     const state = useMemo(() => states[index], [states,index]);
 
+    //Weird bug where after undoing an action and placing a new gate, everything afterwards just counts as one big action and not individual.
     const setState = (value) => {
-        if(state === value) {
+        if(JSON.stringify(state) === JSON.stringify(value)) {
+            console.log("HAHA");
             return;
         }
         const copy = states.slice(0, index + 1);
-        console.log(copy);
         copy.push(value);
         setStates(copy);
         setIndex(copy.length - 1);
     };
 
     const undo = (steps = 1) => {
+        setQubitOp(states[index-1]);
         setIndex(Math.max(0, Number(index) - (Number(steps) || 1)));
-        setQubitOp(states[index - 1]);
     }
 
     const redo = (steps = 1) => {
+        setQubitOp(states[index+1]);
         setIndex(Math.min(states.length - 1, Number(index) + (Number(steps) || 1)));
-        setQubitOp(states[index + 1]);
     };
 
     return {

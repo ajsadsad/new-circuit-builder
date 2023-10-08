@@ -46,7 +46,6 @@ export default function CircuitBuilderPage () {
         setCBDimensions,
         handleChange,
         handleClick,
-        moveGateFromQubit,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
@@ -93,9 +92,10 @@ export default function CircuitBuilderPage () {
                             qubitStates={qubitStates}
                             gateFromQubit={gateFromQubit}
                             handleChange={handleChange}
-                            moveGateFromQubit={moveGateFromQubit}
                             handleClick={handleClick}
                             setGateClicked={setGateClicked}
+                            setDraggingGate = { setDraggingGate }
+                            setDraggingGateNode = { setDraggingGateNode }
                         />
 
                     </div>

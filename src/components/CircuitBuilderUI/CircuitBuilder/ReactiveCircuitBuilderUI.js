@@ -19,7 +19,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked}) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate}) {
 
     const refContainer = useRef();
 
@@ -40,6 +40,8 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
             addQubit = { addQubit }
             handleClick = { handleClick }
             setGateClicked = { setGateClicked }
+            setDraggingGate = { setDraggingGate }
+            setDraggingGateNode = { setDraggingGateNode }
         />
     )
 

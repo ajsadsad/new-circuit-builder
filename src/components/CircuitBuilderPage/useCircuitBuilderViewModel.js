@@ -13,7 +13,7 @@
  * @param {number} value - value that slider is currently at.
  *
  */
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState';
 
@@ -27,8 +27,7 @@ const useCircuitBuilderViewModel = () => {
     const [faveGatesViewable, setFaveGatesView] = useState(false);
     const [circuitCodeViewable, setCircuitCodeView] = useState(true);
     const draggingGate = useRef(undefined);
-    const [draggingGateNode, setDraggingGateNode] = useState(undefined);
-    const [gateFromQubit, setGateFromQubit] = useState(false);
+    const draggingGateNode = useRef(undefined);
     const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
     const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})))
     const [thetaModal, showThetaModal] = useState(false);
@@ -40,8 +39,16 @@ const useCircuitBuilderViewModel = () => {
 
     const { state, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(getQubitStateDeepCopy(), setQubitOp);
 
+    // useEffect (() => {
+    //     setQubitOp(state[index]);
+    // }, [state])
+
     function setDraggingGate(gate) {
         draggingGate.current = gate;
+    }
+
+    function setDraggingGateNode(e) {
+        draggingGateNode.current = e;
     }
 
     function getQubitStateDeepCopy() {
@@ -63,32 +70,18 @@ const useCircuitBuilderViewModel = () => {
 
     function handleChange(e) {
         //if gate is being dragged from circuit
-        console.log(draggingGate.current);
-        if(gateFromQubit) {
+        if(draggingGateNode.current.target.getAttribute("inqubit") === "true") {
             let copy = [...qubitStates];
-            copy[draggingGateNode.target.parentElement.parentElement.id][draggingGateNode.target.parentElement.id] = { hasGate : false, gate : null};
+            copy[draggingGateNode.current.target.parentElement.parentElement.id][draggingGateNode.current.target.parentElement.id] = { hasGate : false, gate : null};
             copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current };
-            //e.target.appendChild(draggingGateNode.target);
-            setGateFromQubit(!gateFromQubit);
+            setQubitOp(copy);
         } else {
             let copy = [...qubitStates];
             copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current};
             setQubitOp(copy);
-            //e.target.appendChild(draggingGateNode.target.cloneNode());
         }
         setState(getQubitStateDeepCopy());
         console.log(qubitStates);
-    }
-
-    function moveGateFromQubit(e) {
-        setDraggingGateNode(e);
-        setDraggingGate(JSON.parse(e.target.getAttribute("gate")));
-        let copy = [...qubitStates];
-        setState(copy);
-        copy[e.target.parentNode.parentNode.id][e.target.parentNode.id] = { hasGate : false, gate : null};
-        setQubitOp(copy);
-        setGateFromQubit(!gateFromQubit);
-        setState(getQubitStateDeepCopy());
     }
 
     function updateSlider(value) {
@@ -188,7 +181,6 @@ const useCircuitBuilderViewModel = () => {
         faveGatesViewable,
         circuitCodeViewable,
         qubitStates,
-        gateFromQubit,
         circuitBuilderDimensions,
         thetaModal,
         noParamModal,
@@ -206,7 +198,6 @@ const useCircuitBuilderViewModel = () => {
         processCircuit,
         setCBDimensions,
         handleChange,
-        moveGateFromQubit,
         setDraggingGate,
         setDraggingGateNode,
         updateOptionView,
