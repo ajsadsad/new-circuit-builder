@@ -51,7 +51,7 @@ export default function CircuitBuilderPage () {
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
-        updateCircuitCodeView
+        updateCircuitCodeView, state, setState, index, lastIndex, undo, redo
     } = useCircuitBuilderViewModel();
 
 
@@ -73,7 +73,7 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
-                    
+
                 </div>
 
 
@@ -102,7 +102,7 @@ export default function CircuitBuilderPage () {
                     {/* <div class="col">
                         <p>
                             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
-                                
+
                             </button>
                         </p>
                         <div style={{ minHeight: 120 }}>
@@ -142,10 +142,14 @@ export default function CircuitBuilderPage () {
                     setCodeView =  { updateCircuitCodeView }
                     setOutputView = { updateOutputView }
                     processCircuit = { processCircuit }
-                /> 
+                    undo = { undo }
+                    redo = { redo }
+                    index = { index }
+                    lastIndex = { lastIndex }
+                />
 
             </div>
-{/* 
+{/*
             // <OptionsMenu
             // optionsView = { optionViewable }
             // />
@@ -213,10 +217,10 @@ export default function CircuitBuilderPage () {
         //     /> */}
 
         </div>
-       
 
-        
-        
+
+
+
         // <div className = { styles.container }>
             // <OptionsMenu
             // optionsView = { optionViewable }
