@@ -4,8 +4,8 @@
  *  @param {boolean} faveGatesView - True is fave gates menu is viewable.
  *  @param {boolean} allGatesView - True if all gates menu is viewable.
  */
-import React, { useState, useEffect, useRef } from 'react'
-import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss'
+import React, { useState, useEffect, useRef } from 'react';
+import styles from '../css/CircuitBuilder.module.css';
 
 export default function CircuitCode({ codeView, faveGatesView, allGatesView }) {
     const refContainer = useRef();
@@ -19,44 +19,16 @@ export default function CircuitCode({ codeView, faveGatesView, allGatesView }) {
         }
     }, [faveGatesView, allGatesView]);
 
-    if(codeView === true) {
-        if(faveGatesView === true && allGatesView === true ) {
-            return <div className = { styles.Code }
-                        ref = { refContainer }>
-                    Code Console
-                     width : {dimensions.width}
-                     height : {dimensions.height}
-                    </div>
-         } else if(faveGatesView === true && allGatesView === false ) {
-            return <div className = {
-                        `${ styles.Code }
-                         ${ styles.CodeNoAllGates }` }
-                        ref = { refContainer }>
-                    Code Console
-                     width : {dimensions.width}
-                     height : {dimensions.height}
-                    </div>
-         } else if(faveGatesView === false && allGatesView === false ) {
-            return <div className = {
-                        `${ styles.Code }
-                         ${ styles.CodeNoAllGates }
-                         ${ styles.CodeNoFaveMenu }` }
-                        ref = { refContainer }>
-                    Code Console
-                     width : {dimensions.width}
-                     height : {dimensions.height}
-                    </div>
-         } else if(faveGatesView === false && allGatesView === true ) {
-            return <div className = {
-                        `${ styles.Code }
-                         ${ styles.CodeNoFaveMenu }` }
-                        ref = { refContainer }>
-                    Code Console
-                     width : {dimensions.width}
-                     height : {dimensions.height}
-                    </div>
-            }
-    } else {
-        return <div style = { { display: "none" } }/>
-    }
+   return(
+
+    <div className = {
+        `${ styles.Code }
+         ${ styles.CodeNoAllGates }
+         ${ styles.CodeNoFaveMenu }` }
+        ref = { refContainer }>
+    Code Console
+     width : {dimensions.width}
+     height : {dimensions.height}
+    </div>
+   )
 }

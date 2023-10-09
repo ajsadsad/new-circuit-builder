@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss'
+import styles from '../css/CircuitBuilder.module.css';
 
 export default function Output ({ outputView, codeView, faveGatesView, optionsView }) {
     const refContainer = useRef();

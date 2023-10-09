@@ -4,7 +4,7 @@
  *  Calls useCircuitBuilderViewModel to access and update states.
  */
 import React from 'react';
-import styles from './CircuitBuilder.module.scss';
+import styles from '../css/CircuitBuilder.module.css';
 import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu';
 import CircuitCode from '../CircuitBuilderUI/CircuitCode';
 import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu';
@@ -55,13 +55,17 @@ export default function CircuitBuilderPage () {
 
     return (
         <div>
-            <div class="container overflow-hidden" >
+ 
+
+
+
+            <div class="container-fluid overflow-hidden mt-4" >
                 <div class="row gx-0 gy-5 ">
-                    <div class="col-2">
+                    <div class="col-1">
                         <OptionsMenu
                             optionsView={optionViewable} />
                     </div>
-                    <div class="col-10">
+                    <div class="col-11">
                         <AllGatesMenu
                             optionsView={optionViewable}
                             faveGatesView={faveGatesViewable}
@@ -71,7 +75,7 @@ export default function CircuitBuilderPage () {
                             gates={gates} />
                     </div>
              
-                    <div class="col-10">
+                    <div class="col-11">
                         <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             setCBDimensions={setCBDimensions}
@@ -87,6 +91,26 @@ export default function CircuitBuilderPage () {
                             moveGateFromQubit={moveGateFromQubit}
                             handleClick={handleClick}
                             setGateClicked={setGateClicked}
+                        />
+                        <ThetaModal
+                            thetaModal={thetaModal}
+                            updateThetaModal={updateThetaModal}
+                            gateClickedName={gateClickedName}
+                            gateClickedDesc={gateClickedDesc}
+                            updateSlider={updateSlider}
+                        />
+                        <NoParamModal
+                            gateClickedName={gateClickedName}
+                            gateClickedDesc={gateClickedDesc}
+                            noParamModal={noParamModal}
+                            showNoParamModal={showNoParamModal}
+                        />
+
+                    </div>
+                    <div class="col-1 d-flex align-items-center  flex-row-reverse">
+                        <FaveGatesMenu
+                            faveGatesView={faveGatesViewable}
+                            setFaveGateView={updateFaveGatesView}
                         />
                     </div>
                     {/* <div class="col">
@@ -146,7 +170,7 @@ export default function CircuitBuilderPage () {
             //     noParamModal = { noParamModal }
             //     showNoParamModal = { showNoParamModal}
             // />
-        //     <Output
+            // <Output
         //         outputView = { outputViewable }
         //         codeView = { circuitCodeViewable }
         //         faveGatesView = { faveGatesViewable }
@@ -157,10 +181,10 @@ export default function CircuitBuilderPage () {
             //     faveGatesView = { faveGatesViewable }
             //     allGatesView = { allGatesViewable }
             // />
-        //     <FaveGatesMenu
-        //         faveGatesView = { faveGatesViewable }
-        //         setFaveGateView={ updateFaveGatesView }
-        //     />
+            // <FaveGatesMenu
+            //     faveGatesView = { faveGatesViewable }
+            //     setFaveGateView={ updateFaveGatesView }
+            // />
             //  <AllGatesMenu
             //     optionsView = { optionViewable }
             //     faveGatesView = { faveGatesViewable }

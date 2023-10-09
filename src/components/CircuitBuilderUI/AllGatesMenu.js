@@ -8,7 +8,7 @@
  */
 
 import React, {useRef} from 'react';
-import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss';
+import styles from '../css/CircuitBuilder.module.css';
 import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {

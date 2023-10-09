@@ -19,7 +19,9 @@
 }
 
 .row {
+  
   height: 48px;
+  
   background-color: pink;
   border: 1px solid black;
   margin: 0;
@@ -38,10 +40,11 @@
 
 .qubitNum {
   height: 48px;
-  max-width: 48px !important;
+  min-width: 48px !important;
   background-color: lightblue;
   padding-right: 0 !important;
   padding-left: 0 !important;
+  align-items: center !important;
 }
 
 .OptionsMenu {
@@ -165,4 +168,14 @@
 .BottomPageTabs {
   grid-area: UITabs1;
   border: 5px solid rgba(250, 216, 81, 0.939);
+}
+
+div.scroll {
+  margin: 4px, 4px;
+  padding: 4px;
+  background-color: #08c708;
+  width: 300px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
