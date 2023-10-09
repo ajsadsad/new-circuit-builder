@@ -38,6 +38,14 @@ const useCircuitBuilderViewModel = () => {
 
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
 
+    const [clicked, setClicked] = useState(false);
+    const [points, setPoints] =  useState( { x:0, y: 0 } );
+
+    function handleRightClick(e) {
+        setClicked(true);
+        setPoints({x : e.pageX, y : e.pageY})
+    }
+
     function setDraggingGate(gate) {
         draggingGate.current = gate;
     }
@@ -181,10 +189,13 @@ const useCircuitBuilderViewModel = () => {
         thetaModal,
         noParamModal,
         hasMeasure,
-        showMeasModal,
         gateClickedName,
         gateClickedDesc,
         gateClicked,
+        clicked,
+        points,
+        handleRightClick,
+        showMeasModal,
         showThetaModal,
         showNoParamModal,
         updateSlider,

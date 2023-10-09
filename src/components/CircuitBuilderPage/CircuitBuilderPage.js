@@ -16,7 +16,7 @@ import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
 import MeasurementModal from '../Modals/MeasurementModal';
-
+import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 export default function CircuitBuilderPage () {
 
     const {
@@ -34,8 +34,11 @@ export default function CircuitBuilderPage () {
         thetaModal,
         noParamModal,
         hasMeasure,
-        showMeasModal,
         setGateClicked,
+        clicked,
+        points,
+        handleRightClick,
+        showMeasModal,
         setDraggingGate,
         setDraggingGateNode,
         showNoParamModal,
@@ -77,78 +80,93 @@ export default function CircuitBuilderPage () {
 
 
             </div>
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col">
-                        <ReactiveCircuitBuilderUI
-                            addQubit={addQubit}
-                            setCBDimensions={setCBDimensions}
-                            dimensions={circuitBuilderDimensions}
-                            optionsView={optionViewable}
-                            faveGatesView={faveGatesViewable}
-                            codeView={circuitCodeViewable}
-                            outputView={outputViewable}
-                            allGatesView={allGatesViewable}
-                            currQBState = { currQBState }
-                            gateFromQubit={gateFromQubit}
-                            handleChange={handleChange}
-                            handleClick={handleClick}
-                            setGateClicked={setGateClicked}
-                            setDraggingGate = { setDraggingGate }
-                            setDraggingGateNode = { setDraggingGateNode }
-                        />
 
-                    </div>
-                    {/* <div class="col">
-                        <p>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+            <ContextMenuTrigger id="contextmenu">
+                <div class="container text-center">
+                    <div class="row">
+                        <div class="col">
+                            <ReactiveCircuitBuilderUI
+                                addQubit={addQubit}
+                                setCBDimensions={setCBDimensions}
+                                dimensions={circuitBuilderDimensions}
+                                optionsView={optionViewable}
+                                faveGatesView={faveGatesViewable}
+                                codeView={circuitCodeViewable}
+                                outputView={outputViewable}
+                                allGatesView={allGatesViewable}
+                                currQBState = { currQBState }
+                                gateFromQubit={gateFromQubit}
+                                handleChange={handleChange}
+                                handleClick={handleClick}
+                                setGateClicked={setGateClicked}
+                                setDraggingGate = { setDraggingGate }
+                                setDraggingGateNode = { setDraggingGateNode }
+                            />
 
-                            </button>
-                        </p>
-                        <div style={{ minHeight: 120 }}>
-                            <div class="collapse collapse-horizontal" id="collapseWidthExample">
-                                <div class="card card-body" style={{ width: 300 }}>
-                                    This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
+                        </div>
+                        {/* <div class="col">
+                            <p>
+                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+
+                                </button>
+                            </p>
+                            <div style={{ minHeight: 120 }}>
+                                <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                                    <div class="card card-body" style={{ width: 300 }}>
+                                        This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> */}
+                        </div> */}
+                    </div>
                 </div>
-                <ThetaModal
-                    thetaModal = { thetaModal }
-                    updateThetaModal = { updateThetaModal }
-                    gateClickedName = { gateClickedName }
-                    gateClickedDesc = { gateClickedDesc }
-                    updateSlider = { updateSlider }
-                />
-                <NoParamModal
-                    gateClickedName = { gateClickedName }
-                    gateClickedDesc = { gateClickedDesc }
-                    noParamModal = { noParamModal }
-                    showNoParamModal = { showNoParamModal}
-                />
+            </ContextMenuTrigger>
 
-                <MeasurementModal
-                    hasMeasure = { hasMeasure }
-                    showMeasModal = { showMeasModal}
-                />
+            <ContextMenu id="contextmenu">
+                <MenuItem onClick={ () => { console.log("copy") }}>
+                    <span>Copy</span>
+                </MenuItem>
+                <MenuItem onClick={ () => { console.log("Undo") }}>
+                    <span>Undo</span>
+                </MenuItem>
+                <MenuItem onClick={ () => { console.log("Delete") }}>
+                    <span>Delete</span>
+                </MenuItem>
+            </ContextMenu>
 
-                <BottomPageTabs
-                    setOptionMenuView={ updateOptionView }
-                    optionsView = { optionViewable }
-                    setFaveGateView={ updateFaveGatesView }
-                    faveGatesView = { faveGatesViewable }
-                    setAllGatesView = { updateAllGatesMenuView }
-                    setCodeView =  { updateCircuitCodeView }
-                    setOutputView = { updateOutputView }
-                    processCircuit = { processCircuit }
-                    undo = { undo }
-                    redo = { redo }
-                    index = { index }
-                    lastIndex = { lastIndex }
-                />
+            <ThetaModal
+                thetaModal = { thetaModal }
+                updateThetaModal = { updateThetaModal }
+                gateClickedName = { gateClickedName }
+                gateClickedDesc = { gateClickedDesc }
+                updateSlider = { updateSlider }
+            />
+            <NoParamModal
+                gateClickedName = { gateClickedName }
+                gateClickedDesc = { gateClickedDesc }
+                noParamModal = { noParamModal }
+                showNoParamModal = { showNoParamModal}
+            />
 
-            </div>
+            <MeasurementModal
+                hasMeasure = { hasMeasure }
+                showMeasModal = { showMeasModal}
+            />
+
+            <BottomPageTabs
+                setOptionMenuView={ updateOptionView }
+                optionsView = { optionViewable }
+                setFaveGateView={ updateFaveGatesView }
+                faveGatesView = { faveGatesViewable }
+                setAllGatesView = { updateAllGatesMenuView }
+                setCodeView =  { updateCircuitCodeView }
+                setOutputView = { updateOutputView }
+                processCircuit = { processCircuit }
+                undo = { undo }
+                redo = { redo }
+                index = { index }
+                lastIndex = { lastIndex }
+            />
 {/*
             // <OptionsMenu
             // optionsView = { optionViewable }
