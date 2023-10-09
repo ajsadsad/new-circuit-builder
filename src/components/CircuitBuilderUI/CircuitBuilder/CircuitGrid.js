@@ -15,7 +15,7 @@ import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { useCallback } from 'react';
+import plusSign from '../../../assets/plus.svg';
 
 export default function CircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, setDraggingGateNode }) {
 
@@ -39,8 +39,12 @@ export default function CircuitGrid ({ qubitStates, handleChange, addQubit, hand
                                     id = { index }
                                     className = { styles.qubitNum }
                                     onClick = { addQubit }
+                                    draggable = { false }
                                     >
-                                        +
+                                        <img
+                                            src = {plusSign}
+                                            draggable = { false }
+                                        />
                                     </Col>)
                                 } else {
                                     return (
@@ -51,7 +55,6 @@ export default function CircuitGrid ({ qubitStates, handleChange, addQubit, hand
                                         onDragEnter = {(e) => { e.preventDefault();}}
                                         onDragOver = {(e) => { e.preventDefault(); }}
                                         onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
-                                        onClick = {(e) => { handleClick(e); }}
                                     >
                                         { row.hasGate &&
                                             <img
@@ -61,8 +64,9 @@ export default function CircuitGrid ({ qubitStates, handleChange, addQubit, hand
                                                 gate={JSON.stringify(row.gate)}
                                                 src={require(`../../../assets/${row.gate.img}`)}
                                                 inqubit = {"true"}
-                                                draggable={true}
+                                                draggable ={ true }
                                                 onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(row.gate); }}
+                                                onClick = {(e) => { handleClick(e); }}
                                             />}
                                     </Col>
                                     )

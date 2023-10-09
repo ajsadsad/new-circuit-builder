@@ -33,6 +33,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         draggable={true}
                         onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
+                    <p> {gate.gateName} </p>
                 </div>
             )
         } else {
@@ -47,7 +48,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         draggable={true}
                         onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
-
+                    <p> {gate.gateName} </p>
                 </div>
 
             )
