@@ -15,10 +15,9 @@ import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import { useCallback } from 'react';
 
-export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQubit, addQubit, handleClick }) {
-
-    //have to figure out how to keep gates inside of grid on rerender. Probably a turnary operation in this map function.
+export default function CircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, setDraggingGateNode }) {
 
     return(
         <>
@@ -52,11 +51,21 @@ export default function CircuitGrid ({ qubitStates, handleChange, moveGateFromQu
                                         onDragEnter = {(e) => { e.preventDefault();}}
                                         onDragOver = {(e) => { e.preventDefault(); }}
                                         onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
-                                        onDrop = {(e) => { e.preventDefault(); console.log(e.target.id); handleChange(e);  }}
-                                        draggable = { true }
-                                        onDragStart = {(e) =>  { moveGateFromQubit(e) } }
                                         onClick = {(e) => { handleClick(e); }}
-                                    />)
+                                    >
+                                        { row.hasGate &&
+                                            <img
+                                                className={styles.GateImg}
+                                                key={row.gate.qid}
+                                                id={row.gate.qid}
+                                                gate={JSON.stringify(row.gate)}
+                                                src={require(`../../../assets/${row.gate.img}`)}
+                                                inqubit = {"true"}
+                                                draggable={true}
+                                                onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(row.gate); }}
+                                            />}
+                                    </Col>
+                                    )
                                 }
                             })
                         }

@@ -13,8 +13,9 @@
  * @param {number} value - value that slider is currently at.
  *
  */
-import { useState } from 'react'
+import { useState, useRef, useMemo} from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
+import useUndoRedoCBState from '../Hooks/useUndoRedoCBState';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -25,18 +26,35 @@ const useCircuitBuilderViewModel = () => {
     const [allGatesViewable, setAllGatesView] = useState(true);
     const [faveGatesViewable, setFaveGatesView] = useState(false);
     const [circuitCodeViewable, setCircuitCodeView] = useState(true);
-    const [draggingGate, setDraggingGate] = useState(undefined);
-    const [draggingGateNode, setDraggingGateNode] = useState(undefined);
-    const [gateFromQubit, setGateFromQubit] = useState(false);
+    const draggingGate = useRef(undefined);
+    const draggingGateNode = useRef(undefined);
+    const gateClicked = useRef(undefined);
     const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
-    const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})))
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
-    const [gateClicked, setGateClicked] = useState(undefined);
     const [noParamModal, showNoParamModal] = useState(false);
     const [hasMeasure, showMeasModal] = useState(false);
- 
+
+    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
+
+    function setDraggingGate(gate) {
+        draggingGate.current = gate;
+    }
+
+    function setDraggingGateNode(e) {
+        draggingGateNode.current = e;
+    }
+
+    function setGateClicked(e) {
+        gateClicked.current = e;
+    }
+
+    function getQubitStateDeepCopy() {
+        let copy = JSON.parse(JSON.stringify(currQBState));
+        return copy;
+    }
+
     function handleClick(e) {
         let gate = JSON.parse(e.target.getAttribute("gate"));
         setGateClickedName(gate.gateName);
@@ -51,50 +69,37 @@ const useCircuitBuilderViewModel = () => {
 
     function handleChange(e) {
         //if gate is being dragged from circuit
-        if(gateFromQubit) {
-            let copy = [...qubitStates];
-            copy[draggingGateNode.target.parentElement.parentElement.id][draggingGateNode.target.parentElement.id] = { hasGate : false, gate : null};
-            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate };
-            e.target.appendChild(draggingGateNode.target);
-            setGateFromQubit(!gateFromQubit);
+        if(draggingGateNode.current.target.getAttribute("inqubit") === "true") {
+            let copy = getQubitStateDeepCopy();
+            copy[draggingGateNode.current.target.parentElement.parentElement.id][draggingGateNode.current.target.parentElement.id] = { hasGate : false, gate : null};
+            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current };
+            setState(copy);
         } else {
-            let copy = [...qubitStates];
-            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate};
-            setQubitOp(copy);
-            e.target.appendChild(draggingGateNode.target.cloneNode());
+            let copy = getQubitStateDeepCopy();
+            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current};
+            setState(copy);
         }
-        console.log(qubitStates);
-    }
-
-    function moveGateFromQubit(e) {
-        setDraggingGateNode(e);
-        setDraggingGate(JSON.parse(e.target.getAttribute("gate")));
-        let copy = [...qubitStates];
-        copy[e.target.parentNode.parentNode.id][e.target.parentNode.id] = { hasGate : false, gate : null};
-        setQubitOp(copy);
-        setGateFromQubit(!gateFromQubit);
     }
 
     function updateSlider(value) {
         const val = document.querySelector("#theta");
         val.textContent = value;
-        let updateGate = JSON.parse(gateClicked.target.getAttribute("gate"));
-        updateGate.theta = value;
-        let copy = [...qubitStates];
-        copy[gateClicked.target.parentNode.parentNode.id][gateClicked.target.parentNode.id] = { hasGate : true, gate : updateGate};
-        setQubitOp(copy);
     }
 
-    function updateThetaModal() {
+    function updateThetaModal(value) {
         showThetaModal(false);
+        let updatedGate = JSON.parse(gateClicked.current.target.getAttribute("gate"));
+        updatedGate.theta = value;
+        let copy = getQubitStateDeepCopy();
+        copy[gateClicked.current.target.parentNode.parentNode.id][gateClicked.current.target.parentNode.id] = { hasGate : true, gate : updatedGate};
+        setState(copy);
     }
-    // The docs say that the quokka is fed this with a bunch of JSON files so it might not have to be one big JSON file.
-    // Can maybe pass the operation down as a prop into this function instead.
+
     function processCircuit() {
         if(checkMeasurementGate()) {
             let json = [];
-            json.push({'operation' : 'create_circuit', 'num_qubits' : qubitStates.length});
-            qubitStates.map((row, rowIndex) => row.map((v, i) => {
+            json.push({'operation' : 'create_circuit', 'num_qubits' : currQBState.length});
+            currQBState.map((row, rowIndex) => row.map((v, i) => {
                 if(v.hasGate) {
                     if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
@@ -112,26 +117,25 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function checkMeasurementGate() {
-        
         let hasMeasure = false;
-        qubitStates.map((row, rowIndex) => row.map((v, i) => {
+        currQBState.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'measure') {
                     console.log("hasGate")
-                    hasMeasure = true;    
-                } 
-            }           
+                    hasMeasure = true;
+                }
+            }
         }));
         return hasMeasure
     }
 
     function addQubit() {
-        if(qubitStates.length < 33) {
-            let copy = [...qubitStates];
-            copy.push(Array(qubitStates[0].length));
-            copy[qubitStates.length].fill({hasGate : false, gate : null});
-            setQubitOp(copy);
-            console.log(qubitStates);
+        if(currQBState.length < 33) {
+            let copy = getQubitStateDeepCopy();
+            copy.push(Array(currQBState[0].length));
+            copy[currQBState.length].fill({hasGate : false, gate : null});
+            setState(copy);
+            console.log(currQBState);
         } else {
             alert("Cannot add more than 32 qubits");
         }
@@ -173,8 +177,6 @@ const useCircuitBuilderViewModel = () => {
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
-        qubitStates,
-        gateFromQubit,
         circuitBuilderDimensions,
         thetaModal,
         noParamModal,
@@ -192,14 +194,14 @@ const useCircuitBuilderViewModel = () => {
         processCircuit,
         setCBDimensions,
         handleChange,
-        moveGateFromQubit,
         setDraggingGate,
         setDraggingGateNode,
         updateOptionView,
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
-        updateCircuitCodeView
+        updateCircuitCodeView,
+        currQBState, setState, index, lastIndex, undo, redo
     }
 }
 export default useCircuitBuilderViewModel;

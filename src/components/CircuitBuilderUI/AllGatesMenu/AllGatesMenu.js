@@ -7,13 +7,13 @@
  * @param {function} setDraggingGateNode - Function used to track state of current gate being dragged from menu as a HTML Node.
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
 import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
 
-  
+
     const refContainer = useRef();
 
     const standardGates = gates.map((index) => {
@@ -34,8 +34,6 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
                 </div>
-                
-                
             )
         } else {
             return (
@@ -51,7 +49,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                     />
 
                 </div>
-                
+
             )
         }
     });
@@ -93,15 +91,15 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                 //         Button with data-bs-target
                 //     </button>
                 //     <div class="collapse" id="collapseExample">
-                        
+
                 //         {gateImgs}
-                        
+
                 //         </div>
                 //         {/* All Gates Menu
                 //     width : {dimensions.width}
                 //     height : {dimensions.height} */}
 
-                  
+
 
                 // </div>
     //         ]
