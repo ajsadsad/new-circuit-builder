@@ -17,6 +17,7 @@ import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
 import MeasurementModal from '../Modals/MeasurementModal';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
+
 export default function CircuitBuilderPage () {
 
     const {
@@ -81,10 +82,10 @@ export default function CircuitBuilderPage () {
 
             </div>
 
-            <ContextMenuTrigger id="contextmenu">
+            {/* <ContextMenuTrigger id="contextmenu"> */}
                 <div class="container text-center">
-                    <div class="row">
-                        <div class="col">
+                    <div class="row" draggable = { false }>
+                        <div class="col" draggable = { false }>
                             <ReactiveCircuitBuilderUI
                                 addQubit={addQubit}
                                 setCBDimensions={setCBDimensions}
@@ -120,9 +121,9 @@ export default function CircuitBuilderPage () {
                         </div> */}
                     </div>
                 </div>
-            </ContextMenuTrigger>
+            {/* </ContextMenuTrigger> */}
 
-            <ContextMenu id="contextmenu">
+            {/* <ContextMenu id="contextmenu">
                 <MenuItem onClick={ () => { console.log("copy") }}>
                     <span>Copy</span>
                 </MenuItem>
@@ -132,7 +133,7 @@ export default function CircuitBuilderPage () {
                 <MenuItem onClick={ () => { console.log("Delete") }}>
                     <span>Delete</span>
                 </MenuItem>
-            </ContextMenu>
+            </ContextMenu> */}
 
             <ThetaModal
                 thetaModal = { thetaModal }
