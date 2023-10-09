@@ -55,9 +55,9 @@ export default function CircuitBuilderPage () {
 
     return (
         <div>
-            <div class="container text-center" >
-                <div class="row">
-                    <div class="col">
+            <div class="container overflow-hidden" >
+                <div class="row gx-0 gy-5 ">
+                    <div class="col-2">
                         <OptionsMenu
                             optionsView={optionViewable} />
                     </div>
@@ -70,14 +70,8 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
-                    
-                </div>
-
-
-            </div>
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col">
+             
+                    <div class="col-10">
                         <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             setCBDimensions={setCBDimensions}

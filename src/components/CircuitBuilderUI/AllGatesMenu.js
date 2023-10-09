@@ -57,27 +57,23 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
     });
 
     return (
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        Gates Menu
+
+        <div class="accordion d-grid" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item d-grid">
+                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        Gate Menu
                     </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
                     <div class="accordion-body">
-                        {/* All Gates Menu
-                        width : {dimensions.width}
-                        height : {dimensions.height} */}
-                        <div class="container text-center">
-                            <div class="row">
-                                {gateImgs}
-                            </div>
+                        <div class="row">
+                            {gateImgs}
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
 
 
 
