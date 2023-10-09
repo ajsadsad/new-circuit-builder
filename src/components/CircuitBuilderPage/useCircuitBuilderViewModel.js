@@ -28,22 +28,26 @@ const useCircuitBuilderViewModel = () => {
     const [circuitCodeViewable, setCircuitCodeView] = useState(true);
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
+    const gateClicked = useRef(undefined);
     const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
-    // const [qubitStates, setQubitOp] = useState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})))
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
-    const [gateClicked, setGateClicked] = useState(undefined);
     const [noParamModal, showNoParamModal] = useState(false);
     const [hasMeasure, showMeasModal] = useState(false);
 
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
+
     function setDraggingGate(gate) {
         draggingGate.current = gate;
     }
 
     function setDraggingGateNode(e) {
         draggingGateNode.current = e;
+    }
+
+    function setGateClicked(e) {
+        gateClicked.current = e;
     }
 
     function getQubitStateDeepCopy() {
@@ -75,21 +79,20 @@ const useCircuitBuilderViewModel = () => {
             copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current};
             setState(copy);
         }
-        console.log(currQBState);
     }
 
     function updateSlider(value) {
         const val = document.querySelector("#theta");
         val.textContent = value;
-        let updatedGate = JSON.parse(gateClicked.target.getAttribute("gate"));
-        updatedGate.theta = value;
-        let copy = getQubitStateDeepCopy();
-        copy[gateClicked.target.parentNode.parentNode.id][gateClicked.target.parentNode.id] = { hasGate : true, gate : updatedGate};
-        setState(copy);
     }
 
-    function updateThetaModal() {
+    function updateThetaModal(value) {
         showThetaModal(false);
+        let updatedGate = JSON.parse(gateClicked.current.target.getAttribute("gate"));
+        updatedGate.theta = value;
+        let copy = getQubitStateDeepCopy();
+        copy[gateClicked.current.target.parentNode.parentNode.id][gateClicked.current.target.parentNode.id] = { hasGate : true, gate : updatedGate};
+        setState(copy);
     }
 
     function processCircuit() {
