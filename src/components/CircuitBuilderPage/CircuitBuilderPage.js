@@ -50,7 +50,7 @@ export default function CircuitBuilderPage () {
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
-        updateCircuitCodeView, state, setState, index, lastIndex, undo, redo
+        updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo
     } = useCircuitBuilderViewModel();
 
 
@@ -89,7 +89,7 @@ export default function CircuitBuilderPage () {
                             codeView={circuitCodeViewable}
                             outputView={outputViewable}
                             allGatesView={allGatesViewable}
-                            qubitStates={qubitStates}
+                            currQBState = { currQBState }
                             gateFromQubit={gateFromQubit}
                             handleChange={handleChange}
                             handleClick={handleClick}

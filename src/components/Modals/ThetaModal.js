@@ -9,7 +9,7 @@ export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedN
         <Modal
         size="sm"
         show={thetaModal}
-        onHide={() => updateThetaModal()}
+        onHide={(e) => updateThetaModal() }
         aria-labelledby="example-modal-sizes-title-sm"
         centered
         >
