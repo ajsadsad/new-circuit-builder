@@ -1,0 +1,1 @@
+{"version":3,"sourceRoot":"","sources":["../../common/fonts.scss","../AboutPage/About.module.scss","../../common/text-styles.scss","../../common/dropdown-styles.scss"],"names":[],"mappings":"AAAA,WACE,mBACA,kBACA,gBACA,qFAIF,WACE,wBACA,kBACA,gBACA,+EAMF,WACE,qBACA,kBACA,gBACA,iHCpBF,OACI,WACA,0BACA,aACA,sBACA,uBAEA,SCoDF,YC5Da,kBD6Db,kBACA,gBACA,eACA","file":"About.module.css"}

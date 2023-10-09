@@ -11,7 +11,7 @@
  * @param {function} handleClick - triggered when cell in grid is clicked. Called from CircuitBuilderViewModel.
  *
  */
-import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';

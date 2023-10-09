@@ -1,15 +1,16 @@
 import React from 'react'
-import '../../CircuitBuilderPage/CircuitBuilder.module.scss';
+//import '../../CircuitBuilderPage/CircuitBuilder.module.scss';
 import Collapse from 'react-bootstrap/Collapse';
 import { Button } from 'bootstrap';
+import "../css/OptionsMenu.css";
 
 export default function OptionsMenu ({ optionsView }) {
 
     return (
 
-        <div  class="accordion" id="accordionExample" >
-
-            dwad
+        <div  class="accordion text-white" id="accordionExample" >
+ddd
+           <body class="text-danger"> dwaddwd</body> 
             <div class="accordion-item">
                 
                 <h2 class="accordion-header" id="headingOne">

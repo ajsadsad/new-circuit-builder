@@ -16,7 +16,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react'
-import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss'
 import CircuitGrid from './CircuitGrid'
 
 export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked}) {

@@ -5,7 +5,7 @@
  *  @param {boolean} allGatesView - True if all gates menu is viewable.
  */
 import React, { useState, useEffect, useRef } from 'react'
-import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss'
+import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss'
 
 export default function CircuitCode({ codeView, faveGatesView, allGatesView }) {
     const refContainer = useRef();

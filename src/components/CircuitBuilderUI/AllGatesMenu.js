@@ -8,7 +8,7 @@
  */
 
 import React, {useRef} from 'react';
-import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
+import styles from '../CircuitBuilderPage/CircuitBuilder.module.scss';
 import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
@@ -29,7 +29,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         key={gate.qid}
                         id={gate.qid}
                         gate={JSON.stringify(gate)}
-                        src={require(`../../../assets/${gate.img}`)}
+                        src={require(`../../assets/${gate.img}`)}
                         draggable={true}
                         onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
@@ -45,7 +45,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         key={gate.qid}
                         id={gate.qid}
                         gate={JSON.stringify(gate)}
-                        src={require(`../../../assets/${gate.img}`)}
+                        src={require(`../../assets/${gate.img}`)}
                         draggable={true}
                         onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
