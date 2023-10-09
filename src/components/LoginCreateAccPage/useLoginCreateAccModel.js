@@ -1,29 +1,20 @@
-import React from 'react';
 import APIClient from '../../api/APIClient.ts'
+import { useNavigate } from "react-router-dom";
 
-const useLoginCreateAccModel = () => {
+export default function useLoginCreateAccModel() {
 
-    // const dispatchAccDetails = () => {
-    //     dispatch(updateUserAuthentication(true));
-    //         dispatch(updateCurrentlyAuthenticatedUser({
-    //             id: "0",
-    //             email: regEmail
-    //         }));
-    // }
+    const history = useNavigate();
 
     const getLogin = async (regEmail, regPassword) => {
         const response = await authLogin(regEmail, regPassword);
         if(response) {
-            //dispatchAccDetails();
-            //history('/circuitBuilder');
+            history('/circuitBuilder');
             console.log("Succesful Login");
         }
     }
 
     const authLogin = async (email, password) => {
         const apiClient = new APIClient();
-        console.log("Log in");
-
         try {
             const response = await apiClient.authService.login({
                 email: email,
@@ -45,17 +36,13 @@ const useLoginCreateAccModel = () => {
     const getCreateNewAccount = async (regEmail, regPassword, regConfirmPassword) => {
         const accCreateResponse = await authAccCreation(regEmail, regPassword, regConfirmPassword);
         if(accCreateResponse){
-            // dispatchAccDetails();
-            // history('/circuitBuilder');
+            history('/circuitBuilder');
             console.log("Succesful Account Creation");
         }
     }
 
     const authAccCreation = async (email, password1, password2) => {
         const apiClient = new APIClient();
-
-        console.log("Create new account ");
-
         try {
             const response = await apiClient.authService.register({
                 email: email,
@@ -77,5 +64,3 @@ const useLoginCreateAccModel = () => {
     }
 
 }
-
-export default useLoginCreateAccModel;

@@ -1,27 +1,35 @@
-import React, { useState } from 'react'
-import useLoginOrCreateAccountModel from './useLoginCreateAccModel'
+import { useRef } from 'react'
+import useLoginCreateAccModel from './useLoginCreateAccModel'
 
 //viewModel - have to change the name, I don't think this application is large enough as is to require a view controller and view model
-const useLoginCreateAccViewModel = () => {
+export default function useLoginCreateAccViewModel() {
 
-    const { getCreateNewAccount, getLogin } = useLoginOrCreateAccountModel();
-    const [regEmail, setRegEmail] = useState("");
-    const [regPassword, setRegPassword] = useState("");
-    const [regConfirmPassword, setRegConfirmPassword] = useState("");
-    //const history = useNavigate();
+    const { getCreateNewAccount, getLogin } = useLoginCreateAccModel();
+    const regEmail = useRef("");
+    const regPassword = useRef("");
+    const regConfirmPassword = useRef("");
 
-    const onLoginClick = ( regEmail, regPassword ) => {
-        getLogin(regEmail, regPassword);
+    function setRegEmail(input) {
+        regEmail.current = input;
     }
 
-    const onCreateNewAccountClick = ( regEmail, regPassword, regConfirmPassword ) => {
-        getCreateNewAccount(regEmail, regPassword, regConfirmPassword);
+    function setRegPassword(pw) {
+        regPassword.current = pw;
+    }
+
+    function setRegConfirmPassword(pw) {
+        regConfirmPassword.current = pw;
+    }
+
+    function onLoginClick() {
+        getLogin(regEmail.current, regPassword.current);
+    }
+
+    const onCreateNewAccountClick = () => {
+        getCreateNewAccount(regEmail.current, regPassword.current, regConfirmPassword.current);
     }
 
     return {
-        regEmail,
-        regPassword,
-        regConfirmPassword,
         setRegEmail,
         setRegPassword,
         setRegConfirmPassword,
@@ -29,5 +37,3 @@ const useLoginCreateAccViewModel = () => {
         onCreateNewAccountClick
     }
 }
-
-export default useLoginCreateAccViewModel
