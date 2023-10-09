@@ -5,16 +5,16 @@ import styles from './LoginCreateAccount.module.scss';
 import { Button } from '../LoginCreateAccPageUI/Button/Button.tsx'
 import { Input } from '../LoginCreateAccPageUI/Input/Input.tsx'
 
-const LoginOrCreateAccount = () => {
+export default function() {
 
-    const { regEmail,
-        regPassword,
-        regConfirmPassword,
+    const
+    {
         setRegEmail,
         setRegPassword,
         setRegConfirmPassword,
         onLoginClick,
-        onCreateNewAccountClick } = useLoginCreateAccViewModel();
+        onCreateNewAccountClick
+    } = useLoginCreateAccViewModel();
 
     return (
         <div className={styles.container}>
@@ -42,10 +42,10 @@ const LoginOrCreateAccount = () => {
                 <Button
                     name="Login"
                     types={["loginBtn"]}
-                    onClick={onLoginClick(regEmail, regPassword)}/>
+                    onClick={onLoginClick}/>
                 <button
                     className={styles.forgotBtn}
-                    onClick={console.log("To add in still")}>Forgot Password?
+                    >Forgot Password?
                 </button>
 
             </div>
@@ -85,13 +85,11 @@ const LoginOrCreateAccount = () => {
                     placeholder="Confirm Password"
                 />
                 <Button
-                    name="Login"
+                    name="Create Account"
                     types={["loginBtn"]}
-                    onClick={onCreateNewAccountClick(regEmail, regPassword, regConfirmPassword)}/>
+                    onClick={onCreateNewAccountClick}/>
             </div>
             </div>
         </div>
     )
 }
-
-export default LoginOrCreateAccount;
