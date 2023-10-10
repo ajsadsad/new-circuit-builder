@@ -18,6 +18,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../css/CircuitBuilder.module.css';
 import CircuitGrid from './CircuitGrid'
+import OptionsMenu from '../CircuitBuilderUI/OptionsMenu';
 
 export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, qubitStates, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked}) {
 
@@ -46,8 +47,8 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         <div className ={
             `${ styles.CircuitBuilder }` }
              ref = { refContainer }>
-             width : 100%
-             height : {dimensions.height}
+             {/* width : {dimensions.width}
+             height : {dimensions.height} */}
             {/* Circuit Builder:
             All Gates Menu - ON
             Code Console - OFF
@@ -55,6 +56,8 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
             Fave menu - OFF
             Output Console - OFF */}
             { circuitGrid }
+            
+            
         </div>
 
     )

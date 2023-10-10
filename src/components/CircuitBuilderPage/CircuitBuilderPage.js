@@ -54,18 +54,16 @@ export default function CircuitBuilderPage () {
 
 
     return (
-        <div>
+        <div  className={styles.main}>
  
 
 
 
-            <div class="container-fluid overflow-hidden mt-4" >
-                <div class="row gx-0 gy-5 ">
-                    <div class="col-1">
-                        <OptionsMenu
-                            optionsView={optionViewable} />
-                    </div>
-                    <div class="col-11">
+            <div class="container-fluid overflow-hidden mt-4">
+                <div class="row gx-0 gy-3 ">
+                    
+
+                    <div class="col-6">
                         <AllGatesMenu
                             optionsView={optionViewable}
                             faveGatesView={faveGatesViewable}
@@ -74,8 +72,18 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
-             
-                    <div class="col-11">
+                    <div class="col-6">
+                        <FaveGatesMenu
+                            faveGatesView={faveGatesViewable}
+                            setFaveGateView={updateFaveGatesView}
+                        />
+                    </div>
+
+
+
+
+                    <div class="col-12" >
+
                         <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             setCBDimensions={setCBDimensions}
@@ -107,16 +115,11 @@ export default function CircuitBuilderPage () {
                         />
 
                     </div>
-                    <div class="col-1 d-flex align-items-center  flex-row-reverse">
-                        <FaveGatesMenu
-                            faveGatesView={faveGatesViewable}
-                            setFaveGateView={updateFaveGatesView}
-                        />
-                    </div>
+
                     {/* <div class="col">
                         <p>
                             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
-                                
+
                             </button>
                         </p>
                         <div style={{ minHeight: 120 }}>

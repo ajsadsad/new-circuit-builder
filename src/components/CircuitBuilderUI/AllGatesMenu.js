@@ -8,7 +8,7 @@
  */
 
 import React, {useRef} from 'react';
-import styles from '../css/CircuitBuilder.module.css';
+import styles from '../css/AllGatesMenu.module.css';
 import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
@@ -57,22 +57,28 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
     });
 
     return (
-
-        <div class="accordion d-grid" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item d-grid">
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        Gate Menu
+        <div>
+            <div class=" accordion accordion-flush d-grid" id="accordionPanelsStayOpenExample" className={styles.AllGatesMenu} >
+                <div class="accordion-item d-grid" >
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        Gates
                     </button>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <div class="row">
-                            {gateImgs}
-                        </div>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+                        <div class="accordion-body" className={styles.accBody}>
+                            <div class="row">
+                                {gateImgs}
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
+           
+
         </div>
+
+
+
 
 
 

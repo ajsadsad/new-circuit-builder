@@ -1,16 +1,9 @@
-@import "../../../node_modules/bootstrap/scss/functions";
+.OptionsMenu{
+    background-color: rgb(255, 255, 255);
 
-// Default variable overrides
+    border: 2.5px solid black;
+    min-width: 100%;
 
-$body-color: #ff0000 ;
 
-// Required
-@import "../../../node_modules/bootstrap/scss/variables";
-@import "../../../node_modules/bootstrap/scss/variables-dark";
-@import "../../../node_modules/bootstrap/scss/maps";
-@import "../../../node_modules/bootstrap/scss/mixins";
-@import "../../../node_modules/bootstrap/scss/root";
 
-// Optional Bootstrap components here
-@import "../../../node_modules/bootstrap/scss/reboot";
-@import "../../../node_modules/bootstrap/scss/type";
+}
