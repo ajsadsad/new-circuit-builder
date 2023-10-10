@@ -1,18 +1,12 @@
-/**
- *  View of the quantum circuit that is made up of five different components.
- *  Options Menu, All Gates Menu, Circuit Code, Circuit Output, and all Modals required.
- *  Calls useCircuitBuilderViewModel to access and update states.
- */
 import React from 'react';
-import styles from './CircuitBuilder.module.scss';
-import contextStyles from './ContextMenu.module.scss';
-import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu/AllGatesMenu';
-import CircuitCode from '../CircuitBuilderUI/CircuitCode/CircuitCode';
-import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu/FaveGatesMenu';
-import OptionsMenu from '../CircuitBuilderUI/OptionsMenu/OptionsMenu';
-import Output from '../CircuitBuilderUI/Output/Output';
-import BottomPageTabs from '../CircuitBuilderUI/BottomPageTabs/BottomPageTabs';
-import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/CircuitBuilder/ReactiveCircuitBuilderUI';
+import styles from '../css/CircuitBuilder.module.css';
+import contextStyles from '../css/ContextMenu.module.css';
+import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu';
+import CircuitCode from '../CircuitBuilderUI/CircuitCode';
+import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu';
+import OptionsMenu from '../CircuitBuilderUI/OptionsMenu';
+import Output from '../CircuitBuilderUI/Output';
+import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/ReactiveCircuitBuilderUI';
 import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
@@ -62,13 +56,9 @@ export default function CircuitBuilderPage () {
 
     return (
         <div onClick={(e) => { clearSelectedGates() }}>
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col">
-                        <OptionsMenu
-                            optionsView={optionViewable} />
-                    </div>
-                    <div class="col-10">
+            <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
+                <div class="row gx-0 gy-3 ">
+                    <div class="col-12">
                         <AllGatesMenu
                             optionsView={optionViewable}
                             faveGatesView={faveGatesViewable}
@@ -77,52 +67,51 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
-
+                    {/* <div class="col-6">
+                        <FaveGatesMenu
+                            faveGatesView={faveGatesViewable}
+                            setFaveGateView={updateFaveGatesView}
+                        />
+                    </div> */}
                 </div>
-
-
             </div>
 
-            <ContextMenuTrigger id="contextmenu">
-                <div class="container text-center">
-                    <div class="row" draggable = { false }>
-                        <div class="col" draggable = { false }>
-                            <ReactiveCircuitBuilderUI
-                                addQubit={addQubit}
-                                setCBDimensions={setCBDimensions}
-                                dimensions={circuitBuilderDimensions}
-                                optionsView={optionViewable}
-                                faveGatesView={faveGatesViewable}
-                                codeView={circuitCodeViewable}
-                                outputView={outputViewable}
-                                allGatesView={allGatesViewable}
-                                currQBState = { currQBState }
-                                gateFromQubit={gateFromQubit}
-                                handleChange={handleChange}
-                                handleClick={handleClick}
-                                setGateClicked={setGateClicked}
-                                setDraggingGate = { setDraggingGate }
-                                setDraggingGateNode = { setDraggingGateNode }
-                            />
-
-                        </div>
-                        {/* <div class="col">
-                            <p>
-                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
-
-                                </button>
-                            </p>
-                            <div style={{ minHeight: 120 }}>
-                                <div class="collapse collapse-horizontal" id="collapseWidthExample">
-                                    <div class="card card-body" style={{ width: 300 }}>
-                                        This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
-                                    </div>
-                                </div>
+            <div >
+                <ContextMenuTrigger id="contextmenu" className={styles.middle}>
+                    <div class="container text-center" className={styles.middle}>
+                        <div class="row" draggable={false} className = {styles.row}>
+                            <div class="col" draggable={false}>
+                                <ReactiveCircuitBuilderUI
+                                    addQubit={addQubit}
+                                    setCBDimensions={setCBDimensions}
+                                    dimensions={circuitBuilderDimensions}
+                                    optionsView={optionViewable}
+                                    faveGatesView={faveGatesViewable}
+                                    codeView={circuitCodeViewable}
+                                    outputView={outputViewable}
+                                    allGatesView={allGatesViewable}
+                                    currQBState={currQBState}
+                                    gateFromQubit={gateFromQubit}
+                                    handleChange={handleChange}
+                                    handleClick={handleClick}
+                                    setGateClicked={setGateClicked}
+                                    setDraggingGate={setDraggingGate}
+                                    setDraggingGateNode={setDraggingGateNode}
+                                />
                             </div>
-                        </div> */}
+                        </div>
+                    </div >
+                    <div className={styles.optionsBar}>
+                        <OptionsMenu
+                            processCircuit = { processCircuit }
+                            redo = { redo }
+                            undo = { undo }
+                            index = { index }
+                            lastIndex = { lastIndex }
+                        />
                     </div>
-                </div>
-            </ContextMenuTrigger>
+                </ContextMenuTrigger>
+            </div>
 
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
                 <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { undo() }} disabled = { !(index > 0)}>
@@ -136,47 +125,34 @@ export default function CircuitBuilderPage () {
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Compound!") }}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={() => { console.log("Compound!") }}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }
             </ContextMenu>
 
             <ThetaModal
-                thetaModal = { thetaModal }
-                updateThetaModal = { updateThetaModal }
-                gateClickedName = { gateClickedName }
-                gateClickedDesc = { gateClickedDesc }
-                updateSlider = { updateSlider }
-                gateClickedThetaVal = { gateClickedThetaVal }
+                thetaModal={thetaModal}
+                updateThetaModal={updateThetaModal}
+                gateClickedName={gateClickedName}
+                gateClickedDesc={gateClickedDesc}
+                updateSlider={updateSlider}
+                gateClickedThetaVal={gateClickedThetaVal}
             />
             <NoParamModal
-                gateClickedName = { gateClickedName }
-                gateClickedDesc = { gateClickedDesc }
-                noParamModal = { noParamModal }
-                showNoParamModal = { showNoParamModal}
+                gateClickedName={gateClickedName}
+                gateClickedDesc={gateClickedDesc}
+                noParamModal={noParamModal}
+                showNoParamModal={showNoParamModal}
             />
 
             <MeasurementModal
-                hasMeasure = { hasMeasure }
-                showMeasModal = { showMeasModal}
+                hasMeasure={hasMeasure}
+                showMeasModal={showMeasModal}
             />
 
-            <BottomPageTabs
-                setOptionMenuView={ updateOptionView }
-                optionsView = { optionViewable }
-                setFaveGateView={ updateFaveGatesView }
-                faveGatesView = { faveGatesViewable }
-                setAllGatesView = { updateAllGatesMenuView }
-                setCodeView =  { updateCircuitCodeView }
-                setOutputView = { updateOutputView }
-                processCircuit = { processCircuit }
-                undo = { undo }
-                redo = { redo }
-                index = { index }
-                lastIndex = { lastIndex }
-            />
-        {/*
+
+            {/*
             // <OptionsMenu
             // optionsView = { optionViewable }
             // />
