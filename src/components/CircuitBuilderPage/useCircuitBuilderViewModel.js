@@ -36,7 +36,7 @@ const useCircuitBuilderViewModel = () => {
     const [noParamModal, showNoParamModal] = useState(false);
     const [hasMeasure, showMeasModal] = useState(false);
 
-    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 3},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
+    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
 
     const [clicked, setClicked] = useState(false);
     const [points, setPoints] =  useState( { x:0, y: 0 } );

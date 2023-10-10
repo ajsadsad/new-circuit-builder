@@ -33,14 +33,14 @@ export default function CircuitGrid ({ qubitStates, handleChange, addQubit, hand
                             column.map((row, index) =>
                             {
                                 if(index === 0) {
-                                    if(rowIndex == qubitStates.length - 1) {
+                                    if(rowIndex === qubitStates.length - 1) {
                                         return(
                                             <Col
-                                            key = { rowIndex + "." + index }
-                                            id = { index }
-                                            className = { styles.qubitNum }
-                                            onClick = { addQubit }
-                                            draggable = { false }
+                                                key = { rowIndex + "." + index }
+                                                id = { index }
+                                                className = { styles.qubitNum }
+                                                onClick = { addQubit }
+                                                draggable = { false }
                                             >
                                                 <img
                                                     src = {plusSign}
@@ -50,38 +50,41 @@ export default function CircuitGrid ({ qubitStates, handleChange, addQubit, hand
                                     } else {
                                         return(
                                             <Col
-                                            key = { rowIndex + "." + index }
-                                            id = { index }
-                                            className = { styles.qubitNum }
-                                            draggable = { false }
+                                                key = { rowIndex + "." + index }
+                                                id = { index }
+                                                className = { styles.qubitNum }
+                                                draggable = { false }
                                             >
                                                 <span> {"q[" + rowIndex + "]"} </span>
                                             </Col>)
                                     }
                                 } else {
-                                    return (
-                                    <Col
-                                        key = { rowIndex + "." + index }
-                                        id = { index }
-                                        className = { styles.col }
-                                        onDragEnter = {(e) => { e.preventDefault();}}
-                                        onDragOver = {(e) => { e.preventDefault(); }}
-                                        onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
-                                    >
-                                        { row.hasGate &&
-                                            <img
-                                                className={styles.GateImg}
-                                                key={row.gate.qid}
-                                                id={row.gate.qid}
-                                                gate={JSON.stringify(row.gate)}
-                                                src={require(`../../../assets/${row.gate.img}`)}
-                                                inqubit = {"true"}
-                                                draggable ={ true }
-                                                onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(row.gate); }}
-                                                onClick = {(e) => { handleClick(e); }}
-                                            />}
-                                    </Col>
-                                    )
+                                    if(rowIndex === qubitStates.length -1) {
+                                        return (<Col id = "spareLine" className = { styles.addQubitBtn}> </Col>)
+                                    } else {
+                                        return (
+                                            <Col
+                                                key = { rowIndex + "." + index }
+                                                id = { index }
+                                                className = { styles.col }
+                                                onDragEnter = {(e) => { e.preventDefault();}}
+                                                onDragOver = {(e) => { e.preventDefault(); }}
+                                                onDrop = {(e) => { e.preventDefault(); handleChange(e);  }}
+                                            >
+                                                { row.hasGate &&
+                                                    <img
+                                                        className={styles.GateImg}
+                                                        key={row.gate.qid}
+                                                        id={row.gate.qid}
+                                                        gate={JSON.stringify(row.gate)}
+                                                        src={require(`../../../assets/${row.gate.img}`)}
+                                                        inqubit = {"true"}
+                                                        draggable ={ true }
+                                                        onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(row.gate); }}
+                                                        onClick = {(e) => { handleClick(e); }}
+                                                    />}
+                                            </Col>)
+                                    }
                                 }
                             })
                         }

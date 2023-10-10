@@ -49,6 +49,21 @@
 
 }
 
+.addQubitBtn {
+  display: flex !important;
+  height: 50px;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  background-image: linear-gradient(#c9c9c9, #c9c9c9);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
 .OptionsMenu {
   grid-area: Options-Menu;
   display: block;
@@ -163,7 +178,6 @@
   padding: 0;
   border: 0;
 }
-
 
 .BottomPageTabs {
   grid-area: UITabs1;
