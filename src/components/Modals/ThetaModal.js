@@ -2,9 +2,9 @@ import FormRange from 'react-bootstrap/FormRange'
 import Modal from 'react-bootstrap/Modal';
 import React, { useRef } from 'react';
 
-export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedName, gateClickedDesc, updateSlider }) {
+export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedName, gateClickedDesc, gateClickedThetaVal, updateSlider }) {
 
-    const val = useRef("0");
+    const val = useRef(gateClickedThetaVal);
 
     return (
     <>
@@ -29,7 +29,7 @@ export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedN
             onChange = {(e) => { updateSlider(e.target.value); val.current = e.target.value; } }
 
         />
-        <p> Theta: <output type="number" name="amountInput" value = "0" id = "theta" /> </p>
+        <p> Theta: <output type="number" name="amountInput" value = {val} id = "theta" /> </p>
         </Modal.Body>
         </Modal>
     </>

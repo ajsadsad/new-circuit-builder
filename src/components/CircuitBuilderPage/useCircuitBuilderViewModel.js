@@ -15,7 +15,8 @@
  */
 import { useState, useRef, useMemo} from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
-import useUndoRedoCBState from '../Hooks/useUndoRedoCBState';
+import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
+import styles from './CircuitBuilder.module.scss'
 
 const useCircuitBuilderViewModel = () => {
 
@@ -33,18 +34,13 @@ const useCircuitBuilderViewModel = () => {
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
+    const [gateClickedThetaVal, setGateClickedThetaVal] = useState();
     const [noParamModal, showNoParamModal] = useState(false);
     const [hasMeasure, showMeasModal] = useState(false);
 
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
 
-    const [clicked, setClicked] = useState(false);
-    const [points, setPoints] =  useState( { x:0, y: 0 } );
-
-    function handleRightClick(e) {
-        setClicked(true);
-        setPoints({x : e.pageX, y : e.pageY})
-    }
+    const [gatesSelected, setGatesSelected] = useState([]);
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -63,16 +59,41 @@ const useCircuitBuilderViewModel = () => {
         return copy;
     }
 
+    function clearSelectedGates() {
+        gatesSelected.map((g) => {
+            g.e.setAttribute("class", `${styles.GateImg}`);
+        });
+        setGatesSelected([]);
+    }
+
     function handleClick(e) {
-        let gate = JSON.parse(e.target.getAttribute("gate"));
-        setGateClickedName(gate.gateName);
-        setGateClickedDesc(gate.description);
-        setGateClicked(e);
-        if(e.target.id === 'xrot' || e.target.id === 'yrot' || e.target.id === 'zrot') {
-            showThetaModal(true);
+        if(e.shiftKey) {
+            let rowIndex = e.currentTarget.parentNode.parentNode.id
+            let colIndex = e.currentTarget.parentNode.id
+            if(gatesSelected.filter( g => g.row === rowIndex && g.col === colIndex).length > 0) {
+                e.target.setAttribute("class", `${styles.GateImg}`);
+                let copy = gatesSelected.filter(g => g.row !== rowIndex || g.col !== colIndex);
+                setGatesSelected(copy);
+            } else {
+                e.target.setAttribute("class", `${styles.GateImgSelected}`);
+                let gate = JSON.parse(e.target.getAttribute("gate"));
+                let copy = [...gatesSelected];
+                copy.push({ row : rowIndex, col : colIndex, gate : gate, e : e.target });
+                setGatesSelected(copy);
+            }
         } else {
-            showNoParamModal(true);
+            let gate = JSON.parse(e.target.getAttribute("gate"));
+            setGateClickedName(gate.gateName);
+            setGateClickedDesc(gate.description);
+            setGateClickedThetaVal(gate.theta);
+            setGateClicked(e);
+            if(e.target.id === 'xrot' || e.target.id === 'yrot' || e.target.id === 'zrot') {
+                showThetaModal(true);
+            } else {
+                showNoParamModal(true);
+            }
         }
+        console.log(gatesSelected);
     }
 
     function handleChange(e) {
@@ -192,9 +213,9 @@ const useCircuitBuilderViewModel = () => {
         gateClickedName,
         gateClickedDesc,
         gateClicked,
-        clicked,
-        points,
-        handleRightClick,
+        gateClickedThetaVal,
+        gatesSelected,
+        clearSelectedGates,
         showMeasModal,
         showThetaModal,
         showNoParamModal,

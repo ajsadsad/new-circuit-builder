@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import styles from './CircuitBuilder.module.scss';
+import contextStyles from './ContextMenu.module.scss';
 import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu/AllGatesMenu';
 import CircuitCode from '../CircuitBuilderUI/CircuitCode/CircuitCode';
 import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu/FaveGatesMenu';
@@ -27,7 +28,6 @@ export default function CircuitBuilderPage () {
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
-        qubitStates,
         gateFromQubit,
         circuitBuilderDimensions,
         gateClickedName,
@@ -36,9 +36,9 @@ export default function CircuitBuilderPage () {
         noParamModal,
         hasMeasure,
         setGateClicked,
-        clicked,
-        points,
-        handleRightClick,
+        gateClickedThetaVal,
+        gatesSelected,
+        clearSelectedGates,
         showMeasModal,
         setDraggingGate,
         setDraggingGateNode,
@@ -60,7 +60,7 @@ export default function CircuitBuilderPage () {
 
 
     return (
-        <div>
+        <div onClick={(e) => { clearSelectedGates() }}>
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
@@ -82,7 +82,7 @@ export default function CircuitBuilderPage () {
 
             </div>
 
-            {/* <ContextMenuTrigger id="contextmenu"> */}
+            <ContextMenuTrigger id="contextmenu">
                 <div class="container text-center">
                     <div class="row" draggable = { false }>
                         <div class="col" draggable = { false }>
@@ -121,19 +121,25 @@ export default function CircuitBuilderPage () {
                         </div> */}
                     </div>
                 </div>
-            {/* </ContextMenuTrigger> */}
+            </ContextMenuTrigger>
 
-            {/* <ContextMenu id="contextmenu">
-                <MenuItem onClick={ () => { console.log("copy") }}>
+            <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("copy") }}>
                     <span>Copy</span>
                 </MenuItem>
-                <MenuItem onClick={ () => { console.log("Undo") }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Undo") }}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem onClick={ () => { console.log("Delete") }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Delete") }}>
                     <span>Delete</span>
                 </MenuItem>
-            </ContextMenu> */}
+                {
+                    gatesSelected.length > 1 &&
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Compound!") }}>
+                        <span>Make Compound Gate</span>
+                    </MenuItem>
+                }
+            </ContextMenu>
 
             <ThetaModal
                 thetaModal = { thetaModal }
@@ -141,6 +147,7 @@ export default function CircuitBuilderPage () {
                 gateClickedName = { gateClickedName }
                 gateClickedDesc = { gateClickedDesc }
                 updateSlider = { updateSlider }
+                gateClickedThetaVal = { gateClickedThetaVal }
             />
             <NoParamModal
                 gateClickedName = { gateClickedName }
