@@ -66,6 +66,14 @@ const useCircuitBuilderViewModel = () => {
         setGatesSelected([]);
     }
 
+    function deleteGate() {
+        let copy = getQubitStateDeepCopy();
+        gatesSelected.map((gate) => {
+            copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
+        })
+        setState(copy);
+    }
+
     function handleClick(e) {
         if(e.shiftKey) {
             let rowIndex = e.currentTarget.parentNode.parentNode.id
@@ -215,6 +223,7 @@ const useCircuitBuilderViewModel = () => {
         gateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        deleteGate,
         clearSelectedGates,
         showMeasModal,
         showThetaModal,

@@ -38,6 +38,7 @@ export default function CircuitBuilderPage () {
         setGateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        deleteGate,
         clearSelectedGates,
         showMeasModal,
         setDraggingGate,
@@ -124,13 +125,13 @@ export default function CircuitBuilderPage () {
             </ContextMenuTrigger>
 
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("copy") }}>
-                    <span>Copy</span>
-                </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Undo") }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { undo() }} disabled = { !(index > 0)}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Delete") }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { redo() }} disabled = {!index < lastIndex}>
+                    <span>Redo</span>
+                </MenuItem>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { deleteGate() }}>
                     <span>Delete</span>
                 </MenuItem>
                 {
