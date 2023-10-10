@@ -3,7 +3,11 @@ import React from 'react'
 import styles from "../css/OptionsMenu.module.css";
 import { Dropdown } from 'react-bootstrap';
 
-export default function OptionsMenu() {
+export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex }) {
+
+    const canUndo = index > 0;
+    const canRedo = index < lastIndex;
+
     return (
         <div  className={styles.OptionsMenu}>
             <div class=" dropup d-flex justify-content-end" >
@@ -18,6 +22,9 @@ export default function OptionsMenu() {
 
                 </ul>
             </div>
+            <button onClick = { processCircuit }> Create QASM JSON </button>
+            <button onClick = { redo } disabled = { !canRedo }> redo </button>
+            <button onClick = { undo } disabled = { !canUndo }> undo </button>
         </div>
 
 

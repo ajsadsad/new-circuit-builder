@@ -14,8 +14,6 @@ import { Collapse } from 'bootstrap';
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
 
 
-    const refContainer = useRef();
-
     const standardGates = gates.map((index) => {
         return(JSON.parse([index]));
     })
@@ -33,7 +31,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
-                    <p className={styles.p}> {gate.gateName} </p>
+                    <p> {gate.gateName} </p>
                 </div>
             )
         } else {
@@ -48,7 +46,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
-                    <p className={styles.p}> {gate.gateName} </p >
+                    <p> {gate.gateName} </p>
                 </div>
 
             )
@@ -72,16 +70,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                     </div>
                 </div>
             </div>
-           
-
         </div>
-
-
-
-
-
-
-
     );
 
 

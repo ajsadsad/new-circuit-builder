@@ -58,9 +58,7 @@ export default function CircuitBuilderPage () {
         <div onClick={(e) => { clearSelectedGates() }}>
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
-
-
-                    <div class="col-6">
+                    <div class="col-12">
                         <AllGatesMenu
                             optionsView={optionViewable}
                             faveGatesView={faveGatesViewable}
@@ -69,50 +67,51 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
-                    <div class="col-6">
+                    {/* <div class="col-6">
                         <FaveGatesMenu
                             faveGatesView={faveGatesViewable}
                             setFaveGateView={updateFaveGatesView}
                         />
-                    </div>
-            
+                    </div> */}
                 </div>
             </div>
 
-            <ContextMenuTrigger id="contextmenu" className={styles.middle}>
-                <div class="container text-center" className={styles.middle}>
-                    <div class="row" draggable={false}>
-                        <div class="col" draggable={false}>
-                            <ReactiveCircuitBuilderUI
-                                addQubit={addQubit}
-                                setCBDimensions={setCBDimensions}
-                                dimensions={circuitBuilderDimensions}
-                                optionsView={optionViewable}
-                                faveGatesView={faveGatesViewable}
-                                codeView={circuitCodeViewable}
-                                outputView={outputViewable}
-                                allGatesView={allGatesViewable}
-                                currQBState={currQBState}
-                                gateFromQubit={gateFromQubit}
-                                handleChange={handleChange}
-                                handleClick={handleClick}
-                                setGateClicked={setGateClicked}
-                                setDraggingGate={setDraggingGate}
-                                setDraggingGateNode={setDraggingGateNode}
-                            />
-                            
-
+            <div >
+                <ContextMenuTrigger id="contextmenu" className={styles.middle}>
+                    <div class="container text-center" className={styles.middle}>
+                        <div class="row" draggable={false} className = {styles.row}>
+                            <div class="col" draggable={false}>
+                                <ReactiveCircuitBuilderUI
+                                    addQubit={addQubit}
+                                    setCBDimensions={setCBDimensions}
+                                    dimensions={circuitBuilderDimensions}
+                                    optionsView={optionViewable}
+                                    faveGatesView={faveGatesViewable}
+                                    codeView={circuitCodeViewable}
+                                    outputView={outputViewable}
+                                    allGatesView={allGatesViewable}
+                                    currQBState={currQBState}
+                                    gateFromQubit={gateFromQubit}
+                                    handleChange={handleChange}
+                                    handleClick={handleClick}
+                                    setGateClicked={setGateClicked}
+                                    setDraggingGate={setDraggingGate}
+                                    setDraggingGateNode={setDraggingGateNode}
+                                />
+                            </div>
                         </div>
+                    </div >
+                    <div className={styles.optionsBar}>
+                        <OptionsMenu
+                            processCircuit = { processCircuit }
+                            redo = { redo }
+                            undo = { undo }
+                            index = { index }
+                            lastIndex = { lastIndex }
+                        />
                     </div>
-                    
-                </div >
-                
-                <div className={styles.optionsBar}>
-                <OptionsMenu/>
-
-                </div>
-                
-            </ContextMenuTrigger>
+                </ContextMenuTrigger>
+            </div>
 
             <ContextMenu id="contextmenu" className={contextStyles.ContextMenu}>
                 <MenuItem className={contextStyles.contextMenu__item} onClick={() => { undo() }} disabled={!(index > 0)}>

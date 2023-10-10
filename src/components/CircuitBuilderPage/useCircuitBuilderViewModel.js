@@ -16,7 +16,7 @@
 import { useState, useRef, useMemo} from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
-import styles from '../css/CircuitBuilder.module.css'
+import styles from '../css/CircuitBuilder.module.css';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -66,6 +66,14 @@ const useCircuitBuilderViewModel = () => {
         setGatesSelected([]);
     }
 
+    function deleteGate() {
+        let copy = getQubitStateDeepCopy();
+        gatesSelected.map((gate) => {
+            copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
+        })
+        setState(copy);
+    }
+
     function handleClick(e) {
         if(e.shiftKey) {
             let rowIndex = e.currentTarget.parentNode.parentNode.id
@@ -93,7 +101,6 @@ const useCircuitBuilderViewModel = () => {
                 showNoParamModal(true);
             }
         }
-        console.log(gatesSelected);
     }
 
     function handleChange(e) {
@@ -215,6 +222,7 @@ const useCircuitBuilderViewModel = () => {
         gateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        deleteGate,
         clearSelectedGates,
         showMeasModal,
         showThetaModal,

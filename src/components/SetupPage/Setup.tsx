@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 // import {openModal} from '../../redux/actions/modalsAction';
 import styles from './Setup.module.scss';
 // import {Modal} from "../../common/classes";
-import { Button } from "../LoginCreateAccPageUI/Button/Button.tsx"; // Don't want this take it out. Just kept it in to defbug.
+import { Button } from "../LoginCreateAccPageUI/Input/Button/Button.tsx"; // Don't want this take it out. Just kept it in to defbug.
 
 const Setup : React.FC = () => {
     const dispatch = useDispatch();

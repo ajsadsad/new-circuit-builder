@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import styles from './Header.module.scss';
+import styles from '../sass/Header.module.scss';
 import logo from '../../assets/logo.svg'
 import account_icon from '../../assets/account_icon.svg';
 

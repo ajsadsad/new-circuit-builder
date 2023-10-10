@@ -1,9 +1,9 @@
 import './App.css';
 import CircuitBuilderPage from './components/CircuitBuilderPage/CircuitBuilderPage';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Header from './components/Header/Header.js';
+import Header from './components/Header/Header.tsx';
 import LoginCreateAccView from './components/LoginCreateAccPage/LoginCreateAccView';
-import About from './components/AboutPage/About.tsx'; 
+import About from './components/AboutPage/About.tsx';
 import Setup from './components/SetupPage/Setup.tsx';
 
 function App() {

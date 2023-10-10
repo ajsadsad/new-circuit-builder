@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Button.module.scss";
-import { ButtonTypes } from "../../../common/types.ts";
+import { ButtonTypes } from "../../../../common/types";
 
 interface ButtonProps {
   name: string;

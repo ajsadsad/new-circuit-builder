@@ -2,7 +2,7 @@ import React from 'react';
 import underlay_quokka_icon from '../../assets/underlay_quokka_icon.svg';
 import useLoginCreateAccViewModel from './useLoginCreateAccViewModel';
 import styles from './LoginCreateAccount.module.scss';
-import { Button } from '../LoginCreateAccPageUI/Button/Button.tsx'
+import { Button } from '../LoginCreateAccPageUI/Input/Button/Button.tsx'
 import { Input } from '../LoginCreateAccPageUI/Input/Input.tsx'
 
 export default function() {
