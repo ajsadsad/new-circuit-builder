@@ -1,18 +1,12 @@
-/**
- *  View of the quantum circuit that is made up of five different components.
- *  Options Menu, All Gates Menu, Circuit Code, Circuit Output, and all Modals required.
- *  Calls useCircuitBuilderViewModel to access and update states.
- */
 import React from 'react';
-import styles from './CircuitBuilder.module.scss';
-import contextStyles from './ContextMenu.module.scss';
-import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu/AllGatesMenu';
-import CircuitCode from '../CircuitBuilderUI/CircuitCode/CircuitCode';
-import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu/FaveGatesMenu';
-import OptionsMenu from '../CircuitBuilderUI/OptionsMenu/OptionsMenu';
-import Output from '../CircuitBuilderUI/Output/Output';
-import BottomPageTabs from '../CircuitBuilderUI/BottomPageTabs/BottomPageTabs';
-import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/CircuitBuilder/ReactiveCircuitBuilderUI';
+import styles from '../css/CircuitBuilder.module.css';
+import contextStyles from '../css/ContextMenu.module.css';
+import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu';
+import CircuitCode from '../CircuitBuilderUI/CircuitCode';
+import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu';
+import OptionsMenu from '../CircuitBuilderUI/OptionsMenu';
+import Output from '../CircuitBuilderUI/Output';
+import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/ReactiveCircuitBuilderUI';
 import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
@@ -38,6 +32,7 @@ export default function CircuitBuilderPage () {
         setGateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        deleteGate,
         clearSelectedGates,
         showMeasModal,
         setDraggingGate,
@@ -124,13 +119,13 @@ export default function CircuitBuilderPage () {
             </ContextMenuTrigger>
 
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("copy") }}>
-                    <span>Copy</span>
-                </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Undo") }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { undo() }} disabled = { !(index > 0)}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Delete") }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { redo() }} disabled = {!index < lastIndex}>
+                    <span>Redo</span>
+                </MenuItem>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { deleteGate() }}>
                     <span>Delete</span>
                 </MenuItem>
                 {
@@ -161,20 +156,7 @@ export default function CircuitBuilderPage () {
                 showMeasModal = { showMeasModal}
             />
 
-            <BottomPageTabs
-                setOptionMenuView={ updateOptionView }
-                optionsView = { optionViewable }
-                setFaveGateView={ updateFaveGatesView }
-                faveGatesView = { faveGatesViewable }
-                setAllGatesView = { updateAllGatesMenuView }
-                setCodeView =  { updateCircuitCodeView }
-                setOutputView = { updateOutputView }
-                processCircuit = { processCircuit }
-                undo = { undo }
-                redo = { redo }
-                index = { index }
-                lastIndex = { lastIndex }
-            />
+
         {/*
             // <OptionsMenu
             // optionsView = { optionViewable }

@@ -16,7 +16,7 @@
 import { useState, useRef, useMemo} from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
-import styles from './CircuitBuilder.module.scss'
+import styles from '../css/CircuitBuilder.module.css'
 
 const useCircuitBuilderViewModel = () => {
 
