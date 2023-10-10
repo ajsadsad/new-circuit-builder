@@ -50,8 +50,6 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }` }
                  ref = { refContainer }>
-                width : {dimensions.width}
-                height : {dimensions.height}
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON

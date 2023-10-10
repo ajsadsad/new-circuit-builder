@@ -33,19 +33,31 @@ export default function CircuitGrid ({ qubitStates, handleChange, addQubit, hand
                             column.map((row, index) =>
                             {
                                 if(index === 0) {
-                                    return(
-                                    <Col
-                                    key = { rowIndex + "." + index }
-                                    id = { index }
-                                    className = { styles.qubitNum }
-                                    onClick = { addQubit }
-                                    draggable = { false }
-                                    >
-                                        <img
-                                            src = {plusSign}
+                                    if(rowIndex == qubitStates.length - 1) {
+                                        return(
+                                            <Col
+                                            key = { rowIndex + "." + index }
+                                            id = { index }
+                                            className = { styles.qubitNum }
+                                            onClick = { addQubit }
                                             draggable = { false }
-                                        />
-                                    </Col>)
+                                            >
+                                                <img
+                                                    src = {plusSign}
+                                                    draggable = { false }
+                                                />
+                                            </Col>)
+                                    } else {
+                                        return(
+                                            <Col
+                                            key = { rowIndex + "." + index }
+                                            id = { index }
+                                            className = { styles.qubitNum }
+                                            draggable = { false }
+                                            >
+                                                <span> {"q[" + rowIndex + "]"} </span>
+                                            </Col>)
+                                    }
                                 } else {
                                     return (
                                     <Col
