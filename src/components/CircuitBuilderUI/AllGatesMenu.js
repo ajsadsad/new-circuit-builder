@@ -33,7 +33,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
-                    <p> {gate.gateName} </p>
+                    <p className={styles.p}> {gate.gateName} </p>
                 </div>
             )
         } else {
@@ -48,7 +48,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
-                    <p> {gate.gateName} </p>
+                    <p className={styles.p}> {gate.gateName} </p >
                 </div>
 
             )
@@ -59,11 +59,11 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
         <div>
             <div class=" accordion accordion-flush d-grid" id="accordionPanelsStayOpenExample" className={styles.AllGatesMenu} >
                 <div class="accordion-item d-grid" >
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    <button class="btn btn-secondary rounded-0 collapsed" className={styles.button} type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                         Gates
                     </button>
                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-                        <div class="accordion-body" className={styles.accBody}>
+                        <div class="accordion-body" className={styles.accordionContent}>
                             <div class="row">
                                 {gateImgs}
                             </div>

@@ -56,13 +56,11 @@ export default function CircuitBuilderPage () {
 
     return (
         <div onClick={(e) => { clearSelectedGates() }}>
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col">
-                        <OptionsMenu
-                            optionsView={optionViewable} />
-                    </div>
-                    <div class="col-10">
+            <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
+                <div class="row gx-0 gy-3 ">
+
+
+                    <div class="col-6">
                         <AllGatesMenu
                             optionsView={optionViewable}
                             faveGatesView={faveGatesViewable}
@@ -71,16 +69,20 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
-
+                    <div class="col-6">
+                        <FaveGatesMenu
+                            faveGatesView={faveGatesViewable}
+                            setFaveGateView={updateFaveGatesView}
+                        />
+                    </div>
+            
                 </div>
-
-
             </div>
 
-            <ContextMenuTrigger id="contextmenu">
-                <div class="container text-center">
-                    <div class="row" draggable = { false }>
-                        <div class="col" draggable = { false }>
+            <ContextMenuTrigger id="contextmenu" className={styles.middle}>
+                <div class="container text-center" className={styles.middle}>
+                    <div class="row" draggable={false}>
+                        <div class="col" draggable={false}>
                             <ReactiveCircuitBuilderUI
                                 addQubit={addQubit}
                                 setCBDimensions={setCBDimensions}
@@ -90,74 +92,68 @@ export default function CircuitBuilderPage () {
                                 codeView={circuitCodeViewable}
                                 outputView={outputViewable}
                                 allGatesView={allGatesViewable}
-                                currQBState = { currQBState }
+                                currQBState={currQBState}
                                 gateFromQubit={gateFromQubit}
                                 handleChange={handleChange}
                                 handleClick={handleClick}
                                 setGateClicked={setGateClicked}
-                                setDraggingGate = { setDraggingGate }
-                                setDraggingGateNode = { setDraggingGateNode }
+                                setDraggingGate={setDraggingGate}
+                                setDraggingGateNode={setDraggingGateNode}
                             />
+                            
 
                         </div>
-                        {/* <div class="col">
-                            <p>
-                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
-
-                                </button>
-                            </p>
-                            <div style={{ minHeight: 120 }}>
-                                <div class="collapse collapse-horizontal" id="collapseWidthExample">
-                                    <div class="card card-body" style={{ width: 300 }}>
-                                        This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
                     </div>
+                    
+                </div >
+                
+                <div className={styles.optionsBar}>
+                <OptionsMenu/>
+
                 </div>
+                
             </ContextMenuTrigger>
 
-            <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { undo() }} disabled = { !(index > 0)}>
+            <ContextMenu id="contextmenu" className={contextStyles.ContextMenu}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={() => { undo() }} disabled={!(index > 0)}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { redo() }} disabled = {!index < lastIndex}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={() => { redo() }} disabled={!index < lastIndex}>
                     <span>Redo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { deleteGate() }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={() => { deleteGate() }}>
                     <span>Delete</span>
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { console.log("Compound!") }}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={() => { console.log("Compound!") }}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }
             </ContextMenu>
 
             <ThetaModal
-                thetaModal = { thetaModal }
-                updateThetaModal = { updateThetaModal }
-                gateClickedName = { gateClickedName }
-                gateClickedDesc = { gateClickedDesc }
-                updateSlider = { updateSlider }
-                gateClickedThetaVal = { gateClickedThetaVal }
+                thetaModal={thetaModal}
+                updateThetaModal={updateThetaModal}
+                gateClickedName={gateClickedName}
+                gateClickedDesc={gateClickedDesc}
+                updateSlider={updateSlider}
+                gateClickedThetaVal={gateClickedThetaVal}
             />
             <NoParamModal
-                gateClickedName = { gateClickedName }
-                gateClickedDesc = { gateClickedDesc }
-                noParamModal = { noParamModal }
-                showNoParamModal = { showNoParamModal}
+                gateClickedName={gateClickedName}
+                gateClickedDesc={gateClickedDesc}
+                noParamModal={noParamModal}
+                showNoParamModal={showNoParamModal}
             />
 
             <MeasurementModal
-                hasMeasure = { hasMeasure }
-                showMeasModal = { showMeasModal}
+                hasMeasure={hasMeasure}
+                showMeasModal={showMeasModal}
             />
 
 
-        {/*
+            {/*
             // <OptionsMenu
             // optionsView = { optionViewable }
             // />

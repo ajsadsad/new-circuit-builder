@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../css/FaveGatesMenu.module.css';
+
 import logo from '../../assets/logo.svg'
 
 export default function Header() {
