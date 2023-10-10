@@ -31,7 +31,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         gate={JSON.stringify(gate)}
                         src={require(`../../../assets/${gate.img}`)}
                         draggable={true}
-                        onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
+                        onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
                     <p> {gate.gateName} </p>
                 </div>
@@ -46,7 +46,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         gate={JSON.stringify(gate)}
                         src={require(`../../../assets/${gate.img}`)}
                         draggable={true}
-                        onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(gate); }}
+                        onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
                     <p> {gate.gateName} </p>
                 </div>
