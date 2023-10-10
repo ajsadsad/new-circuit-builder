@@ -7,8 +7,8 @@
  * @param {function} setDraggingGateNode - Function used to track state of current gate being dragged from menu as a HTML Node.
  */
 
-import React, {useRef, useEffect} from 'react';
-import styles from '../../CircuitBuilderPage/CircuitBuilder.module.scss';
+import React, {useRef} from 'react';
+import styles from '../css/AllGatesMenu.module.css';
 import { Collapse } from 'bootstrap';
 
 export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
@@ -29,7 +29,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         key={gate.qid}
                         id={gate.qid}
                         gate={JSON.stringify(gate)}
-                        src={require(`../../../assets/${gate.img}`)}
+                        src={require(`../../assets/${gate.img}`)}
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
@@ -44,7 +44,7 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
                         key={gate.qid}
                         id={gate.qid}
                         gate={JSON.stringify(gate)}
-                        src={require(`../../../assets/${gate.img}`)}
+                        src={require(`../../assets/${gate.img}`)}
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                     />
@@ -56,27 +56,29 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
     });
 
     return (
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        Standard Gates
+        <div>
+            <div class=" accordion accordion-flush d-grid" id="accordionPanelsStayOpenExample" className={styles.AllGatesMenu} >
+                <div class="accordion-item d-grid" >
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        Gates
                     </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                    <div class="accordion-body">
-                        {/* All Gates Menu
-                        width : {dimensions.width}
-                        height : {dimensions.height} */}
-                        <div class="container text-center">
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+                        <div class="accordion-body" className={styles.accBody}>
                             <div class="row">
                                 {gateImgs}
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+           
+
         </div>
+
+
+
+
 
 
 
