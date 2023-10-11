@@ -27,20 +27,18 @@ const useCircuitBuilderViewModel = () => {
     const [allGatesViewable, setAllGatesView] = useState(true);
     const [faveGatesViewable, setFaveGatesView] = useState(false);
     const [circuitCodeViewable, setCircuitCodeView] = useState(true);
-    const draggingGate = useRef(undefined);
-    const draggingGateNode = useRef(undefined);
-    const gateClicked = useRef(undefined);
-    const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
     const [gateClickedThetaVal, setGateClickedThetaVal] = useState();
     const [noParamModal, showNoParamModal] = useState(false);
     const [hasMeasure, showMeasModal] = useState(false);
-
-    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
-
     const [gatesSelected, setGatesSelected] = useState([]);
+    const [circuitCode, setCircuitCode] = useState([]);
+    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
+    const draggingGate = useRef(undefined);
+    const draggingGateNode = useRef(undefined);
+    const gateClicked = useRef(undefined);
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -135,7 +133,7 @@ const useCircuitBuilderViewModel = () => {
         let vcode = [];
         let line = 6;
         let cregMeasure = 1;
-        vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + currQBState.length + "];\n", "4: creg c[" + currQBState.length + "];\n" + "5: ")
+        vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + (currQBState.length-1) + "];\n", "4: creg c[" + (currQBState.length-1) + "];\n" + "5: ")
         currQBState.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
@@ -237,7 +235,6 @@ const useCircuitBuilderViewModel = () => {
         allGatesViewable,
         faveGatesViewable,
         circuitCodeViewable,
-        circuitBuilderDimensions,
         thetaModal,
         noParamModal,
         hasMeasure,
@@ -246,6 +243,8 @@ const useCircuitBuilderViewModel = () => {
         gateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        circuitCode,
+        setCircuitCode,
         deleteGate,
         clearSelectedGates,
         showMeasModal,
@@ -256,7 +255,6 @@ const useCircuitBuilderViewModel = () => {
         handleClick,
         addQubit,
         processCircuit,
-        setCBDimensions,
         handleChange,
         setDraggingGate,
         setDraggingGateNode,
@@ -265,8 +263,6 @@ const useCircuitBuilderViewModel = () => {
         updateAllGatesMenuView,
         updateFaveGatesView,
         updateCircuitCodeView,
-        circuitCode,
-        setCircuitCode,
         convertCircuit,
         currQBState, setState, index, lastIndex, undo, redo
     }

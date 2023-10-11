@@ -15,22 +15,11 @@
  * @param {function} setGateClicked - function passed in as a prop to CircuitGrid to help keep track of current gate being actioned upon.
  */
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, {useRef } from 'react'
 import styles from '../css/CircuitBuilder.module.css'
 import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, setCBDimensions, dimensions, currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate}) {
-
-    const refContainer = useRef();
-
-    useEffect(() => {
-        if (refContainer.current) {
-            setCBDimensions({
-                width: refContainer.current.offsetWidth,
-                height: refContainer.current.offsetHeight,
-            });
-        }
-    }, [optionsView, faveGatesView, codeView, outputView, allGatesView,]);
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate}) {
 
     let circuitGrid = (
         <CircuitGrid
@@ -44,12 +33,11 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
             setDraggingGateNode = { setDraggingGateNode }
         />
     )
-
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
        return <div className = {
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }` }
-                 ref = { refContainer }>
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
@@ -60,9 +48,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
             </div>
     } else if (allGatesView === true && codeView === true && optionsView === true && faveGatesView === false && outputView === true ) {
         return <div className = { `${ styles.CircuitBuilder }` }
-                ref = { refContainer }>
-                width : {dimensions.width}
-                height : {dimensions.height}
+                >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
@@ -75,9 +61,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className = {
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
@@ -91,9 +75,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
@@ -107,9 +89,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoFaveMenuNoCodeNoOption}
                  ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
@@ -123,9 +103,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput}
                  ${ styles.CircuitBuilderNoOptionWithCode }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
@@ -140,9 +118,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput  }
                  ${ styles.CircuitBuilderNoOptionWithCode }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
@@ -156,9 +132,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
@@ -172,9 +146,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }
                  ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
@@ -187,9 +159,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoFaveMenuNoCodeNoOption }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
@@ -203,9 +173,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }
                  ${ styles.CircuitBuilderNoOptionNoCodeNoFave}` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
@@ -219,9 +187,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
                  ${ styles.CircuitBuilderNoOptionNoCodeNoFave }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
@@ -235,9 +201,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }
                  ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
@@ -251,9 +215,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu}
                  ${ styles.CircuitBuilderNoOutputConsoleWithAllGates }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
@@ -267,9 +229,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
                  ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
@@ -282,9 +242,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionNoCodeWithFave }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
@@ -298,9 +256,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoOptionWithCode }
                  ${ styles.CircuitBuilderNoOutputConsole }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - ON
@@ -314,9 +270,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
                  ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
@@ -329,9 +283,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput}` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
@@ -345,9 +297,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput }
                  ${ styles.CircuitBuilderNoOptionWithCode }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
@@ -360,9 +310,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuNoOutput}` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - ON
@@ -375,9 +323,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
         return <div className ={
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption}` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - ON
                 Code Console - OFF
@@ -391,9 +337,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoCodeNoOptionWithFaveMenu }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF
@@ -407,9 +351,7 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
                 `${ styles.CircuitBuilder }
                  ${ styles.CircuitBuilderNoAllGatesMenuWithOutput }
                  ${ styles.CircuitBuilderNoCodeNoFaveMenuWithOption }` }
-                 ref = { refContainer }>
-                 width : {dimensions.width}
-                 height : {dimensions.height}
+                 >
                 {/* Circuit Builder:
                 All Gates Menu - OFF
                 Code Console - OFF

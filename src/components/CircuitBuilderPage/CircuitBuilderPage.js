@@ -23,7 +23,6 @@ export default function CircuitBuilderPage () {
         faveGatesViewable,
         circuitCodeViewable,
         gateFromQubit,
-        circuitBuilderDimensions,
         gateClickedName,
         gateClickedDesc,
         thetaModal,
@@ -42,7 +41,6 @@ export default function CircuitBuilderPage () {
         updateThetaModal,
         addQubit,
         processCircuit,
-        setCBDimensions,
         handleChange,
         handleClick,
         updateOptionView,
@@ -96,8 +94,6 @@ export default function CircuitBuilderPage () {
                             <ContextMenuTrigger id="contextmenu">
                                 <ReactiveCircuitBuilderUI
                                     addQubit={addQubit}
-                                    setCBDimensions={setCBDimensions}
-                                    dimensions={circuitBuilderDimensions}
                                     optionsView={optionViewable}
                                     faveGatesView={faveGatesViewable}
                                     codeView={circuitCodeViewable}
