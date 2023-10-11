@@ -76,11 +76,12 @@ export default function CircuitBuilderPage () {
                 </div>
             </div>
 
+            {/* might need to move the conextmenu into the circuit grid so that you're able to right click and select gates to delete */}
             <div >
-                <ContextMenuTrigger id="contextmenu" className={styles.middle}>
-                    <div class="container text-center" className={styles.middle}>
-                        <div class="row" draggable={false} className = {styles.row}>
-                            <div class="col" draggable={false}>
+                <div class="container text-center" className={styles.middle}>
+                    <div class="row" draggable={false} className = {styles.row}>
+                        <div class="col" draggable={false}>
+                            <ContextMenuTrigger id="contextmenu">
                                 <ReactiveCircuitBuilderUI
                                     addQubit={addQubit}
                                     setCBDimensions={setCBDimensions}
@@ -98,19 +99,19 @@ export default function CircuitBuilderPage () {
                                     setDraggingGate={setDraggingGate}
                                     setDraggingGateNode={setDraggingGateNode}
                                 />
-                            </div>
+                            </ContextMenuTrigger>
                         </div>
-                    </div >
-                    <div className={styles.optionsBar}>
-                        <OptionsMenu
-                            processCircuit = { processCircuit }
-                            redo = { redo }
-                            undo = { undo }
-                            index = { index }
-                            lastIndex = { lastIndex }
-                        />
                     </div>
-                </ContextMenuTrigger>
+                </div >
+                <div className={styles.optionsBar}>
+                    <OptionsMenu
+                        processCircuit = { processCircuit }
+                        redo = { redo }
+                        undo = { undo }
+                        index = { index }
+                        lastIndex = { lastIndex }
+                    />
+                </div>
             </div>
 
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>

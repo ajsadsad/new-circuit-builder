@@ -157,7 +157,6 @@ const useCircuitBuilderViewModel = () => {
         currQBState.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'measure') {
-                    console.log("hasGate")
                     hasMeasure = true;
                 }
             }
@@ -166,14 +165,13 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function addQubit() {
-        if(currQBState.length < 33) {
+        if(currQBState.length < 31) {
             let copy = getQubitStateDeepCopy();
             copy.push(Array(currQBState[0].length));
             copy[currQBState.length].fill({hasGate : false, gate : null});
             setState(copy);
-            console.log(currQBState);
         } else {
-            alert("Cannot add more than 32 qubits");
+            alert("Cannot add more than 30 qubits");
         }
     }
 
