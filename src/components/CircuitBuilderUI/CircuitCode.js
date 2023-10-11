@@ -4,31 +4,30 @@
  *  @param {boolean} faveGatesView - True is fave gates menu is viewable.
  *  @param {boolean} allGatesView - True if all gates menu is viewable.
  */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, isValidElement } from 'react';
 import styles from '../css/CircuitBuilder.module.css';
 
-export default function CircuitCode({ codeView, faveGatesView, allGatesView }) {
+export default function CircuitCode({ codeView, faveGatesView, allGatesView, currQBState, convertCircuit, circuitCode, setCircuitCode }) {
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     useEffect(() => {
-        if (refContainer.current) {
-            setDimensions({
-                width: refContainer.current.offsetWidth,
-                height: refContainer.current.offsetHeight,
-            });
-        }
-    }, [faveGatesView, allGatesView]);
+        setCircuitCode(convertCircuit)
+        // toString()
+    }, [currQBState]);
+
+    // function toString() {
+    //     if(isValidElement(circuitCode)) {
+    //         let tempArray = circuitCode;
+    //         circuitCode = "";
+    //         for (var i = 0; i < circuitCode.length(); i++) {
+    //             setCircuitCode(circuitCode + (i + 1) + ": " + tempArray[i] + "\n");
+    //         }
+    //     }
+    // }
 
    return(
-
-    <div className = {
-        `${ styles.Code }
-         ${ styles.CodeNoAllGates }
-         ${ styles.CodeNoFaveMenu }` }
-        ref = { refContainer }>
-    Code Console
-     width : {dimensions.width}
-     height : {dimensions.height}
+    <div class="text-white">
+        {circuitCode}
     </div>
    )
 }

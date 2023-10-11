@@ -131,9 +131,35 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
+    function convertCircuit() {
+        let vcode = [];
+        let line = 6;
+        let cregMeasure = 1;
+        vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + currQBState.length + "];\n", "4: creg c[" + currQBState.length + "];\n" + "5: ")
+        currQBState.map((row, rowIndex) => row.map((v, i) => {
+            if(v.hasGate) {
+                if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
+                    vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                } else if(v.gate.id === 'cnot') {
+                    vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                } else {
+                    if(v.gate.qid === 'measure') {
+                        vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "] -> c[" + cregMeasure + "];\n")
+                        cregMeasure += 1;
+                    }
+                    else {
+                        vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                    }
+                }
+                line++;
+            }
+        }));
+        return vcode;
+    }
+
     function processCircuit() {
+        let json = [];
         if(checkMeasurementGate()) {
-            let json = [];
             json.push({'operation' : 'create_circuit', 'num_qubits' : currQBState.length});
             currQBState.map((row, rowIndex) => row.map((v, i) => {
                 if(v.hasGate) {
@@ -145,10 +171,10 @@ const useCircuitBuilderViewModel = () => {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
                     }
                 }
-                return json
             }));
             json.push({'operation' : 'destroy_circuit'});
             sendCircuitData(json);
+            return json
         } else {showMeasModal(true)};
     }
 
@@ -239,6 +265,9 @@ const useCircuitBuilderViewModel = () => {
         updateAllGatesMenuView,
         updateFaveGatesView,
         updateCircuitCodeView,
+        circuitCode,
+        setCircuitCode,
+        convertCircuit,
         currQBState, setState, index, lastIndex, undo, redo
     }
 }
