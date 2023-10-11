@@ -26,7 +26,7 @@
         "qid": "xrot",
         "qasmid" : "rx",
         "description": "RX (Rotated Pauli X gate) is a single-qubit rotation through an angle of π/2 around the x-axis.",
-        "img" : "rx_gate.svg",
+        "img" : "x_gate.svg",
         "theta" : "0.35"
     },
     {
@@ -34,7 +34,7 @@
         "qid": "yrot",
         "qasmid" : "ry",
         "description": "RY (Rotated Pauli Y gate) is a single-qubit rotation through an angle of π/2 around the y-axis.",
-        "img" : "ry_gate.svg",
+        "img" : "y_gate.svg",
         "theta" : "0.35"
     },
     {
@@ -42,7 +42,7 @@
         "qid": "zrot",
         "qasmid" : "rz",
         "description": "RZ (Rotated Pauli Z gate) is a single-qubit rotation through an angle of π/2 around the z-axis.",
-        "img" : "rz_gate.svg",
+        "img" : "z_gate.svg",
         "theta" : "0.35"
     },
     {

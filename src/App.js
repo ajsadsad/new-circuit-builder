@@ -3,7 +3,7 @@ import CircuitBuilderPage from './components/CircuitBuilderPage/CircuitBuilderPa
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from './components/Header/Header.tsx';
 import LoginCreateAccView from './components/LoginCreateAccPage/LoginCreateAccView';
-import About from './components/AboutPage/About.tsx'; 
+import About from './components/AboutPage/About.tsx';
 import Setup from './components/SetupPage/Setup.tsx';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
         </nav>
         <Routes>
             <Route path={``} element={
-                <About/>
+                <CircuitBuilderPage/>
             }/>
             <Route path = {"/login"} element = {
               <LoginCreateAccView/>
