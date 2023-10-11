@@ -49,6 +49,9 @@ export default function CircuitBuilderPage () {
         updateOutputView,
         updateAllGatesMenuView,
         updateFaveGatesView,
+        circuitCode,
+        setCircuitCode,
+        convertCircuit,
         updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo
     } = useCircuitBuilderViewModel();
 
@@ -67,6 +70,15 @@ export default function CircuitBuilderPage () {
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates} />
                     </div>
+                    <CircuitCode
+                        codeView = { circuitCodeViewable }
+                        faveGatesView = { faveGatesViewable }
+                        allGatesView = { allGatesViewable }
+                        currQBState = { currQBState }
+                        convertCircuit = { convertCircuit }
+                        circuitCode = { circuitCode }
+                        setCircuitCode = { setCircuitCode }
+                    />
                     {/* <div class="col-6">
                         <FaveGatesMenu
                             faveGatesView={faveGatesViewable}
