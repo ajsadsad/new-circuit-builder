@@ -8,8 +8,7 @@ import React, { useState, useEffect, useRef, isValidElement } from 'react';
 import styles from '../css/CircuitBuilder.module.css';
 
 export default function CircuitCode({ codeView, faveGatesView, allGatesView, currQBState, convertCircuit, circuitCode, setCircuitCode }) {
-    const refContainer = useRef();
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
     useEffect(() => {
         setCircuitCode(convertCircuit)
         // toString()

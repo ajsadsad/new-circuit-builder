@@ -13,10 +13,11 @@
  * @param {number} value - value that slider is currently at.
  *
  */
-import { useState, useRef, useMemo} from 'react'
+import { useState, useRef, useEffect, createElement } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
 import styles from '../css/CircuitBuilder.module.css';
+import { type } from '@testing-library/user-event/dist/type';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -38,7 +39,13 @@ const useCircuitBuilderViewModel = () => {
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
-    const gateClicked = useRef(undefined);
+    const gateClicked = useRef({e : undefined, gateRow : undefined, gateCol : undefined});
+    const svgRef = useRef(null);
+    const rectRef = useRef(null);
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const startPts = useRef({x : 0, y : 0});
+    const imgRef = useRef(null);
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -48,8 +55,8 @@ const useCircuitBuilderViewModel = () => {
         draggingGateNode.current = e;
     }
 
-    function setGateClicked(e) {
-        gateClicked.current = e;
+    function setGateClicked(e, row, col) {
+        gateClicked.current = {e : e, gateRow : row, gateCol : col};
     }
 
     function getQubitStateDeepCopy() {
@@ -64,12 +71,79 @@ const useCircuitBuilderViewModel = () => {
         setGatesSelected([]);
     }
 
+    function startDrawRect(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if(isDragging) {
+            return;
+        } else {
+            startPts.current = ({x : e.clientX - e.currentTarget.getBoundingClientRect().left, y : e.clientY - e.currentTarget.getBoundingClientRect().top});
+
+            setIsDrawing(true);
+        }
+    }
+
+    function endDrawRect(e) {
+        if(isDragging) {
+            setIsDragging(false);
+            handleChange(e);
+            imgRef.current.setAttributeNS(null, "display", "none");
+        } else {
+            rectRef.current.setAttributeNS(null, 'x', "0");
+            rectRef.current.setAttributeNS(null, 'y', "0");
+            rectRef.current.setAttributeNS(null, 'width', "0");
+            rectRef.current.setAttributeNS(null, 'height', "0");
+            setIsDrawing(false);
+
+        }
+    }
+
+    function drawRect(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isDrawing) {
+            const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
+            const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
+
+            const rectWidth = Math.abs(newMouseX - startPts.current.x);
+            const rectHeight = Math.abs(newMouseY - startPts.current.y);
+
+            rectRef.current.setAttributeNS(null, 'x', startPts.current.x);
+            rectRef.current.setAttributeNS(null, 'y', startPts.current.y);
+            rectRef.current.setAttributeNS(null, 'width', rectWidth);
+            rectRef.current.setAttributeNS(null, 'height', rectHeight);
+
+            svgRef.current.appendChild(rectRef.current);
+        } else if (isDragging) {
+            const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
+            const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
+
+            imgRef.current.setAttributeNS(null,"x", newMouseX);
+            imgRef.current.setAttributeNS(null,"y", newMouseY);
+            imgRef.current.setAttributeNS(null, 'width', "38");
+            imgRef.current.setAttributeNS(null, 'height', "38");
+            imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
+            imgRef.current.setAttributeNS(null, "display", "block");
+        }
+    }
+
     function deleteGate() {
         let copy = getQubitStateDeepCopy();
         gatesSelected.map((gate) => {
             copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
         })
         setState(copy);
+    }
+
+    // Need to change this as it won't be able to slice rows with 2 digits.
+    function getGateLocation(e) {
+        return ({ row : e.target.id.slice(0, 1), col : e.target.id.slice(2) })
+    }
+
+    function startDraggingGate(e) {
+        setIsDragging(true);
+        startPts.current = ({x : e.clientX - e.target.getBoundingClientRect().left, y : e.clientY - e.target.getBoundingClientRect().top});
+        setDraggingGateNode(e);
     }
 
     function handleClick(e) {
@@ -89,11 +163,12 @@ const useCircuitBuilderViewModel = () => {
             }
         } else {
             let gate = JSON.parse(e.target.getAttribute("gate"));
+            let gateLocation = getGateLocation(e);
             setGateClickedName(gate.gateName);
             setGateClickedDesc(gate.description);
             setGateClickedThetaVal(gate.theta);
-            setGateClicked(e);
-            if(e.target.id === 'xrot' || e.target.id === 'yrot' || e.target.id === 'zrot') {
+            setGateClicked(e, gateLocation.row, gateLocation.col);
+            if(gate.qid === 'xrot' || gate.qid === 'yrot' || gate.qid === 'zrot') {
                 showThetaModal(true);
             } else {
                 showNoParamModal(true);
@@ -101,32 +176,38 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
+    //might have to put a useRef for each column to change the qubit inside and not have an extra rectangle element inside or have the img populate outside of the <g> </g> tag.
     function handleChange(e) {
         //if gate is being dragged from circuit
-        if(draggingGateNode.current.target.getAttribute("inqubit") === "true") {
+        if(isDragging) {
             let copy = getQubitStateDeepCopy();
-            copy[draggingGateNode.current.target.parentElement.parentElement.id][draggingGateNode.current.target.parentElement.id] = { hasGate : false, gate : null};
-            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current };
+            let originalLocation = getGateLocation(draggingGateNode.current);
+            let newLocation = getGateLocation(e);
+            copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
+            copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
             setState(copy);
         } else {
+            let gateLocation = getGateLocation(e);
             let copy = getQubitStateDeepCopy();
-            copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current};
+            copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
             setState(copy);
         }
+        draggingGate.current = null;
+        draggingGateNode.current = null;
+    }
+
+    function updateThetaModal(value) {
+        showThetaModal(false);
+        let updatedGate = JSON.parse(gateClicked.current.e.target.getAttribute("gate"));
+        updatedGate.theta = value;
+        let copy = getQubitStateDeepCopy();
+        copy[gateClicked.current.gateRow][gateClicked.current.gateCol] = { hasGate : true, gate : updatedGate};
+        setState(copy);
     }
 
     function updateSlider(value) {
         const val = document.querySelector("#theta");
         val.textContent = value;
-    }
-
-    function updateThetaModal(value) {
-        showThetaModal(false);
-        let updatedGate = JSON.parse(gateClicked.current.target.getAttribute("gate"));
-        updatedGate.theta = value;
-        let copy = getQubitStateDeepCopy();
-        copy[gateClicked.current.target.parentNode.parentNode.id][gateClicked.current.target.parentNode.id] = { hasGate : true, gate : updatedGate};
-        setState(copy);
     }
 
     function convertCircuit() {
@@ -244,6 +325,8 @@ const useCircuitBuilderViewModel = () => {
         gateClickedThetaVal,
         gatesSelected,
         circuitCode,
+        // mousePos,
+        // mouseMove,
         setCircuitCode,
         deleteGate,
         clearSelectedGates,
@@ -264,7 +347,9 @@ const useCircuitBuilderViewModel = () => {
         updateFaveGatesView,
         updateCircuitCodeView,
         convertCircuit,
-        currQBState, setState, index, lastIndex, undo, redo
+        currQBState, setState, index, lastIndex, undo, redo,
+        startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
+        startDraggingGate,
     }
 }
 export default useCircuitBuilderViewModel;
