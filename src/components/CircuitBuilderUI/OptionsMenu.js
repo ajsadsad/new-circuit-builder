@@ -1,5 +1,4 @@
-import React from 'react'
-//import '../../CircuitBuilderPage/CircuitBuilder.module.scss';
+import React, { useState } from 'react'
 import styles from "../css/OptionsMenu.module.css";
 import { Dropdown } from 'react-bootstrap';
 
@@ -7,9 +6,19 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
 
     const canUndo = index > 0;
     const canRedo = index < lastIndex;
+    const [showCancel, setShowCancel] = useState(false);
+
+    const handleCreateQasmJson = () => {
+        setShowCancel(true);
+        processCircuit();
+    }
+
+    const handleCancel = () => {
+        setShowCancel(false);
+    }
 
     return (
-        <div  className={styles.OptionsMenu}>
+        <div className={styles.OptionsMenu}>
             <div class=" dropup d-flex justify-content-end" >
                 <button class="btn btn-dark rounded-0 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -19,17 +28,12 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                 <ul class="dropdown-menu dropdown-menu-dark ">
                     <li><a class="dropdown-item">Save</a></li>
                     <li><a class="dropdown-item">Reset Grid</a></li>
-
                 </ul>
             </div>
-            <button onClick = { processCircuit }> Create QASM JSON </button>
-            <button onClick = { redo } disabled = { !canRedo }> redo </button>
-            <button onClick = { undo } disabled = { !canUndo }> undo </button>
+            {showCancel && <button onClick={handleCancel}> Cancel </button>}
+            <button onClick={handleCreateQasmJson}> Create QASM JSON </button>
+            <button onClick={redo} disabled={!canRedo}> redo </button>
+            <button onClick={undo} disabled={!canUndo}> undo </button>
         </div>
-
-
-
-
-
     )
 }
