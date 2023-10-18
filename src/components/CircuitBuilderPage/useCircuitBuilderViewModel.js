@@ -67,7 +67,7 @@ const useCircuitBuilderViewModel = () => {
 
     function clearSelectedGates() {
         gatesSelected.map((g) => {
-            g.e.setAttribute("class", `${styles.GateImg}`);
+            g.e.setAttributeNS(null, "style", "stroke : none;");
         });
         setGatesSelected([]);
     }
@@ -113,6 +113,7 @@ const useCircuitBuilderViewModel = () => {
             // rectRef.current.setAttributeNS(null, 'y', "0");
             // rectRef.current.setAttributeNS(null, 'width', "0");
             // rectRef.current.setAttributeNS(null, 'height', "0");
+            let copy = [...gatesSelected];
             qubitCellRef.current.map((qRefRow, rowIndex) => {
                 const b = rectRef.current.getBoundingClientRect();
                     qRefRow.map((qRefCol, colIndex) => {
@@ -121,21 +122,20 @@ const useCircuitBuilderViewModel = () => {
                             if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
                                 let gateLocation = getGateLocation(qRefCol.id);
                                 if((gatesSelected.filter( g => g.row === gateLocation.row && g.col === gateLocation.col)).length > 0) {
-                                    qRefCol.setAttributeNS(null, "class", `${styles.GateImg}`);
-                                    let copy = gatesSelected.filter(g => g.row !== gateLocation.row || g.col !== gateLocation.col);
-                                    setGatesSelected(copy);
+                                    qRefCol.setAttributeNS(null, "style", "stroke : none;");
+                                    copy = gatesSelected.filter(g => g.row !== gateLocation.row || g.col !== gateLocation.col);
+                                    console.log("here"); 
                                 } else {
+                                    qRefCol.setAttributeNS(null, "style", "stroke : black; stroke-width : 5");
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
-                                    let copy = [...gatesSelected];
                                     copy.push({ row : gateLocation.row, col : gateLocation.col, gate : gate, e : qRefCol});
-                                    setGatesSelected(copy);
                                 }
                             }
                         }
                     })
             })
             rectRef.current.setAttributeNS(null, 'display', "none");
-            console.log(gatesSelected);
+            setGatesSelected(copy);
             setIsDrawing(false);
         }
     }
@@ -297,6 +297,7 @@ const useCircuitBuilderViewModel = () => {
                 setGatesSelected(copy);
             }
         } else {
+            console.log("Here"); 
             let gate = JSON.parse(e.target.getAttribute("gate"));
             let gateLocation = getGateLocation(e.target.id);
             setGateClickedName(gate.gateName);

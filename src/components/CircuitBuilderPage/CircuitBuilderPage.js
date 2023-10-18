@@ -64,7 +64,7 @@ export default function CircuitBuilderPage () {
 
 
     return (
-        <div onClick={(e) => { clearSelectedGates() }} >
+        <div>
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
@@ -95,7 +95,7 @@ export default function CircuitBuilderPage () {
             </div>
 
             <div class="container text-center" className={styles.middle}>
-                <ContextMenuTrigger id="contextmenu">
+                {/* <ContextMenuTrigger id="contextmenu"> */}
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             optionsView={optionViewable}
@@ -123,7 +123,7 @@ export default function CircuitBuilderPage () {
                             imgRef = { imgRef }
                             qubitCellRef = { qubitCellRef }
                         />
-                </ContextMenuTrigger>
+                {/* </ContextMenuTrigger> */}
             </div >
 
             <div className={styles.optionsBar}>
