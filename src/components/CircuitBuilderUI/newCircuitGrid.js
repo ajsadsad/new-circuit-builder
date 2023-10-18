@@ -78,24 +78,24 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                             />
                                             :
                                             <>
-                                            <rect
-                                                x = { 48 * colIndex }
-                                                y = { 48 * rowIndex + 24}
-                                                height = { 40 }
-                                                width = { 40 }
-                                                key={col.gate.qid}
-                                                style = {{"fill" : "none"}}
-                                                ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
-                                                id={ rowIndex + "." + colIndex }
-                                                gate={JSON.stringify(col.gate)}
-                                                inqubit = {"true"}
-                                                onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleClick(e);}}
-                                                onMouseUp={ (e) => {e.preventDefault(); e.stopPropagation(); }}
-                                                onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); setDraggingGate(col.gate); startDraggingGate(e);}}
-                                            />
+                                                <rect
+                                                    x = { 48 * colIndex }
+                                                    y = { 48 * rowIndex + 24}
+                                                    height = { 40 }
+                                                    width = { 40 }
+                                                    key={col.gate.qid}
+                                                    style = {{"fill" : "none"}}
+                                                    ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
+                                                    id={ rowIndex + "." + colIndex }
+                                                    gate={JSON.stringify(col.gate)}
+                                                />
                                                 <image
                                                     x = { 48 * colIndex }
                                                     y = { 48 * rowIndex + 24}
+                                                    inqubit = {"true"}
+                                                    gate={JSON.stringify(col.gate)}
+                                                    onMouseUp={ (e) => {e.preventDefault(); e.stopPropagation(); }}
+                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); setDraggingGate(col.gate); startDraggingGate(e);}}
                                                     href={require(`../../assets/${col.gate.img}`)}
                                                 />
                                             </>
