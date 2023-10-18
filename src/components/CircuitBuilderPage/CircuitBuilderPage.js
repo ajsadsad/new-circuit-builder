@@ -18,6 +18,11 @@ export default function CircuitBuilderPage () {
 
     const {
         gates,
+        optionViewable,
+        outputViewable,
+        allGatesViewable,
+        faveGatesViewable,
+        circuitCodeViewable,
         gateFromQubit,
         gateClickedName,
         gateClickedDesc,
@@ -27,6 +32,8 @@ export default function CircuitBuilderPage () {
         setGateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        mousePos,
+        mouseMove,
         deleteGate,
         clearSelectedGates,
         showMeasModal,
@@ -39,10 +46,14 @@ export default function CircuitBuilderPage () {
         processCircuit,
         handleChange,
         handleClick,
+        updateOptionView,
+        updateOutputView,
+        updateAllGatesMenuView,
+        updateFaveGatesView,
         circuitCode,
         setCircuitCode,
         convertCircuit,
-        currQBState, index, lastIndex, undo, redo,
+        updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, draggingGate,
         Box, Container,
         startDraggingGate, imgRef, qubitCellRef,
@@ -53,17 +64,22 @@ export default function CircuitBuilderPage () {
 
 
     return (
-        <div>
+        <div onClick={(e) => { clearSelectedGates() }} >
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
                         <AllGatesMenu
+                            optionsView={optionViewable}
+                            faveGatesView={faveGatesViewable}
+                            allGatesView={allGatesViewable}
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
-                            gates={gates}
-                        />
+                            gates={gates} />
                     </div>
                     <CircuitCode
+                        codeView = { circuitCodeViewable }
+                        faveGatesView = { faveGatesViewable }
+                        allGatesView = { allGatesViewable }
                         currQBState = { currQBState }
                         convertCircuit = { convertCircuit }
                         circuitCode = { circuitCode }
@@ -79,9 +95,14 @@ export default function CircuitBuilderPage () {
             </div>
 
             <div class="container text-center" className={styles.middle}>
-                {/* <ContextMenuTrigger id="contextmenu"> */}
+                <ContextMenuTrigger id="contextmenu">
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
+                            optionsView={optionViewable}
+                            faveGatesView={faveGatesViewable}
+                            codeView={circuitCodeViewable}
+                            outputView={outputViewable}
+                            allGatesView={allGatesViewable}
                             currQBState={currQBState}
                             gateFromQubit={gateFromQubit}
                             handleChange={handleChange}
@@ -102,7 +123,7 @@ export default function CircuitBuilderPage () {
                             imgRef = { imgRef }
                             qubitCellRef = { qubitCellRef }
                         />
-                {/* </ContextMenuTrigger> */}
+                </ContextMenuTrigger>
             </div >
 
             <div className={styles.optionsBar}>
@@ -153,6 +174,37 @@ export default function CircuitBuilderPage () {
                 hasMeasure={hasMeasure}
                 showMeasModal={showMeasModal}
             />
+
+
+            {/*
+            // <OptionsMenu
+            // optionsView = { optionViewable }
+            // />
+            //     <Output
+            //         outputView = { outputViewable }
+            //         codeView = { circuitCodeViewable }
+            //         faveGatesView = { faveGatesViewable }
+            //         optionsView = { optionViewable }
+            //     />
+                // <CircuitCode
+                //     codeView = { circuitCodeViewable }
+                //     faveGatesView = { faveGatesViewable }
+                //     allGatesView = { allGatesViewable }
+                // />
+            //     <FaveGatesMenu
+            //         faveGatesView = { faveGatesViewable }
+            //         setFaveGateView={ updateFaveGatesView }
+            //     />
+                //  <AllGatesMenu
+                //     optionsView = { optionViewable }
+                //     faveGatesView = { faveGatesViewable }
+                //     allGatesView = { allGatesViewable }
+                //     setDraggingGate = { setDraggingGate }
+                //     setDraggingGateNode = { setDraggingGateNode }
+                //     gates = { gates }
+                // />
+            */}
+
         </div>
     )
 }
