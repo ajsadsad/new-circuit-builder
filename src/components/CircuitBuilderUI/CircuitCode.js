@@ -16,7 +16,9 @@ export default function CircuitCode({ currQBState, convertCircuit, circuitCode, 
 
    return(
     <div class="text-white">
-        {circuitCode}
+        <pre style={{ textAlign: "left" }}>
+            {circuitCode}
+        </pre>
     </div>
    )
 }

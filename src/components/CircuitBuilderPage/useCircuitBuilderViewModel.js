@@ -278,23 +278,22 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function convertCircuit() {
-        let vcode = [];
         let line = 6;
         let cregMeasure = 1;
-        vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + (currQBState.length-1) + "];\n", "4: creg c[" + (currQBState.length-1) + "];\n" + "5: ")
+        let vcode = "1: OPENQASM 2.0;\n2: include \"qelibl.inc\";\n3: qreg q[" + currQBState.length + "];\n4: creg c[" + currQBState.length + "];\n5: \n";
         currQBState.map((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
-                    vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                    vcode = vcode + line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n";
                 } else if(v.gate.id === 'cnot') {
-                    vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                    vcode = vcode + line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n";
                 } else {
                     if(v.gate.qid === 'measure') {
-                        vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "] -> c[" + cregMeasure + "];\n")
+                        vcode = vcode + line + ": " + v.gate.qasmid + " q[" + rowIndex + "] -> c[" + cregMeasure + "];\n";
                         cregMeasure += 1;
                     }
                     else {
-                        vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                        vcode = vcode + line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n";
                     }
                 }
                 line++;
