@@ -52,7 +52,8 @@ export default function CircuitBuilderPage () {
         setCircuitCode,
         convertCircuit,
         updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo,
-        clearAllGates
+        clearAllGates,
+        compress
     } = useCircuitBuilderViewModel();
 
 
@@ -121,6 +122,7 @@ export default function CircuitBuilderPage () {
                         index = { index }
                         lastIndex = { lastIndex }
                         clearAllGates={clearAllGates}
+                        compress={compress}
                     />
                 </div>
             </div>
