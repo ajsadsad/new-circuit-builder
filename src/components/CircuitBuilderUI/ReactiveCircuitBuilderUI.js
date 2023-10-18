@@ -15,7 +15,6 @@
  * @param {function} setGateClicked - function passed in as a prop to CircuitGrid to help keep track of current gate being actioned upon.
  */
 
-import React, { useRef, useEffect, useState } from 'react'
 import styles from '../css/CircuitBuilder.module.css'
 import NewCircuitGrid from './newCircuitGrid'
 
