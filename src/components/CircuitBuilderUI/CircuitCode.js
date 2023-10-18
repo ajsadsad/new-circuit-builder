@@ -27,7 +27,9 @@ export default function CircuitCode({ codeView, faveGatesView, allGatesView, cur
 
    return(
     <div class="text-white">
-        {circuitCode}
+        <pre style={{ textAlign: "left" }}>
+            {circuitCode}
+        </pre>
     </div>
    )
 }
