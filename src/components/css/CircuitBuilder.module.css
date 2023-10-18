@@ -70,9 +70,11 @@
   grid-area: Circuit-Builder;
   /* background-color: rgba(232, 14, 213); */
   width: 100%;
-  max-height: 100%;
   align-items: center;
   overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .CircuitBuilderNoAllGatesMenuNoOutput {
@@ -207,9 +209,10 @@
   padding-bottom: 50px;
   height: 50vh;
   width: 100%;
-  display: block;
   position: relative;
   overflow: scroll;
+  justify-content: center;
+  align-items: center;
 }
 
 .optionsBar {

@@ -18,114 +18,137 @@ import Container from 'react-bootstrap/Container';
 import circle from '../../assets/plus-circle-dotted.svg'
 import { useEffect } from 'react'
 
-export default function CircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, setDraggingGateNode, canvasRef, contextRef, startDrawRect, endDrawRect, drawRect, draggingGate }) {
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        canvas.width = 2000;
-        canvas.height = 1000;
-        canvas.position = "absolute";
-        const context = canvas.getContext("2d");
-        context.lineCap = "round";
-        context.strokeStyle = "black";
-        context.lineWidth = 5;
-        contextRef.current = context;
-    }, [])
-    return(
+export default function CircuitGrid ({  qubitStates, handleChange, addQubit, handleClick, setDraggingGate, setDraggingGateNode,  svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef }) {
 
-        <>
-            <canvas
-                ref = { canvasRef }
-                style = {  {"position" : "absolute", "left": "0", "right":"0", "z-index" : "1", }}
-                onMouseDown = { (e) => { startDrawRect(e); console.log(e.clientX + " " + e.clientY) }}
-                onMouseMove = { (e) => { drawRect(e) } }
-                onMouseUp = { endDrawRect }
-                onMouseLeave = { endDrawRect }
-            />
-            <Container>
-            {
-                qubitStates.map((column, rowIndex) =>
-                    <Row
-                        key = { rowIndex }
-                        id = { rowIndex }
-                        className = { styles.row }
-                    >
+    const boxStyles = {
+        "display": "flex",
+        "flexWrap": "wrap",
+        "gap": "1rem",
+        "width": "70ch",
+        "maxWidth": "100%",
+        "margin": "10ch auto",
+        "background": "#eee",
+        "padding": "4rem",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "overflow": "hidden",
+        "border": ".25rem dashed #aaa",
+        "borderRadius": "1rem",
+        "boxShadow": "inset 0 0 0 .25rem hsl(206deg 100% 50%)"
+      };
+
+    return(
+        <Container
+            ref = { svgRef }
+            onMouseDown = { (e) => { startDrawRect(e); e.preventDefault(); } }
+            onMouseUp = { (e) => { endDrawRect(e) ; e.preventDefault(); e.stopPropagation()} }
+            onMouseMove = { (e) => { drawRect(e) } }
+            onMouseLeave = { (e) => { endDrawRect(e) ; e.preventDefault(); e.stopPropagation() } }
+            style = { {"padding" : "50px",
+            "gap": "1rem",
+            "width": "100%",
+            "height" : "100%",
+            "margin": "10ch auto",
+            "background": "#eee",
+            "padding": "4rem",
+            "overflow": "hidden",
+            "border": ".25rem dashed #aaa",
+            "borderRadius": "1rem",}}
+        >
+        <div
+            ref = { rectRef }
+            style = {{
+                "position" : "fixed",
+                "background" : "hsl(206deg 100% 50% / 5%)",
+                "boxShadow" : "inset 0 0 0 2px hsl(206deg 100% 50% / 50%)",
+                "borderRadius" : "2px",
+                "pointerEvents" : "none",
+                "mixBlendMode" : "multiply",
+            }}
+        />
+        {
+            qubitStates.map((column, rowIndex) =>
+                <Row
+                    key = { rowIndex }
+                    id = { rowIndex }
+                    className = { styles.row }
+                >
+                    {
+                        column.map((row, index) =>
                         {
-                            column.map((row, index) =>
-                            {
-                                if(index === 0) {
-                                    if(rowIndex === qubitStates.length - 1) {
-                                        return(
-                                            <Col
-                                                key={rowIndex + "." + index}
-                                                id={index}
-                                                className={styles.qubitNum}
-                                                onClick={addQubit}
-                                                draggable={false}
-                                            >
-                                                <img src = {circle}/>
-                                            </Col>)
-                                    } else {
+                            if(index === 0) {
+                                if(rowIndex === qubitStates.length - 1) {
+                                    return(
+                                        <Col
+                                            key={rowIndex + "." + index}
+                                            id={index}
+                                            className={styles.qubitNum}
+                                            onClick={addQubit}
+                                            draggable={false}
+                                        >
+                                            <img src = {circle}/>
+                                        </Col>)
+                                } else {
+                                    return (
+                                        <Col
+                                            key={rowIndex + "." + index}
+                                            id={index}
+                                            className={styles.qubitNum}
+                                            draggable={false}
+                                        >
+                                            <span> {"q[" + rowIndex + "]"} </span>
+                                        </Col>)
+                                }
+                            } else {
+                                if(rowIndex === qubitStates.length -1) {
+                                    return (<Col id = "spareLine" className = { styles.addQubitBtn}> </Col>)
+                                } else {
+                                    if(row.hasGate) {
                                         return (
                                             <Col
-                                                key={rowIndex + "." + index}
-                                                id={index}
-                                                className={styles.qubitNum}
-                                                draggable={false}
-                                            >
-                                                <span> {"q[" + rowIndex + "]"} </span>
-                                            </Col>)
-                                    }
-                                } else {
-                                    if(rowIndex === qubitStates.length -1) {
-                                        return (<Col id = "spareLine" className = { styles.addQubitBtn}> </Col>)
-                                    } else {
-                                        if(row.hasGate) {
-                                            return (
-                                                <Col
-                                                    key = { rowIndex + "." + index }
-                                                    id = { index }
-                                                    className = { styles.col }
-                                                    onDragEnter = {(e) => { e.preventDefault();}}
-                                                    onDragOver = {(e) => { e.preventDefault(); }}
-                                                    onDrop = {(e) => { e.preventDefault(); e.stopPropagation(); handleChange(e);  }}
-                                                    style = {{"z-index" : "5", "pointer-events" : "none"}}
-                                                >
-                                                    { row.hasGate &&
-                                                        <img
-                                                            className={styles.GateImg}
-                                                            key={row.gate.qid}
-                                                            id={row.gate.qid}
-                                                            gate={JSON.stringify(row.gate)}
-                                                            src={require(`../../assets/${row.gate.img}`)}
-                                                            inqubit = {"true"}
-                                                            draggable ={ true }
-                                                            onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(row.gate); }}
-                                                            onClick = {(e) => { handleClick(e); e.stopPropagation();}}
-                                                            style = {{"z-index" : "5", "pointer-events" : "none"}}
-                                                        />}
-                                                </Col>)
-                                        } else {
-                                            return (
-                                                <Col
                                                 key = { rowIndex + "." + index }
                                                 id = { index }
                                                 className = { styles.col }
                                                 onDragEnter = {(e) => { e.preventDefault();}}
                                                 onDragOver = {(e) => { e.preventDefault(); }}
                                                 onDrop = {(e) => { e.preventDefault(); e.stopPropagation(); handleChange(e);  }}
-                                                style = {{"z-index" : "5", "pointer-events" : "none"}}
-                                                >
-                                                </Col>
-                                            )
-                                        }
-                                        }
+                                            >
+                                                { row.hasGate &&
+                                                    <img
+                                                        ref = {qubitCellRef}
+                                                        className={styles.GateImg}
+                                                        key={row.gate.qid}
+                                                        id={row.gate.qid}
+                                                        gate={JSON.stringify(row.gate)}
+                                                        src={require(`../../assets/${row.gate.img}`)}
+                                                        inqubit = {"true"}
+                                                        draggable ={ true }
+                                                        onMouseDown={(e) => { e.stopPropagation(); e.preventDefault()}}
+                                                        onDragStart={(e) => { setDraggingGateNode(e); setDraggingGate(row.gate); }}
+                                                        onClick = {(e) => { handleClick(e); e.stopPropagation();}}
+                                                    />}
+                                            </Col>)
+                                    } else {
+                                        return (
+                                            <Col
+                                            key = { rowIndex + "." + index }
+                                            id = { index }
+                                            className = { styles.col }
+                                            onDragEnter = {(e) => { e.preventDefault();}}
+                                            onDragOver = {(e) => { e.preventDefault(); }}
+                                            onDrop = {(e) => { e.preventDefault(); e.stopPropagation(); handleChange(e);  }}
+                                            >
+                                            </Col>
+                                        )
                                     }
-                            })
-                        }
-                    </Row>
-                )
-            }
-            </Container>
-        </>
+                                    }
+                                }
+                        })
+                    }
+                </Row>
+            )
+        }
+
+        </Container>
     )
 }

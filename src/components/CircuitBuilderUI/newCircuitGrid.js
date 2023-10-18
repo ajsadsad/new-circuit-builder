@@ -2,7 +2,7 @@ import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 import { useEffect } from 'react'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef}) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef}) {
 
     return(
         <svg
@@ -12,10 +12,9 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
             ref = { svgRef }
             className = { styles.grid }
             onMouseDown = { (e) => { startDrawRect(e); } }
-            onMouseUp = { (e) => { endDrawRect(e); } }
+            onMouseUp = { (e) => { e.preventDefault(); endDrawRect(e); } }
             onMouseMove = { (e) => { drawRect(e); } }
-            onMouseLeave = { (e) => { endDrawRect(e) } }
-            style = {  {"position" : "absolute", "left": "0", "right":"0"}}
+            style = {  {"width" : "75vh", "height" : "50vh"}}
         >
         <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
         <image ref = {imgRef} pointerEvents={ "none" } zIndex = { "2" }> </image>
@@ -83,11 +82,12 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 x = { 48 * colIndex }
                                                 y = { 48 * rowIndex + 24}
                                                 key={col.gate.qid}
+                                                ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                 id={ rowIndex + "." + colIndex }
                                                 gate={JSON.stringify(col.gate)}
                                                 href={require(`../../assets/${col.gate.img}`)}
                                                 inqubit = {"true"}
-                                                onClick = {(e) => { handleClick(e); e.stopPropagation();}}
+                                                onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleClick(e);}}
                                                 onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); setDraggingGate(col.gate); startDraggingGate(e);}}
                                             />
                                         }

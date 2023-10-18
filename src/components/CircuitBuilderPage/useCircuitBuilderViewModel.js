@@ -46,6 +46,7 @@ const useCircuitBuilderViewModel = () => {
     const [isDragging, setIsDragging] = useState(false);
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
+    const qubitCellRef = useRef(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ("")})));
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -78,7 +79,22 @@ const useCircuitBuilderViewModel = () => {
             return;
         } else {
             startPts.current = ({x : e.clientX - e.currentTarget.getBoundingClientRect().left, y : e.clientY - e.currentTarget.getBoundingClientRect().top});
+            // rectRef.current.style.left = "0px";
+            // rectRef.current.style.width = "0px";
+            // rectRef.current.style.top = "0px";
+            // rectRef.current.style.height = "0px";
+            // rectRef.current.style.display = "block";
+            // rect.current = svgRef.current.createSVGRect();
+            // rect.current.x = 0;
+            // rect.current.y = 0;
+            // rect.current.width = 0;
+            // rect.current.height = 0;
 
+            rectRef.current.setAttributeNS(null, 'x', "0");
+            rectRef.current.setAttributeNS(null, 'y', "0");
+            rectRef.current.setAttributeNS(null, 'width', "0");
+            rectRef.current.setAttributeNS(null, 'height', "0");
+            rectRef.current.setAttributeNS(null, 'display', "block");
             setIsDrawing(true);
         }
     }
@@ -89,12 +105,34 @@ const useCircuitBuilderViewModel = () => {
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
         } else {
-            rectRef.current.setAttributeNS(null, 'x', "0");
-            rectRef.current.setAttributeNS(null, 'y', "0");
-            rectRef.current.setAttributeNS(null, 'width', "0");
-            rectRef.current.setAttributeNS(null, 'height', "0");
+            // rectRef.current.setAttributeNS(null, 'x', "0");
+            // rectRef.current.setAttributeNS(null, 'y', "0");
+            // rectRef.current.setAttributeNS(null, 'width', "0");
+            // rectRef.current.setAttributeNS(null, 'height', "0");
+            qubitCellRef.current.map((qRefRow, rowIndex) => {
+                const b = rectRef.current.getBoundingClientRect();
+                    qRefRow.map((qRefCol, colIndex) => {
+                        if(qRefCol) {
+                            let a = qRefCol.getBoundingClientRect();
+                            if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
+                                let gateLocation = getGateLocation(qRefCol.id);
+                                if((gatesSelected.filter( g => g.row === gateLocation.row && g.col === gateLocation.col)).length > 0) {
+                                    qRefCol.setAttributeNS(null, "class", `${styles.GateImg}`);
+                                    let copy = gatesSelected.filter(g => g.row !== gateLocation.row || g.col !== gateLocation.col);
+                                    setGatesSelected(copy);
+                                } else {
+                                    let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
+                                    let copy = [...gatesSelected];
+                                    copy.push({ row : gateLocation.row, col : gateLocation.col, gate : gate, e : qRefCol});
+                                    setGatesSelected(copy);
+                                }
+                            }
+                        }
+                    })
+            })
+            rectRef.current.setAttributeNS(null, 'display', "none");
+            console.log(gatesSelected);
             setIsDrawing(false);
-
         }
     }
 
@@ -113,7 +151,49 @@ const useCircuitBuilderViewModel = () => {
             rectRef.current.setAttributeNS(null, 'width', rectWidth);
             rectRef.current.setAttributeNS(null, 'height', rectHeight);
 
-            svgRef.current.appendChild(rectRef.current);
+
+            // rect.current.x = startPts.current.x;
+            // rect.current.y = startPts.current.y;
+            // rect.current.width = rectWidth;
+            // rect.current.height = rectHeight;
+
+            // if(newMouseX > startPts.current.x) {
+            //     rectRef.current.style.left = startPts.current.x + "px";
+            //     rectRef.current.style.width = newMouseX - startPts.current.x + "px";
+            // } else {
+            //     rectRef.current.style.left = newMouseX + "px";
+            //     rectRef.current.style.width = startPts.current.x  - newMouseX + "px";
+            // }
+
+            // if(newMouseY > startPts.current.y) {
+            //     rectRef.current.style.top = startPts.current.y + "px";
+            //     rectRef.current.style.height = newMouseY - startPts.current.y + "px";
+            // } else {
+            //     rectRef.current.style.top = newMouseY + "px";
+            //     rectRef.current.style.height = startPts.current.y - newMouseY + "px";
+            // }
+
+            // const a = qubitCellRef.current.getBoundingClientRect();
+            // const b = rectRef.current.getBoundingClientRect();
+            // if( !(a.y + a.height < b.y ||
+            //     a.y > b.y + b.height ||
+            //     a.x + a.width < b.x ||
+            //     a.x > b.x + b.width)) {
+            //     console.log("Hello")
+            //     let rowIndex = qubitCellRef.current.parentNode.parentNode.id
+            //     let colIndex = qubitCellRef.current.parentNode.id
+            //     if(gatesSelected.filter( g => g.row === rowIndex && g.col === colIndex).length > 0) {
+            //         qubitCellRef.current.setAttribute("class", `${styles.GateImg}`);
+            //         let copy = gatesSelected.filter(g => g.row !== rowIndex || g.col !== colIndex);
+            //         setGatesSelected(copy);
+            //     } else {
+            //         qubitCellRef.current.setAttribute("class", `${styles.GateImgSelected}`);
+            //         let gate = JSON.parse(qubitCellRef.current.getAttribute("gate"));
+            //         let copy = [...gatesSelected];
+            //         copy.push({ row : rowIndex, col : colIndex, gate : gate, e : qubitCellRef.current });
+            //         setGatesSelected(copy);
+            //     }
+            // }
         } else if (isDragging) {
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
             const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
@@ -128,6 +208,7 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function deleteGate() {
+        console.log(gatesSelected);
         let copy = getQubitStateDeepCopy();
         gatesSelected.map((gate) => {
             copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
@@ -136,8 +217,8 @@ const useCircuitBuilderViewModel = () => {
     }
 
     // Need to change this as it won't be able to slice rows with 2 digits.
-    function getGateLocation(e) {
-        return ({ row : e.target.id.slice(0, 1), col : e.target.id.slice(2) })
+    function getGateLocation(id) {
+        return ({ row : id.slice(0, 1), col : id.slice(2) })
     }
 
     function startDraggingGate(e) {
@@ -146,24 +227,74 @@ const useCircuitBuilderViewModel = () => {
         setDraggingGateNode(e);
     }
 
+    // function handleClick(e) {
+    //     if(e.shiftKey) {
+    //         let rowIndex = e.currentTarget.parentNode.parentNode.id
+    //         let colIndex = e.currentTarget.parentNode.id
+    //         if(gatesSelected.filter( g => g.row === rowIndex && g.col === colIndex).length > 0) {
+    //             e.target.setAttribute("class", `${styles.GateImg}`);
+    //             let copy = gatesSelected.filter(g => g.row !== rowIndex || g.col !== colIndex);
+    //             setGatesSelected(copy);
+    //         } else {
+    //             e.target.setAttribute("class", `${styles.GateImgSelected}`);
+    //             let gate = JSON.parse(e.target.getAttribute("gate"));
+    //             let copy = [...gatesSelected];
+    //             copy.push({ row : rowIndex, col : colIndex, gate : gate, e : e.target });
+    //             setGatesSelected(copy);
+    //         }
+    //     } else {
+    //         let gate = JSON.parse(e.target.getAttribute("gate"));
+    //         setGateClickedName(gate.gateName);
+    //         setGateClickedDesc(gate.description);
+    //         setGateClickedThetaVal(gate.theta);
+    //         setGateClicked(e);
+    //         if(e.target.id === 'xrot' || e.target.id === 'yrot' || e.target.id === 'zrot') {
+    //             showThetaModal(true);
+    //         } else {
+    //             showNoParamModal(true);
+    //         }
+    //     }
+    // }
+
+    // function handleChange(e) {
+    //     //if gate is being dragged from circuit
+    //     if(draggingGateNode.current.target.getAttribute("inqubit") === "true") {
+    //         let copy = getQubitStateDeepCopy();
+    //         copy[draggingGateNode.current.target.parentElement.parentElement.id][draggingGateNode.current.target.parentElement.id] = { hasGate : false, gate : null};
+    //         copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current };
+    //         setState(copy);
+    //     } else {
+    //         let copy = getQubitStateDeepCopy();
+    //         copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current};
+    //         setState(copy);
+    //     }
+    // }
+
+    // function updateThetaModal(value) {
+    //     showThetaModal(false);
+    //     let updatedGate = JSON.parse(gateClicked.current.target.getAttribute("gate"));
+    //     updatedGate.theta = value;
+    //     let copy = getQubitStateDeepCopy();
+    //     copy[gateClicked.current.target.parentNode.parentNode.id][gateClicked.current.target.parentNode.id] = { hasGate : true, gate : updatedGate};
+    //     setState(copy);
+    // }
     function handleClick(e) {
         if(e.shiftKey) {
-            let rowIndex = e.currentTarget.parentNode.parentNode.id
-            let colIndex = e.currentTarget.parentNode.id
-            if(gatesSelected.filter( g => g.row === rowIndex && g.col === colIndex).length > 0) {
+            let gateLocation = getGateLocation(e.target.id);
+            if(gatesSelected.filter( g => g.row === gateLocation.row && g.col === gateLocation.col).length > 0) {
                 e.target.setAttribute("class", `${styles.GateImg}`);
-                let copy = gatesSelected.filter(g => g.row !== rowIndex || g.col !== colIndex);
+                let copy = gatesSelected.filter(g => g.row !== gateLocation.row || g.col !== gateLocation.col);
                 setGatesSelected(copy);
             } else {
                 e.target.setAttribute("class", `${styles.GateImgSelected}`);
-                let gate = JSON.parse(e.target.getAttribute("gate"));
+                let gate = JSON.parse(e.target.getAttributeNS(null, "gate"));
                 let copy = [...gatesSelected];
-                copy.push({ row : rowIndex, col : colIndex, gate : gate, e : e.target });
+                copy.push({ row : gateLocation.row, col : gateLocation.col, gate : gate, e : e.target });
                 setGatesSelected(copy);
             }
         } else {
             let gate = JSON.parse(e.target.getAttribute("gate"));
-            let gateLocation = getGateLocation(e);
+            let gateLocation = getGateLocation(e.target.id);
             setGateClickedName(gate.gateName);
             setGateClickedDesc(gate.description);
             setGateClickedThetaVal(gate.theta);
@@ -181,13 +312,13 @@ const useCircuitBuilderViewModel = () => {
         //if gate is being dragged from circuit
         if(isDragging) {
             let copy = getQubitStateDeepCopy();
-            let originalLocation = getGateLocation(draggingGateNode.current);
-            let newLocation = getGateLocation(e);
+            let originalLocation = getGateLocation(draggingGateNode.current.target.id);
+            let newLocation = getGateLocation(e.target.id);
             copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
             copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
             setState(copy);
         } else {
-            let gateLocation = getGateLocation(e);
+            let gateLocation = getGateLocation(e.target.id);
             let copy = getQubitStateDeepCopy();
             copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
             setState(copy);
@@ -275,6 +406,9 @@ const useCircuitBuilderViewModel = () => {
             copy.push(Array(currQBState[0].length));
             copy[currQBState.length].fill({hasGate : false, gate : null});
             setState(copy);
+
+            qubitCellRef.push(Array(currQBState[0].length));
+            copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
         }
@@ -325,8 +459,6 @@ const useCircuitBuilderViewModel = () => {
         gateClickedThetaVal,
         gatesSelected,
         circuitCode,
-        // mousePos,
-        // mouseMove,
         setCircuitCode,
         deleteGate,
         clearSelectedGates,
@@ -349,7 +481,7 @@ const useCircuitBuilderViewModel = () => {
         convertCircuit,
         currQBState, setState, index, lastIndex, undo, redo,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
-        startDraggingGate,
+        startDraggingGate, qubitCellRef,
     }
 }
 export default useCircuitBuilderViewModel;

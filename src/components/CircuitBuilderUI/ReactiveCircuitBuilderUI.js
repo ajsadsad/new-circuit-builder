@@ -18,8 +18,9 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styles from '../css/CircuitBuilder.module.css'
 import NewCircuitGrid from './newCircuitGrid'
+import CircuitGrid from './CircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, draggingGate, startDraggingGate, endDraggingGate, handleDraggingGate, imgRef }) {
+export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, draggingGate, startDraggingGate, endDraggingGate, handleDraggingGate, imgRef, qubitCellRef }) {
 
     const [circuitBuilderDimensions, setCBDimensions] = useState({width : 0, height : 0});
 
@@ -51,8 +52,33 @@ export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, c
             draggingGate = {draggingGate}
             startDraggingGate = { startDraggingGate }
             imgRef = { imgRef }
+            qubitCellRef={qubitCellRef}
         />
     )
+
+        let circuitGrid = (
+            <CircuitGrid
+                qubitStates = { currQBState }
+                handleChange = { handleChange }
+                moveGateFromQubit = { moveGateFromQubit }
+                addQubit = { addQubit }
+                handleClick = { handleClick }
+                setGateClicked = { setGateClicked }
+                setDraggingGate = { setDraggingGate }
+                startDrawRect = { startDrawRect }
+                endDrawRect = { endDrawRect }
+                drawRect = { drawRect }
+                svgRef = { svgRef }
+                rectRef = { rectRef }
+                draggingGate = {draggingGate}
+                startDraggingGate = { startDraggingGate }
+                imgRef = { imgRef }
+                qubitCellRef={qubitCellRef}
+                setDraggingGateNode = {setDraggingGateNode }
+            />
+        )
+
+
 
     if(allGatesView === true && codeView === true && optionsView === false && faveGatesView === false && outputView === true) {
        return <div className = { styles.CircuitBuilder }

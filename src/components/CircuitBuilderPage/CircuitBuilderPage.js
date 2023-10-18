@@ -56,7 +56,7 @@ export default function CircuitBuilderPage () {
         updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, draggingGate,
         Box, Container,
-        startDraggingGate, imgRef,
+        startDraggingGate, imgRef, qubitCellRef
     } = useCircuitBuilderViewModel();
 
 
@@ -94,14 +94,6 @@ export default function CircuitBuilderPage () {
 
             <div class="container text-center" className={styles.middle}>
                 <ContextMenuTrigger id="contextmenu">
-                    {/* <Canvas
-                        startDrawRect = { startDrawRect }
-                        endDrawRect = { endDrawRect }
-                        drawRect = { drawRect }
-                        isDrawing = { isDrawing }
-                        canvasRef = { canvasRef }
-                        contextRef = { contextRef }
-                    /> */}
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             optionsView={optionViewable}
@@ -127,6 +119,7 @@ export default function CircuitBuilderPage () {
                             Container = { Container }
                             startDraggingGate = { startDraggingGate }
                             imgRef = { imgRef }
+                            qubitCellRef = { qubitCellRef }
                         />
                 </ContextMenuTrigger>
             </div >
