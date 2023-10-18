@@ -12,7 +12,7 @@ import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
 import MeasurementModal from '../Modals/MeasurementModal';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import Canvas from '../CircuitBuilderUI/Canvas';
+import { clear } from '@testing-library/user-event/dist/clear';
 
 export default function CircuitBuilderPage () {
 
@@ -56,7 +56,9 @@ export default function CircuitBuilderPage () {
         updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, draggingGate,
         Box, Container,
-        startDraggingGate, imgRef, qubitCellRef
+        startDraggingGate, imgRef, qubitCellRef,
+        clearAllGates,
+        compress,
     } = useCircuitBuilderViewModel();
 
 
@@ -131,6 +133,8 @@ export default function CircuitBuilderPage () {
                         undo = { undo }
                         index = { index }
                         lastIndex = { lastIndex }
+                        clearAllGates={clearAllGates}
+                        compress={compress}
                     />
             </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>

@@ -72,6 +72,10 @@ const useCircuitBuilderViewModel = () => {
         setGatesSelected([]);
     }
 
+    function clearAllGates() {
+        setState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
+    }
+
     function startDrawRect(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -341,6 +345,71 @@ const useCircuitBuilderViewModel = () => {
         val.textContent = value;
     }
 
+    function updateThetaModal(value) {
+        showThetaModal(false);
+        let updatedGate = JSON.parse(gateClicked.current.target.getAttribute("gate"));
+        updatedGate.theta = value;
+        let copy = getQubitStateDeepCopy();
+        copy[gateClicked.current.target.parentNode.parentNode.id][gateClicked.current.target.parentNode.id] = { hasGate : true, gate : updatedGate};
+        setState(copy);
+    }
+
+    function compress() {
+        let copy = getQubitStateDeepCopy();
+        let lastEmptycolumn = null;
+        let columnHasGate = false;
+
+        for (let column in copy[0]) {
+            if (column < 1) continue;
+            for (let row in copy) {
+                //Checks if column has a gate in it
+                if (copy[row][column].hasGate) {
+                    columnHasGate = true;
+                }
+            }
+            //If column has no gate in it and lastEmpty column is null, make that column last empty column
+            if (columnHasGate == false && lastEmptycolumn == null) {
+                lastEmptycolumn = column;
+            }
+
+            if (columnHasGate == true && lastEmptycolumn == null) {
+                columnHasGate = false;
+            }
+            //If column has a gate and lastEmptycolumn not null, swap that values of the current column, with that of the lastEmptyColumn
+            if (columnHasGate == true && lastEmptycolumn != null) {
+                for (let row in copy) {
+                    //If the cell has a gate, change the contents of the cell to match the new location
+                    if (copy[row][column].hasGate) {
+                        copy[row][lastEmptycolumn] =  copy[row][column];
+                        copy[row][column] = {hasGate: false, gate: null}
+                    }
+                }
+                lastEmptycolumn++;
+                columnHasGate = false;
+            }
+        }
+        setState(copy);
+    }
+
+    // function swapColumn(notEmpty, empty){
+    // let copy =
+    //     for(){
+
+    //     }
+
+
+    // }
+
+
+
+
+
+
+
+
+    //    console.log(copy[1][1]);
+
+
     function convertCircuit() {
         let vcode = [];
         let line = 6;
@@ -480,8 +549,11 @@ const useCircuitBuilderViewModel = () => {
         updateCircuitCodeView,
         convertCircuit,
         currQBState, setState, index, lastIndex, undo, redo,
+        clearAllGates,
+        compress,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
         startDraggingGate, qubitCellRef,
     }
+
 }
 export default useCircuitBuilderViewModel;
