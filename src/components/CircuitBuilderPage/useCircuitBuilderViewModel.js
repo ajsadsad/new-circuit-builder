@@ -64,6 +64,10 @@ const useCircuitBuilderViewModel = () => {
         setGatesSelected([]);
     }
 
+    function clearAllGates() {
+        setState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
+    }
+
     function deleteGate() {
         let copy = getQubitStateDeepCopy();
         gatesSelected.map((gate) => {
@@ -264,7 +268,8 @@ const useCircuitBuilderViewModel = () => {
         updateFaveGatesView,
         updateCircuitCodeView,
         convertCircuit,
-        currQBState, setState, index, lastIndex, undo, redo
+        currQBState, setState, index, lastIndex, undo, redo,
+        clearAllGates
     }
 }
 export default useCircuitBuilderViewModel;

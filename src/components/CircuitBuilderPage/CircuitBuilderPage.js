@@ -12,6 +12,7 @@ import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
 import MeasurementModal from '../Modals/MeasurementModal';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
+import { clear } from '@testing-library/user-event/dist/clear';
 
 export default function CircuitBuilderPage () {
 
@@ -50,7 +51,8 @@ export default function CircuitBuilderPage () {
         circuitCode,
         setCircuitCode,
         convertCircuit,
-        updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo
+        updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo,
+        clearAllGates
     } = useCircuitBuilderViewModel();
 
 
@@ -118,6 +120,7 @@ export default function CircuitBuilderPage () {
                         undo = { undo }
                         index = { index }
                         lastIndex = { lastIndex }
+                        clearAllGates={clearAllGates}
                     />
                 </div>
             </div>
