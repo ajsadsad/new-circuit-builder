@@ -101,8 +101,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                     row = { rowIndex }
                                                     col = { colIndex }
                                                     inqubit = {"true"}
-                                                    onMouseUp={ (e) => {e.preventDefault(); e.stopPropagation(); }}
-                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); setDraggingGate(col.gate); startDraggingGate(e);}}
+                                                    onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
                                                     href={require(`../../assets/${col.gate.img}`)}
                                                 />
                                             </>

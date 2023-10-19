@@ -72,12 +72,10 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function startDrawRect(e) {
-        e.preventDefault();
-        e.stopPropagation();
         if(isDragging) {
             return;
         } else {
-            startPts.current = ({x : e.clientX - e.currentTarget.getBoundingClientRect().left, y : e.clientY - e.currentTarget.getBoundingClientRect().top});
+            startPts.current = ({x : Math.abs(e.clientX - e.currentTarget.getBoundingClientRect().left), y : Math.abs(e.clientY - e.currentTarget.getBoundingClientRect().top)});
             rectRef.current.setAttributeNS(null, 'display', "block");
             setIsDrawing(true);
         }
@@ -124,8 +122,8 @@ const useCircuitBuilderViewModel = () => {
         e.preventDefault();
         e.stopPropagation();
         if (isDrawing) {
-            const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
-            const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
+            const newMouseY = Math.abs(e.clientY - e.currentTarget.getBoundingClientRect().top);
+            const newMouseX = Math.abs(e.clientX - e.currentTarget.getBoundingClientRect().left);
 
             const rectWidth = Math.abs(newMouseX - startPts.current.x);
             const rectHeight = Math.abs(newMouseY - startPts.current.y);
@@ -155,6 +153,7 @@ const useCircuitBuilderViewModel = () => {
             let qRef = qubitCellRef.current[gate.row][gate.col]
             qRef.setAttributeNS(null, "style", "stroke : none;");
         })
+        setGatesSelected([]);
         setState(copy);
     }
 
@@ -165,6 +164,7 @@ const useCircuitBuilderViewModel = () => {
 
     function startDraggingGate(e) {
         setIsDragging(true);
+        console.log("test");
         startPts.current = ({x : e.clientX - e.target.getBoundingClientRect().left, y : e.clientY - e.target.getBoundingClientRect().top});
         setDraggingGateNode(e);
     }
