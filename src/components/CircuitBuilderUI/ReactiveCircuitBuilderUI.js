@@ -15,11 +15,11 @@
  * @param {function} setGateClicked - function passed in as a prop to CircuitGrid to help keep track of current gate being actioned upon.
  */
 
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import styles from '../css/CircuitBuilder.module.css'
 import NewCircuitGrid from './newCircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ optionsView, faveGatesView, codeView, outputView, allGatesView, currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, draggingGate, startDraggingGate, endDraggingGate, handleDraggingGate, imgRef, qubitCellRef }) {
+export default function ReactiveCircuitBuilderUI({ currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, draggingGate, startDraggingGate, endDraggingGate, handleDraggingGate, imgRef, qubitCellRef }) {
 
     let newG = (
         <NewCircuitGrid

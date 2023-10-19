@@ -78,10 +78,6 @@ const useCircuitBuilderViewModel = () => {
             return;
         } else {
             startPts.current = ({x : e.clientX - e.currentTarget.getBoundingClientRect().left, y : e.clientY - e.currentTarget.getBoundingClientRect().top});
-            rectRef.current.setAttributeNS(null, 'x', "0");
-            rectRef.current.setAttributeNS(null, 'y', "0");
-            rectRef.current.setAttributeNS(null, 'width', "0");
-            rectRef.current.setAttributeNS(null, 'height', "0");
             rectRef.current.setAttributeNS(null, 'display', "block");
             setIsDrawing(true);
         }
@@ -93,29 +89,33 @@ const useCircuitBuilderViewModel = () => {
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
         } else {
-            qubitCellRef.current.map((qRefRow, rowIndex) => {
+            let highlightedGates = [...gatesSelected];
+            qubitCellRef.current.forEach((qRefRow) => {
                 const b = rectRef.current.getBoundingClientRect();
-                    qRefRow.map((qRefCol, colIndex) => {
+                    qRefRow.forEach((qRefCol) => {
                         if(qRefCol) {
                             let a = qRefCol.getBoundingClientRect();
+                            let row = qRefCol.getAttributeNS(null, "row");
+                            let col = qRefCol.getAttributeNS(null, "col");
                             if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
-                                let gateLocation = getGateLocation(qRefCol.id);
-                                if((gatesSelected.filter( g => g.row === gateLocation.row && g.col === gateLocation.col)).length > 0) {
-                                    qRefCol.setAttributeNS(null, "class", `${styles.GateImg}`);
-                                    let copy = gatesSelected.filter(g => g.row !== gateLocation.row || g.col !== gateLocation.col);
-                                    setGatesSelected(copy);
+                                if(gatesSelected.filter( g => g.e === qRefCol).length > 0) {
+                                    qRefCol.setAttributeNS(null, "style", "stroke : none;")
+                                    highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol)
                                 } else {
+                                    qRefCol.setAttributeNS(null, "style", "stroke : black; stroke-width : 5");
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
-                                    let copy = [...gatesSelected];
-                                    copy.push({ row : gateLocation.row, col : gateLocation.col, gate : gate, e : qRefCol});
-                                    setGatesSelected(copy);
+                                    highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
                                 }
                             }
                         }
                     })
             })
             rectRef.current.setAttributeNS(null, 'display', "none");
-            console.log(gatesSelected);
+            rectRef.current.setAttributeNS(null, 'x', "0");
+            rectRef.current.setAttributeNS(null, 'y', "0");
+            rectRef.current.setAttributeNS(null, 'width', "0");
+            rectRef.current.setAttributeNS(null, 'height', "0");
+            setGatesSelected(highlightedGates);
             setIsDrawing(false);
         }
     }
@@ -148,10 +148,12 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function deleteGate() {
-        console.log(gatesSelected);
         let copy = getQubitStateDeepCopy();
-        gatesSelected.map((gate) => {
+        console.log(gatesSelected);
+        gatesSelected.forEach((gate) => {
             copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
+            let qRef = qubitCellRef.current[gate.row][gate.col]
+            qRef.setAttributeNS(null, "style", "stroke : none;");
         })
         setState(copy);
     }
@@ -201,13 +203,13 @@ const useCircuitBuilderViewModel = () => {
         //if gate is being dragged from circuit
         if(isDragging) {
             let copy = getQubitStateDeepCopy();
-            let originalLocation = getGateLocation(draggingGateNode.current.target.id);
-            let newLocation = getGateLocation(e.target.id);
+            let originalLocation = {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")};
+            let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
             copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
             copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
             setState(copy);
         } else {
-            let gateLocation = getGateLocation(e.target.id);
+            let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
             let copy = getQubitStateDeepCopy();
             copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
             setState(copy);
@@ -281,7 +283,7 @@ const useCircuitBuilderViewModel = () => {
         let line = 6;
         let cregMeasure = 1;
         vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + (currQBState.length-1) + "];\n", "4: creg c[" + (currQBState.length-1) + "];\n" + "5: ")
-        currQBState.map((row, rowIndex) => row.map((v, i) => {
+        currQBState.forEach((row, rowIndex) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
                     vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
@@ -306,7 +308,7 @@ const useCircuitBuilderViewModel = () => {
         let json = [];
         if(checkMeasurementGate()) {
             json.push({'operation' : 'create_circuit', 'num_qubits' : currQBState.length});
-            currQBState.map((row, rowIndex) => row.map((v, i) => {
+            currQBState.forEach((row, rowIndex) => row.map((v, i) => {
                 if(v.hasGate) {
                     if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
@@ -325,7 +327,7 @@ const useCircuitBuilderViewModel = () => {
 
     function checkMeasurementGate() {
         let hasMeasure = false;
-        currQBState.map((row, rowIndex) => row.map((v, i) => {
+        currQBState.forEach((row) => row.map((v, i) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'measure') {
                     hasMeasure = true;
