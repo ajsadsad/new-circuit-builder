@@ -11,7 +11,7 @@ import React, {useRef} from 'react';
 import styles from '../css/AllGatesMenu.module.css';
 import { Collapse } from 'bootstrap';
 
-export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesView, gates, setDraggingGate, setDraggingGateNode }  ) {
+export default function AllGatesMenu ( { gates, setDraggingGate, setDraggingGateNode }  ) {
 
 
     const standardGates = gates.map((index) => {
@@ -74,55 +74,4 @@ export default function AllGatesMenu ( { optionsView, faveGatesView, allGatesVie
             </div>
         </div>
     );
-
-
-    // if (allGatesView === true) {
-    //     if (optionsView === false && faveGatesView === false) {
-    //         return [
-                // <div className={`${styles.AllGatesMenu} ${styles.AllGatesMenuNoOptionNoFave}`} ref={refContainer} >
-
-                //     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                //         Button with data-bs-target
-                //     </button>
-                //     <div class="collapse" id="collapseExample">
-
-                //         {gateImgs}
-
-                //         </div>
-                //         {/* All Gates Menu
-                //     width : {dimensions.width}
-                //     height : {dimensions.height} */}
-
-
-
-                // </div>
-    //         ]
-    //      } else if(optionsView === true && faveGatesView === false) {
-    //         return <div className = {
-    //                     `${ styles.AllGatesMenu }
-    //                      ${ styles.AllGatesMenuWithOptionNoFave }` }
-    //                     ref = { refContainer }>
-    //                 {/* All Gates Menu
-    //                  width : {dimensions.width}
-    //                  height : {dimensions.height} */}
-    //                  {
-    //                    gateImgs
-    //                  }
-    //                 </div>
-    //      } else if(optionsView === false && faveGatesView === true) {
-    //         return <div className = {
-    //                     `${ styles.AllGatesMenu }
-    //                      ${ styles.AllGatesMenuNoOptionWithFave }` }
-    //                     ref = { refContainer }>
-    //                 {/* All Gates Menu
-    //                  width : {dimensions.width}
-    //                  height : {dimensions.height} */}
-    //                  {
-    //                    gateImgs
-    //                  }
-    //                 </div>
-    //      }
-    // } else {
-    //     return <div style = {{display: "none"}}/>
-    // }
 }

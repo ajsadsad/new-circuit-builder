@@ -23,11 +23,6 @@ const useCircuitBuilderViewModel = () => {
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
 
-    const [optionViewable, setOptionView] = useState(false);
-    const [outputViewable, setOutputView] = useState(true);
-    const [allGatesViewable, setAllGatesView] = useState(true);
-    const [faveGatesViewable, setFaveGatesView] = useState(false);
-    const [circuitCodeViewable, setCircuitCodeView] = useState(true);
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
@@ -83,17 +78,6 @@ const useCircuitBuilderViewModel = () => {
             return;
         } else {
             startPts.current = ({x : e.clientX - e.currentTarget.getBoundingClientRect().left, y : e.clientY - e.currentTarget.getBoundingClientRect().top});
-            // rectRef.current.style.left = "0px";
-            // rectRef.current.style.width = "0px";
-            // rectRef.current.style.top = "0px";
-            // rectRef.current.style.height = "0px";
-            // rectRef.current.style.display = "block";
-            // rect.current = svgRef.current.createSVGRect();
-            // rect.current.x = 0;
-            // rect.current.y = 0;
-            // rect.current.width = 0;
-            // rect.current.height = 0;
-
             rectRef.current.setAttributeNS(null, 'x', "0");
             rectRef.current.setAttributeNS(null, 'y', "0");
             rectRef.current.setAttributeNS(null, 'width', "0");
@@ -109,10 +93,6 @@ const useCircuitBuilderViewModel = () => {
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
         } else {
-            // rectRef.current.setAttributeNS(null, 'x', "0");
-            // rectRef.current.setAttributeNS(null, 'y', "0");
-            // rectRef.current.setAttributeNS(null, 'width', "0");
-            // rectRef.current.setAttributeNS(null, 'height', "0");
             qubitCellRef.current.map((qRefRow, rowIndex) => {
                 const b = rectRef.current.getBoundingClientRect();
                     qRefRow.map((qRefCol, colIndex) => {
@@ -154,50 +134,6 @@ const useCircuitBuilderViewModel = () => {
             rectRef.current.setAttributeNS(null, 'y', startPts.current.y);
             rectRef.current.setAttributeNS(null, 'width', rectWidth);
             rectRef.current.setAttributeNS(null, 'height', rectHeight);
-
-
-            // rect.current.x = startPts.current.x;
-            // rect.current.y = startPts.current.y;
-            // rect.current.width = rectWidth;
-            // rect.current.height = rectHeight;
-
-            // if(newMouseX > startPts.current.x) {
-            //     rectRef.current.style.left = startPts.current.x + "px";
-            //     rectRef.current.style.width = newMouseX - startPts.current.x + "px";
-            // } else {
-            //     rectRef.current.style.left = newMouseX + "px";
-            //     rectRef.current.style.width = startPts.current.x  - newMouseX + "px";
-            // }
-
-            // if(newMouseY > startPts.current.y) {
-            //     rectRef.current.style.top = startPts.current.y + "px";
-            //     rectRef.current.style.height = newMouseY - startPts.current.y + "px";
-            // } else {
-            //     rectRef.current.style.top = newMouseY + "px";
-            //     rectRef.current.style.height = startPts.current.y - newMouseY + "px";
-            // }
-
-            // const a = qubitCellRef.current.getBoundingClientRect();
-            // const b = rectRef.current.getBoundingClientRect();
-            // if( !(a.y + a.height < b.y ||
-            //     a.y > b.y + b.height ||
-            //     a.x + a.width < b.x ||
-            //     a.x > b.x + b.width)) {
-            //     console.log("Hello")
-            //     let rowIndex = qubitCellRef.current.parentNode.parentNode.id
-            //     let colIndex = qubitCellRef.current.parentNode.id
-            //     if(gatesSelected.filter( g => g.row === rowIndex && g.col === colIndex).length > 0) {
-            //         qubitCellRef.current.setAttribute("class", `${styles.GateImg}`);
-            //         let copy = gatesSelected.filter(g => g.row !== rowIndex || g.col !== colIndex);
-            //         setGatesSelected(copy);
-            //     } else {
-            //         qubitCellRef.current.setAttribute("class", `${styles.GateImgSelected}`);
-            //         let gate = JSON.parse(qubitCellRef.current.getAttribute("gate"));
-            //         let copy = [...gatesSelected];
-            //         copy.push({ row : rowIndex, col : colIndex, gate : gate, e : qubitCellRef.current });
-            //         setGatesSelected(copy);
-            //     }
-            // }
         } else if (isDragging) {
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
             const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
@@ -231,57 +167,6 @@ const useCircuitBuilderViewModel = () => {
         setDraggingGateNode(e);
     }
 
-    // function handleClick(e) {
-    //     if(e.shiftKey) {
-    //         let rowIndex = e.currentTarget.parentNode.parentNode.id
-    //         let colIndex = e.currentTarget.parentNode.id
-    //         if(gatesSelected.filter( g => g.row === rowIndex && g.col === colIndex).length > 0) {
-    //             e.target.setAttribute("class", `${styles.GateImg}`);
-    //             let copy = gatesSelected.filter(g => g.row !== rowIndex || g.col !== colIndex);
-    //             setGatesSelected(copy);
-    //         } else {
-    //             e.target.setAttribute("class", `${styles.GateImgSelected}`);
-    //             let gate = JSON.parse(e.target.getAttribute("gate"));
-    //             let copy = [...gatesSelected];
-    //             copy.push({ row : rowIndex, col : colIndex, gate : gate, e : e.target });
-    //             setGatesSelected(copy);
-    //         }
-    //     } else {
-    //         let gate = JSON.parse(e.target.getAttribute("gate"));
-    //         setGateClickedName(gate.gateName);
-    //         setGateClickedDesc(gate.description);
-    //         setGateClickedThetaVal(gate.theta);
-    //         setGateClicked(e);
-    //         if(e.target.id === 'xrot' || e.target.id === 'yrot' || e.target.id === 'zrot') {
-    //             showThetaModal(true);
-    //         } else {
-    //             showNoParamModal(true);
-    //         }
-    //     }
-    // }
-
-    // function handleChange(e) {
-    //     //if gate is being dragged from circuit
-    //     if(draggingGateNode.current.target.getAttribute("inqubit") === "true") {
-    //         let copy = getQubitStateDeepCopy();
-    //         copy[draggingGateNode.current.target.parentElement.parentElement.id][draggingGateNode.current.target.parentElement.id] = { hasGate : false, gate : null};
-    //         copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current };
-    //         setState(copy);
-    //     } else {
-    //         let copy = getQubitStateDeepCopy();
-    //         copy[e.currentTarget.parentNode.id][e.target.id] = { hasGate : true, gate : draggingGate.current};
-    //         setState(copy);
-    //     }
-    // }
-
-    // function updateThetaModal(value) {
-    //     showThetaModal(false);
-    //     let updatedGate = JSON.parse(gateClicked.current.target.getAttribute("gate"));
-    //     updatedGate.theta = value;
-    //     let copy = getQubitStateDeepCopy();
-    //     copy[gateClicked.current.target.parentNode.parentNode.id][gateClicked.current.target.parentNode.id] = { hasGate : true, gate : updatedGate};
-    //     setState(copy);
-    // }
     function handleClick(e) {
         if(e.shiftKey) {
             let gateLocation = getGateLocation(e.target.id);
@@ -391,25 +276,6 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
-    // function swapColumn(notEmpty, empty){
-    // let copy =
-    //     for(){
-
-    //     }
-
-
-    // }
-
-
-
-
-
-
-
-
-    //    console.log(copy[1][1]);
-
-
     function convertCircuit() {
         let vcode = [];
         let line = 6;
@@ -483,42 +349,10 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
-    //  If option menu is opened then faveMenu has to be closed. Same way the other way round.
-    function updateOptionView() {
-        setOptionView(!optionViewable);
-        if(!optionViewable) {
-            setFaveGatesView(false);
-        }
-    }
-
-    function updateOutputView() {
-        setOutputView(!outputViewable);
-    }
-
-    function updateAllGatesMenuView() {
-        setAllGatesView(!allGatesViewable);
-    }
-
-    function updateFaveGatesView() {
-        setFaveGatesView(!faveGatesViewable)
-        if(!faveGatesViewable) {
-            setOptionView(false);
-        };
-    }
-
-    function updateCircuitCodeView() {
-        setCircuitCodeView(!circuitCodeViewable);
-    }
-
     return {
         gates,
         draggingGateNode,
         draggingGate,
-        optionViewable,
-        outputViewable,
-        allGatesViewable,
-        faveGatesViewable,
-        circuitCodeViewable,
         thetaModal,
         noParamModal,
         hasMeasure,
@@ -542,11 +376,6 @@ const useCircuitBuilderViewModel = () => {
         handleChange,
         setDraggingGate,
         setDraggingGateNode,
-        updateOptionView,
-        updateOutputView,
-        updateAllGatesMenuView,
-        updateFaveGatesView,
-        updateCircuitCodeView,
         convertCircuit,
         currQBState, setState, index, lastIndex, undo, redo,
         clearAllGates,

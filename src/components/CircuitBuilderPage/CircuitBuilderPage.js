@@ -18,11 +18,6 @@ export default function CircuitBuilderPage () {
 
     const {
         gates,
-        optionViewable,
-        outputViewable,
-        allGatesViewable,
-        faveGatesViewable,
-        circuitCodeViewable,
         gateFromQubit,
         gateClickedName,
         gateClickedDesc,
@@ -32,8 +27,6 @@ export default function CircuitBuilderPage () {
         setGateClicked,
         gateClickedThetaVal,
         gatesSelected,
-        mousePos,
-        mouseMove,
         deleteGate,
         clearSelectedGates,
         showMeasModal,
@@ -46,10 +39,6 @@ export default function CircuitBuilderPage () {
         processCircuit,
         handleChange,
         handleClick,
-        updateOptionView,
-        updateOutputView,
-        updateAllGatesMenuView,
-        updateFaveGatesView,
         circuitCode,
         setCircuitCode,
         convertCircuit,
@@ -69,17 +58,12 @@ export default function CircuitBuilderPage () {
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
                         <AllGatesMenu
-                            optionsView={optionViewable}
-                            faveGatesView={faveGatesViewable}
-                            allGatesView={allGatesViewable}
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
-                            gates={gates} />
+                            gates={gates}
+                        />
                     </div>
                     <CircuitCode
-                        codeView = { circuitCodeViewable }
-                        faveGatesView = { faveGatesViewable }
-                        allGatesView = { allGatesViewable }
                         currQBState = { currQBState }
                         convertCircuit = { convertCircuit }
                         circuitCode = { circuitCode }
@@ -98,11 +82,6 @@ export default function CircuitBuilderPage () {
                 <ContextMenuTrigger id="contextmenu">
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
-                            optionsView={optionViewable}
-                            faveGatesView={faveGatesViewable}
-                            codeView={circuitCodeViewable}
-                            outputView={outputViewable}
-                            allGatesView={allGatesViewable}
                             currQBState={currQBState}
                             gateFromQubit={gateFromQubit}
                             handleChange={handleChange}
@@ -174,37 +153,6 @@ export default function CircuitBuilderPage () {
                 hasMeasure={hasMeasure}
                 showMeasModal={showMeasModal}
             />
-
-
-            {/*
-            // <OptionsMenu
-            // optionsView = { optionViewable }
-            // />
-            //     <Output
-            //         outputView = { outputViewable }
-            //         codeView = { circuitCodeViewable }
-            //         faveGatesView = { faveGatesViewable }
-            //         optionsView = { optionViewable }
-            //     />
-                // <CircuitCode
-                //     codeView = { circuitCodeViewable }
-                //     faveGatesView = { faveGatesViewable }
-                //     allGatesView = { allGatesViewable }
-                // />
-            //     <FaveGatesMenu
-            //         faveGatesView = { faveGatesViewable }
-            //         setFaveGateView={ updateFaveGatesView }
-            //     />
-                //  <AllGatesMenu
-                //     optionsView = { optionViewable }
-                //     faveGatesView = { faveGatesViewable }
-                //     allGatesView = { allGatesViewable }
-                //     setDraggingGate = { setDraggingGate }
-                //     setDraggingGateNode = { setDraggingGateNode }
-                //     gates = { gates }
-                // />
-            */}
-
         </div>
     )
 }

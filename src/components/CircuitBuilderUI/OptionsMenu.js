@@ -19,18 +19,12 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                 <ul class="dropdown-menu dropdown-menu-dark ">
                     <li><a class="dropdown-item">Save</a></li>
                     <li><a class="dropdown-item" onClick={compress}>Compress</a></li>
-                    <li><a class="dropdown-item" onClick={clearAllGates}>Reset Grid</a></li>
-
+                    <li><a class="dropdown-item" onClick={clearAllGates}>Clear All</a></li>
+                    <li><a class="dropdown-item" onClick={processCircuit}>Process Circuit</a></li>
+                    <li><a class="dropdown-item" onClick={undo} disabled = { !canUndo }>Undo</a></li>
+                    <li><a class="dropdown-item" onClick={redo} disabled = {!canRedo }>Redo</a></li>
                 </ul>
             </div>
-            <button onClick = { processCircuit }> Create QASM JSON </button>
-            <button onClick = { redo } disabled = { !canRedo }> redo </button>
-            <button onClick = { undo } disabled = { !canUndo }> undo </button>
         </div>
-
-
-
-
-
     )
 }
