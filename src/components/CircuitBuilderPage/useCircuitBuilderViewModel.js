@@ -75,7 +75,7 @@ const useCircuitBuilderViewModel = () => {
         if(isDragging) {
             return;
         } else {
-            startPts.current = ({x : Math.abs(e.clientX - e.currentTarget.getBoundingClientRect().left), y : Math.abs(e.clientY - e.currentTarget.getBoundingClientRect().top)});
+            startPts.current = ({x : e.clientX - e.currentTarget.getBoundingClientRect().left, y : e.clientY - e.currentTarget.getBoundingClientRect().top});
             rectRef.current.setAttributeNS(null, 'display', "block");
             setIsDrawing(true);
         }
@@ -122,16 +122,24 @@ const useCircuitBuilderViewModel = () => {
         e.preventDefault();
         e.stopPropagation();
         if (isDrawing) {
-            const newMouseY = Math.abs(e.clientY - e.currentTarget.getBoundingClientRect().top);
-            const newMouseX = Math.abs(e.clientX - e.currentTarget.getBoundingClientRect().left);
+            const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top;
+            const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
 
-            const rectWidth = Math.abs(newMouseX - startPts.current.x);
-            const rectHeight = Math.abs(newMouseY - startPts.current.y);
+            if(newMouseX > startPts.current.x) {
+                rectRef.current.setAttributeNS(null, 'x', startPts.current.x);
+                rectRef.current.setAttributeNS(null, 'width', newMouseX - startPts.current.x);
+            } else {
+                rectRef.current.setAttributeNS(null, 'x', newMouseX);
+                rectRef.current.setAttributeNS(null, 'width', startPts.current.x - newMouseX);
+            }
 
-            rectRef.current.setAttributeNS(null, 'x', startPts.current.x);
-            rectRef.current.setAttributeNS(null, 'y', startPts.current.y);
-            rectRef.current.setAttributeNS(null, 'width', rectWidth);
-            rectRef.current.setAttributeNS(null, 'height', rectHeight);
+            if(newMouseY > startPts.current.y) {
+                rectRef.current.setAttributeNS(null, 'y', startPts.current.y);
+                rectRef.current.setAttributeNS(null, 'height', newMouseY - startPts.current.y);
+            } else {
+                rectRef.current.setAttributeNS(null, 'y', newMouseY);
+                rectRef.current.setAttributeNS(null, 'height', startPts.current.y - newMouseY);
+            }
         } else if (isDragging) {
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
             const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
