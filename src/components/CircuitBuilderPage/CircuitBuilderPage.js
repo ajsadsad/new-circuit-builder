@@ -42,7 +42,7 @@ export default function CircuitBuilderPage () {
         circuitCode,
         setCircuitCode,
         convertCircuit,
-        updateCircuitCodeView, currQBState, setState, index, lastIndex, undo, redo,
+        currQBState, index, lastIndex, undo, redo,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, draggingGate,
         Box, Container,
         startDraggingGate, imgRef, qubitCellRef,
@@ -53,7 +53,7 @@ export default function CircuitBuilderPage () {
 
 
     return (
-        <div onClick={(e) => { clearSelectedGates() }} >
+        <div>
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
@@ -117,13 +117,13 @@ export default function CircuitBuilderPage () {
                     />
             </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { undo() }} disabled = { !(index > 0)}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation();  undo() }} disabled = { !(index > 0)}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { redo() }} disabled = {!index < lastIndex}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => {e.stopPropagation(); redo() }} disabled = {!index < lastIndex}>
                     <span>Redo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ () => { deleteGate() }}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation(); deleteGate() }}>
                     <span>Delete</span>
                 </MenuItem>
                 {
