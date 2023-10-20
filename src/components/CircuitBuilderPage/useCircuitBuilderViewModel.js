@@ -21,8 +21,6 @@ import { type } from '@testing-library/user-event/dist/type';
 
 const useCircuitBuilderViewModel = () => {
 
-    const { gates, sendCircuitData } = useCircuitBuilderModel();
-
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
@@ -31,7 +29,6 @@ const useCircuitBuilderViewModel = () => {
     const [hasMeasure, showMeasModal] = useState(false);
     const [gatesSelected, setGatesSelected] = useState([]);
     const [circuitCode, setCircuitCode] = useState([]);
-    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ({ hasGate : false, gate : null})})));
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
     const gateClicked = useRef({e : undefined, gateRow : undefined, gateCol : undefined});
@@ -41,7 +38,11 @@ const useCircuitBuilderViewModel = () => {
     const [isDragging, setIsDragging] = useState(false);
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
+    const circuitBuilderRef = useRef(null);
     const qubitCellRef = useRef(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ("")})));
+
+    const { gates, sendCircuitData } = useCircuitBuilderModel();
+    const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -351,7 +352,7 @@ const useCircuitBuilderViewModel = () => {
             copy[currQBState.length].fill({hasGate : false, gate : null});
             setState(copy);
 
-            qubitCellRef.push(Array(currQBState[0].length));
+            qubitCellRef.current.push(Array(currQBState[0].length));
             copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
@@ -390,7 +391,7 @@ const useCircuitBuilderViewModel = () => {
         clearAllGates,
         compress,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
-        startDraggingGate, qubitCellRef,
+        startDraggingGate, qubitCellRef, circuitBuilderRef,
     }
 
 }

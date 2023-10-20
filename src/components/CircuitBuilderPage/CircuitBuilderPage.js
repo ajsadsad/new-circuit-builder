@@ -47,7 +47,7 @@ export default function CircuitBuilderPage () {
         Box, Container,
         startDraggingGate, imgRef, qubitCellRef,
         clearAllGates,
-        compress,
+        compress, circuitBuilderRef,
     } = useCircuitBuilderViewModel();
 
 
@@ -79,7 +79,7 @@ export default function CircuitBuilderPage () {
             </div>
 
             <div class="container text-center" className={styles.middle}>
-                <ContextMenuTrigger id="contextmenu">
+                <ContextMenuTrigger id="contextmenu" style = {"padding-left : 25%"}>
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             currQBState={currQBState}
@@ -101,6 +101,7 @@ export default function CircuitBuilderPage () {
                             startDraggingGate = { startDraggingGate }
                             imgRef = { imgRef }
                             qubitCellRef = { qubitCellRef }
+                            circuitBuilderRef = { circuitBuilderRef }
                         />
                 </ContextMenuTrigger>
             </div >

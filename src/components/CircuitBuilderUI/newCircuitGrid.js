@@ -5,7 +5,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
 
     return(
         <svg
-            height = { "100%" }
+            height = { "1600" }
             width = { "100%" }
             id = "circuit-grid"
             ref = { svgRef }
@@ -13,10 +13,9 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
             onMouseDown = { (e) => { e.stopPropagation(); startDrawRect(e); } }
             onMouseUp = { (e) => { e.preventDefault(); e.stopPropagation(); endDrawRect(e); } }
             onMouseMove = { (e) => { drawRect(e); } }
-            style = {  {"width" : "75vh", "height" : "50vh"}}
         >
         <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
-        <image ref = {imgRef} pointerEvents={ "none" } zIndex = { "2" }> </image>
+        <image ref = {imgRef} pointerEvents={ "none" }> </image>
         {
             qubitStates.map((row, rowIndex) => {
                 return (
@@ -70,7 +69,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 y = { 48 * rowIndex + 24}
                                                 width = { 48 }
                                                 height = { 48 }
-                                                key = { rowIndex + "." + colIndex }
+                                                key = { "Empty cell: " + rowIndex + "." + colIndex }
                                                 id = { rowIndex + "." + colIndex }
                                                 row = { rowIndex }
                                                 col = { colIndex }
