@@ -61,8 +61,8 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function clearSelectedGates() {
-        gatesSelected.map((g) => {
-            g.e.setAttribute("class", `${styles.GateImg}`);
+        gatesSelected.forEach((g) => {
+            g.e.setAttributeNS(null, "style", "stroke : none;");
         });
         setGatesSelected([]);
     }
@@ -172,7 +172,6 @@ const useCircuitBuilderViewModel = () => {
 
     function startDraggingGate(e) {
         setIsDragging(true);
-        console.log("test");
         startPts.current = ({x : e.clientX - e.target.getBoundingClientRect().left, y : e.clientY - e.target.getBoundingClientRect().top});
         setDraggingGateNode(e);
     }

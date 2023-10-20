@@ -53,7 +53,7 @@ export default function CircuitBuilderPage () {
 
 
     return (
-        <div>
+        <div onClick={ (e) => { if(e.button === 0) {clearSelectedGates()}}}>
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
