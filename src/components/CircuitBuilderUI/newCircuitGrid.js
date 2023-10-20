@@ -54,6 +54,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                             y = { 48 * rowIndex + 48 }
                                             width = { 48 }
                                             height = { 48 }
+                                            className = {styles.disableTextSelection}
                                         >
                                             {"q[" + rowIndex + "]"}
                                         </text>
