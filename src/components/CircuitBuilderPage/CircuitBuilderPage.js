@@ -48,12 +48,13 @@ export default function CircuitBuilderPage () {
         startDraggingGate, imgRef, qubitCellRef,
         clearAllGates,
         compress,
+        lineRef, circleRef,
     } = useCircuitBuilderViewModel();
 
 
 
     return (
-        <div>
+        <div onClick={ (e) => { if(e.button === 0) {clearSelectedGates()}}}>
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
@@ -79,7 +80,7 @@ export default function CircuitBuilderPage () {
             </div>
 
             <div class="container text-center" className={styles.middle}>
-                <ContextMenuTrigger id="contextmenu">
+                <ContextMenuTrigger id="contextmenu" style = {"padding-left : 25%"}>
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             currQBState={currQBState}
@@ -101,6 +102,8 @@ export default function CircuitBuilderPage () {
                             startDraggingGate = { startDraggingGate }
                             imgRef = { imgRef }
                             qubitCellRef = { qubitCellRef }
+                            lineRef = { lineRef }
+                            circleRef = { circleRef }
                         />
                 </ContextMenuTrigger>
             </div >

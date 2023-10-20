@@ -1,11 +1,11 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef}) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef }) {
 
     return(
         <svg
-            height = { "100%" }
+            height = { "1600" }
             width = { "100%" }
             id = "circuit-grid"
             ref = { svgRef }
@@ -13,10 +13,9 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
             onMouseDown = { (e) => { e.stopPropagation(); startDrawRect(e); } }
             onMouseUp = { (e) => { e.preventDefault(); e.stopPropagation(); endDrawRect(e); } }
             onMouseMove = { (e) => { drawRect(e); } }
-            style = {  {"width" : "75vh", "height" : "50vh"}}
         >
         <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
-        <image ref = {imgRef} pointerEvents={ "none" } zIndex = { "2" }> </image>
+        <image ref = {imgRef} pointerEvents={ "none" }> </image>
         {
             qubitStates.map((row, rowIndex) => {
                 return (
@@ -54,6 +53,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                             y = { 48 * rowIndex + 48 }
                                             width = { 48 }
                                             height = { 48 }
+                                            className = {styles.disableTextSelection}
                                         >
                                             {"q[" + rowIndex + "]"}
                                         </text>
@@ -69,7 +69,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 y = { 48 * rowIndex + 24}
                                                 width = { 48 }
                                                 height = { 48 }
-                                                key = { rowIndex + "." + colIndex }
+                                                key = { "Empty cell: " + rowIndex + "." + colIndex }
                                                 id = { rowIndex + "." + colIndex }
                                                 row = { rowIndex }
                                                 col = { colIndex }
@@ -84,27 +84,30 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                     x = { 48 * colIndex }
                                                     y = { 48 * rowIndex + 24}
                                                     key={rowIndex + "." + colIndex}
+                                                    ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                     width = { 40 }
                                                     height = { 40 }
                                                     row = { rowIndex }
                                                     col = { colIndex }
-                                                    ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                     style = {{"fill" : "none", "rx" : "15"}}
                                                     gate={JSON.stringify(col.gate)}
                                                 />
-                                                <image
-                                                    x = { 48 * colIndex }
-                                                    y = { 48 * rowIndex + 24}
-                                                    key={col.gate.qid}
-                                                    id={ col.gate.id }
-                                                    gate={JSON.stringify(col.gate)}
-                                                    row = { rowIndex }
-                                                    col = { colIndex }
-                                                    inqubit = {"true"}
-                                                    onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
-                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
-                                                    href={require(`../../assets/${col.gate.img}`)}
-                                                />
+                                                {
+                                                    col.gate !== "CNOT Target" &&
+                                                    <image
+                                                        x = { 48 * colIndex }
+                                                        y = { 48 * rowIndex + 24}
+                                                        key={col.gate.qid}
+                                                        id={ col.gate.id }
+                                                        gate={JSON.stringify(col.gate)}
+                                                        row = { rowIndex }
+                                                        col = { colIndex }
+                                                        inqubit = {"true"}
+                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
+                                                        href={require(`../../assets/${col.gate.img}`)}
+                                                    />
+                                                }
                                             </>
                                         }
                                     </g>

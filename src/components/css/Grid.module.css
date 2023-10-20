@@ -1,5 +1,6 @@
 .grid {
   width: 100%;
+  height : 1600px;
   z-index: 1;
   outline: none;
   margin: auto;
@@ -67,4 +68,12 @@
   stroke-width: 3;
   stroke-dasharray: 3, 3;
   stroke-linejoin: round;
-}/*# sourceMappingURL=Grid.module.css.map */
+}
+
+.disableTextSelection{
+  -moz-user-select:none; /* firefox */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE*/
+  user-select: none; /* Standard syntax */
+}
+/*# sourceMappingURL=Grid.module.css.map */
