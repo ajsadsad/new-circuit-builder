@@ -18,6 +18,7 @@ import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
 import styles from '../css/CircuitBuilder.module.css';
 import { type } from '@testing-library/user-event/dist/type';
+import cnot_gate from '../../assets/cnot_gate.svg';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -38,8 +39,8 @@ const useCircuitBuilderViewModel = () => {
     const [isDragging, setIsDragging] = useState(false);
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
-    const circuitBuilderRef = useRef(null);
-    const qubitCellRef = useRef(Array.from({length: 4},()=> Array.from({length: 18}, () => {return ("")})));
+    const qubitCellRef = useRef(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ("")})));
+    const [isDroppingCNOT, setIsDroppingCNOT] = useState(false);
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
@@ -62,10 +63,10 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function clearSelectedGates() {
-        gatesSelected.forEach((g) => {
-            g.e.setAttributeNS(null, "style", "stroke : none;");
-        });
-        setGatesSelected([]);
+        // gatesSelected.forEach((g) => {
+        //     g.e.setAttributeNS(null, "style", "stroke : none;");
+        // });
+        // setGatesSelected([]);
     }
 
     function clearAllGates() {
@@ -87,6 +88,11 @@ const useCircuitBuilderViewModel = () => {
             setIsDragging(false);
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
+        } else if(isDroppingCNOT) {
+            setIsDroppingCNOT(false);
+            // circleRef.current.setAttributeNS(null, "cy", e.clientY - e.currentTarget.getBoundingClientRect().top);
+            // circleRef.current.setAttributeNS(null, "r", "13");
+            // lineRef.current.setAttributeNS(null, "y2", e.clientY - e.currentTarget.getBoundingClientRect().top);
         } else {
             let highlightedGates = [...gatesSelected];
             qubitCellRef.current.forEach((qRefRow) => {
@@ -151,6 +157,26 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null, 'height', "38");
             imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
+        } else if (isDroppingCNOT) {
+            const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top;
+            const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
+
+            // const cnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            // const cnotCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            // let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 20;
+            // let midY = parseFloat(e.target.getAttributeNS(null, "y")) + 24;
+            // cnotLine.setAttributeNS(null,"x1", midX);
+            // cnotLine.setAttributeNS(null,"y1", midY);
+            // cnotLine.setAttributeNS(null,"x2", midX);
+            // cnotLine.setAttributeNS(null,"y2", midY);
+            // cnotCircle.setAttributeNS(null, "cx", midX);
+            // cnotCircle.setAttributeNS(null, "cy", midY);
+
+            // svgRef.current.appendChild(cnotLine);
+            // svgRef.current.appendChild(cnotCircle);
+            // circleRef.current.setAttributeNS(null, "cy", newMouseY);
+            // circleRef.current.setAttributeNS(null, "r", "13");
+            // lineRef.current.setAttributeNS(null, "y2", newMouseY);
         }
     }
 
@@ -221,6 +247,24 @@ const useCircuitBuilderViewModel = () => {
             let copy = getQubitStateDeepCopy();
             copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
             setState(copy);
+            if(draggingGate.current.qid === "cnot") {
+                setIsDroppingCNOT(true);
+
+                // const cnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                // const cnotCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                // let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 20;
+                // let midY = parseFloat(e.target.getAttributeNS(null, "y")) + 24;
+                // console.log(e.target.getAttributeNS(null, "x"));
+                // cnotLine.setAttributeNS(null,"x1", midX);
+                // cnotLine.setAttributeNS(null,"y1", midY);
+                // cnotLine.setAttributeNS(null,"x2", midX);
+                // cnotLine.setAttributeNS(null,"y2", midY);
+                // cnotCircle.setAttributeNS(null, "cx", midX);
+                // cnotCircle.setAttributeNS(null, "cy", midY);
+
+                // svgRef.current.appendChild(cnotLine);
+                // svgRef.current.appendChild(cnotCircle);
+            }
         }
         draggingGate.current = null;
         draggingGateNode.current = null;
@@ -391,7 +435,7 @@ const useCircuitBuilderViewModel = () => {
         clearAllGates,
         compress,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
-        startDraggingGate, qubitCellRef, circuitBuilderRef,
+        startDraggingGate, qubitCellRef, lineRef, circleRef,
     }
 
 }

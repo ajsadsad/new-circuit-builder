@@ -19,7 +19,7 @@ import React from 'react'
 import styles from '../css/CircuitBuilder.module.css'
 import NewCircuitGrid from './newCircuitGrid'
 
-export default function ReactiveCircuitBuilderUI({ circuitBuilderRef, currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, draggingGate, startDraggingGate, endDraggingGate, handleDraggingGate, imgRef, qubitCellRef }) {
+export default function ReactiveCircuitBuilderUI({currQBState, handleChange, moveGateFromQubit, addQubit, handleClick, setGateClicked, setDraggingGateNode, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, draggingGate, startDraggingGate, imgRef, qubitCellRef, lineRef, circleRef }) {
 
     let newG = (
         <NewCircuitGrid
@@ -39,11 +39,13 @@ export default function ReactiveCircuitBuilderUI({ circuitBuilderRef, currQBStat
             startDraggingGate = { startDraggingGate }
             imgRef = { imgRef }
             qubitCellRef={qubitCellRef}
+            lineRef = { lineRef }
+            circleRef = { circleRef }
         />
     )
 
     return (
-        <div className = { styles.CircuitBuilder } ref = { circuitBuilderRef }>
+        <div className = { styles.CircuitBuilder }>
                 { newG }
             </div>
     )

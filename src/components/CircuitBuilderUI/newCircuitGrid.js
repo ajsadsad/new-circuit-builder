@@ -1,7 +1,7 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef}) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef, lineRef, circleRef}) {
 
     return(
         <svg
@@ -16,6 +16,24 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
         >
         <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
         <image ref = {imgRef} pointerEvents={ "none" }> </image>
+        {/* <line
+            // stroke="#5E6C87" stroke-width="4"
+            ref = { lineRef }
+            pointerEvents={ "none" }
+            style = {{"stroke" : "black", "stroke-width" : "5px"}}
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="0">
+        </line>
+        <circle
+            ref = { circleRef }
+            pointerEvents={ "none" }
+            cx="0"
+            cy="0"
+            r="0"
+            // fill="#5E6C87"
+        /> */}
         {
             qubitStates.map((row, rowIndex) => {
                 return (

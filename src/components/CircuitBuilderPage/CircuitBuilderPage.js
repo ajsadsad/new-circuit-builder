@@ -47,7 +47,8 @@ export default function CircuitBuilderPage () {
         Box, Container,
         startDraggingGate, imgRef, qubitCellRef,
         clearAllGates,
-        compress, circuitBuilderRef,
+        compress,
+        lineRef, circleRef,
     } = useCircuitBuilderViewModel();
 
 
@@ -101,7 +102,8 @@ export default function CircuitBuilderPage () {
                             startDraggingGate = { startDraggingGate }
                             imgRef = { imgRef }
                             qubitCellRef = { qubitCellRef }
-                            circuitBuilderRef = { circuitBuilderRef }
+                            lineRef = { lineRef }
+                            circleRef = { circleRef }
                         />
                 </ContextMenuTrigger>
             </div >
