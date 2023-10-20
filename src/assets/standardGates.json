@@ -57,7 +57,7 @@
         "qid": "cnot",
         "qasmid" : "cx",
         "description": "CNOT or (Controlled Pauli-X) acts on 2 or more qubits.",
-        "img" : "cnot_gate.svg",
+        "img" : "x_gate.svg",
         "q_control" : "",
         "q_target" : ""
     },

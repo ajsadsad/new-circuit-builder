@@ -19,22 +19,6 @@ export default function AllGatesMenu ( { gates, setDraggingGate, setDraggingGate
     })
 
     const gateImgs = standardGates.map((gate) => {
-        if(gate.qid === "xrot") {
-            return (
-                <div class="col" style={{ minHeight: 120 }}>
-                    <img
-                        className={styles.GateImg}
-                        key={gate.qid}
-                        id={gate.qid}
-                        gate={JSON.stringify(gate)}
-                        src={require(`../../assets/${gate.img}`)}
-                        draggable={true}
-                        onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
-                    />
-                    <p> {gate.gateName} </p>
-                </div>
-            )
-        } else {
             return (
                 <div class="col" style={{ minHeight: 120 }}>
                     <img
@@ -50,7 +34,6 @@ export default function AllGatesMenu ( { gates, setDraggingGate, setDraggingGate
                 </div>
 
             )
-        }
     });
 
     return (

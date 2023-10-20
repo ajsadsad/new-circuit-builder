@@ -1,7 +1,7 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef, lineRef, circleRef}) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef }) {
 
     return(
         <svg
@@ -16,24 +16,6 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
         >
         <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
         <image ref = {imgRef} pointerEvents={ "none" }> </image>
-        {/* <line
-            // stroke="#5E6C87" stroke-width="4"
-            ref = { lineRef }
-            pointerEvents={ "none" }
-            style = {{"stroke" : "black", "stroke-width" : "5px"}}
-            x1="0"
-            x2="0"
-            y1="0"
-            y2="0">
-        </line>
-        <circle
-            ref = { circleRef }
-            pointerEvents={ "none" }
-            cx="0"
-            cy="0"
-            r="0"
-            // fill="#5E6C87"
-        /> */}
         {
             qubitStates.map((row, rowIndex) => {
                 return (
@@ -102,27 +84,30 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                     x = { 48 * colIndex }
                                                     y = { 48 * rowIndex + 24}
                                                     key={rowIndex + "." + colIndex}
+                                                    ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                     width = { 40 }
                                                     height = { 40 }
                                                     row = { rowIndex }
                                                     col = { colIndex }
-                                                    ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                     style = {{"fill" : "none", "rx" : "15"}}
                                                     gate={JSON.stringify(col.gate)}
                                                 />
-                                                <image
-                                                    x = { 48 * colIndex }
-                                                    y = { 48 * rowIndex + 24}
-                                                    key={col.gate.qid}
-                                                    id={ col.gate.id }
-                                                    gate={JSON.stringify(col.gate)}
-                                                    row = { rowIndex }
-                                                    col = { colIndex }
-                                                    inqubit = {"true"}
-                                                    onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
-                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
-                                                    href={require(`../../assets/${col.gate.img}`)}
-                                                />
+                                                {
+                                                    col.gate !== "CNOT Target" &&
+                                                    <image
+                                                        x = { 48 * colIndex }
+                                                        y = { 48 * rowIndex + 24}
+                                                        key={col.gate.qid}
+                                                        id={ col.gate.id }
+                                                        gate={JSON.stringify(col.gate)}
+                                                        row = { rowIndex }
+                                                        col = { colIndex }
+                                                        inqubit = {"true"}
+                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
+                                                        href={require(`../../assets/${col.gate.img}`)}
+                                                    />
+                                                }
                                             </>
                                         }
                                     </g>
