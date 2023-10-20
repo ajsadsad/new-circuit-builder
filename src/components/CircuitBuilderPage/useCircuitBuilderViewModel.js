@@ -63,10 +63,10 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function clearSelectedGates() {
-        // gatesSelected.forEach((g) => {
-        //     g.e.setAttributeNS(null, "style", "stroke : none;");
-        // });
-        // setGatesSelected([]);
+        gatesSelected.forEach((g) => {
+            g.e.setAttributeNS(null, "style", "stroke : none;");
+        });
+        setGatesSelected([]);
     }
 
     function clearAllGates() {
@@ -91,19 +91,10 @@ const useCircuitBuilderViewModel = () => {
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
         } else if(isDroppingCNOT.isDropping) {
-            let cnotLine = svgRef.current.getElementById("cnotLine:" + isDroppingCNOT.row + "." + isDroppingCNOT.col);
-            let cnotCircle = svgRef.current.getElementById("cnotCircle:" + isDroppingCNOT.row + "." + isDroppingCNOT.col);
-
-            svgRef.current.removeChild(cnotLine);
-            svgRef.current.removeChild(cnotCircle);
-
-            qubitCellRef.current[isDroppingCNOT.row][isDroppingCNOT.col].parentNode.appendChild(cnotLine);
-            qubitCellRef.current[isDroppingCNOT.row][isDroppingCNOT.col].parentNode.appendChild(cnotCircle);
-
             let copy = getQubitStateDeepCopy();
             copy[e.target.getAttributeNS(null, "row")][e.target.getAttributeNS(null, "col")] = { hasGate : true, gate : "CNOT Target"};
             let updatedGate = JSON.parse(qubitCellRef.current[isDroppingCNOT.row][isDroppingCNOT.col].getAttributeNS(null, "gate"));
-            updatedGate.q_target = e.target.getAttributeNS(null, "row");
+            updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
             updatedGate.q_control = isDroppingCNOT.row;
             copy[isDroppingCNOT.row][isDroppingCNOT.col] = { hasGate : true, gate : updatedGate};
             setState(copy);
@@ -122,9 +113,11 @@ const useCircuitBuilderViewModel = () => {
                                     qRefCol.setAttributeNS(null, "style", "stroke : none;")
                                     highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol)
                                 } else {
-                                    qRefCol.setAttributeNS(null, "style", "stroke : black; stroke-width : 5");
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
-                                    highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
+                                    if(gate !== "CNOT Target") {
+                                        qRefCol.setAttributeNS(null, "style", "stroke : black; stroke-width : 5");
+                                        highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
+                                    }
                                 }
                             }
                         }
@@ -179,13 +172,23 @@ const useCircuitBuilderViewModel = () => {
             let cnotCircle = svgRef.current.getElementById("cnotCircle:" + isDroppingCNOT.row + "." + isDroppingCNOT.col);
 
             cnotLine.setAttributeNS(null, "y2", newMouseY);
-            cnotLine.setAttributeNS(null, "style", "stroke : black; stroke-width : 5px");
+            cnotLine.setAttributeNS(null, "style", "stroke : black; stroke-width : 5px;");
             cnotCircle.setAttributeNS(null, "cy", newMouseY);
             cnotCircle.setAttributeNS(null, "r", "13");
 
         }
     }
 
+    //undoing of CNOT gate doesn't bring back the tail and target circle. I think can fix this by making the img of the qubit cell that has the target circle to be equal to
+    //the circle and line elements of the SVG.
+    /*
+                    img = source(
+                        <g>
+                            <line/>
+                            <circle/>
+                        </g>
+                    )
+    */
     function deleteGate() {
         let copy = getQubitStateDeepCopy();
         gatesSelected.forEach((gate) => {
@@ -193,20 +196,11 @@ const useCircuitBuilderViewModel = () => {
             qRef.setAttributeNS(null, "style", "stroke : none;");
 
             if(gate.gate.qid === "cnot") {
-                let qRefParent = qRef.parentNode;
-                let children = qRefParent.childNodes;
-                let cnotCircle = null;
-                let cnotLine = null;
-                for (const node of children) {
-                    if(node.getAttributeNS(null, "id") === "cnotCircle:" + gate.row + "." + gate.col) {
-                        cnotCircle = node;
-                    } else if (node.getAttributeNS(null, "id") === "cnotLine:" + gate.row + "." + gate.col) {
-                        cnotLine = node;
-                    }
-                }
-
-                qRefParent.removeChild(cnotCircle);
-                qRefParent.removeChild(cnotLine);
+                let cnotLine = svgRef.current.getElementById("cnotLine:" + gate.row + "." + gate.col);
+                let cnotCircle = svgRef.current.getElementById("cnotCircle:" + gate.row + "." + gate.col);
+                svgRef.current.removeChild(cnotCircle);
+                svgRef.current.removeChild(cnotLine);
+                copy[gate.gate.q_target][gate.col] = { hasGate : false, gate : undefined };
             }
             copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
         })
@@ -264,20 +258,11 @@ const useCircuitBuilderViewModel = () => {
             copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
             copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
             if(draggingGate.current.qid === "cnot") {
-                let qRef = qubitCellRef.current[originalLocation.row][originalLocation.col];
-                let qRefParent = qRef.parentNode;
-                let children = qRefParent.childNodes;
-                let cnotCircle = null;
-                let cnotLine = null;
-                for (const node of children) {
-                    if(node.getAttributeNS(null, "id") === "cnotCircle:" + originalLocation.row + "." + originalLocation.col) {
-                        cnotCircle = node;
-                    } else if (node.getAttributeNS(null, "id") === "cnotLine:" + originalLocation.row + "." + originalLocation.col) {
-                        cnotLine = node;
-                    }
-                }
-                qRefParent.removeChild(cnotCircle);
-                qRefParent.removeChild(cnotLine);
+
+                let cnotCircle = svgRef.current.getElementById("cnotCircle:" + originalLocation.row + "." + originalLocation.col);
+                let cnotLine = svgRef.current.getElementById("cnotLine:" + originalLocation.row + "." + originalLocation.col);
+                svgRef.current.removeChild(cnotCircle);
+                svgRef.current.removeChild(cnotLine);
                 copy[draggingGate.current.q_target][originalLocation.col] = { hasGate : false, gate : null };
 
                 let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 20;
@@ -430,8 +415,8 @@ const useCircuitBuilderViewModel = () => {
                 if(v.hasGate) {
                     if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
-                    } else if(v.gate.id === 'cnot') {
-                        json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : v.gate.q_control, 'q_target' : v.gate.q_target})
+                    } else if(v.gate.qid === 'cnot') {
+                        json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : rowIndex, 'q_target' : v.gate.q_target})
                     } else {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
                     }

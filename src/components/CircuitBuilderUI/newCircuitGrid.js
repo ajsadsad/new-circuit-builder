@@ -10,6 +10,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
             id = "circuit-grid"
             ref = { svgRef }
             className = { styles.grid }
+            onClick = { (e) => { e.stopPropagation() }}
             onMouseDown = { (e) => { e.stopPropagation(); startDrawRect(e); } }
             onMouseUp = { (e) => { e.preventDefault(); e.stopPropagation(); endDrawRect(e); } }
             onMouseMove = { (e) => { drawRect(e); } }
@@ -61,7 +62,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                 )
                             } else {
                                 return (
-                                    <g>
+                                    <g id= { "one" }>
                                         {
                                             !col.hasGate ?
                                             <rect
@@ -98,7 +99,6 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                         x = { 48 * colIndex }
                                                         y = { 48 * rowIndex + 24}
                                                         key={col.gate.qid}
-                                                        id={ col.gate.id }
                                                         gate={JSON.stringify(col.gate)}
                                                         row = { rowIndex }
                                                         col = { colIndex }
