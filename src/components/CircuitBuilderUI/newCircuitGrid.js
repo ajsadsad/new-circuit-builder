@@ -1,7 +1,7 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef }) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleMouseClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick}) {
 
     return(
         <svg
@@ -62,7 +62,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                 )
                             } else {
                                 return (
-                                    <g id= { "one" }>
+                                    <g>
                                         {
                                             !col.hasGate ?
                                             <rect
@@ -103,10 +103,46 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                         row = { rowIndex }
                                                         col = { colIndex }
                                                         inqubit = {"true"}
-                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
-                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
+                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp()}}
+                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
+                                                        onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
                                                         href={require(`../../assets/${col.gate.img}`)}
                                                     />
+                                                }
+                                                {
+                                                    col.gate.qid === "xrot" &&
+                                                    <text
+                                                        x = { 48 * colIndex }
+                                                        y = { 48 * rowIndex }
+                                                        fontSize={ "12px"}
+                                                        fontWeight={"bold"}
+                                                        dx = { 8 }
+                                                        dy = { 75 }
+                                                    >
+                                                        { col.gate.theta }
+                                                    </text>
+                                                }
+                                                {
+                                                    col.gate.qid === "zrot" &&
+                                                    <text
+                                                        x = { 48 * colIndex + 8}
+                                                        y = { 48 * rowIndex + 75}
+                                                        fontSize={ "12px"}
+                                                        fontWeight={"bold"}
+                                                    >
+                                                        { col.gate.theta }
+                                                    </text>
+                                                }
+                                                {
+                                                    col.gate.qid === "yrot" &&
+                                                    <text
+                                                        x = { 48 * colIndex + 8}
+                                                        y = { 48 * rowIndex + 75}
+                                                        fontSize={ "12px"}
+                                                        fontWeight={"bold"}
+                                                    >
+                                                        { col.gate.theta }
+                                                    </text>
                                                 }
                                             </>
                                         }

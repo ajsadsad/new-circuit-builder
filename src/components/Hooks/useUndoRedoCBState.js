@@ -22,6 +22,7 @@ export default function useUndoRedoCBState(initialCBState, setQubitOp) {
     }
 
     const redo = (steps = 1) => {
+        console.log("click")
         setIndex(Math.min(states.length - 1, Number(index) + (Number(steps) || 1)));
     };
 
