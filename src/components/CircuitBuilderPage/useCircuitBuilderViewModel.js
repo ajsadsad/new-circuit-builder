@@ -39,10 +39,8 @@ const useCircuitBuilderViewModel = () => {
     const rectRef = useRef(null);
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
-    const qubitCellRef = useRef(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ("")})));
-    const [isDroppingCNOT, setIsDroppingCNOT] = useState({isDropping : false, row : 0, col : 0});
     const [favGates, setFavGates] = useState([]);
-  
+
     const [lastClicked, setLastClicked] = useState(null);
     const qubitCellRef = useRef(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ("")})));
     const timerRef = useRef(null);
@@ -552,11 +550,9 @@ const useCircuitBuilderViewModel = () => {
         clearAllGates,
         compress,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
-        favGates
-        startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick
+        startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
-        addToFavGates
-        startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick
+        addToFavGates,
     }
 
 }

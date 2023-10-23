@@ -48,9 +48,8 @@ export default function CircuitBuilderPage () {
         startDraggingGate, imgRef, qubitCellRef, thetaModalRef,
         clearAllGates,
         compress,
-        favGates
         setLastClicked,
-        addToFavGates
+        addToFavGates,
         lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick
     } = useCircuitBuilderViewModel();
 
@@ -74,7 +73,7 @@ export default function CircuitBuilderPage () {
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
                             gates={favGates}
-                
+
                         />
                     </div>
                     <CircuitCode
