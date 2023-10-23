@@ -41,3 +41,5 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ## Packages Included
 React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
+
+### Features / Bugs still to be Implemented / Fix

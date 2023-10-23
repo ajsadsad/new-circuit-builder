@@ -1,7 +1,7 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef }) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleMouseClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick}) {
 
     return(
         <svg
@@ -10,6 +10,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
             id = "circuit-grid"
             ref = { svgRef }
             className = { styles.grid }
+            onClick = { (e) => { e.stopPropagation() }}
             onMouseDown = { (e) => { e.stopPropagation(); startDrawRect(e); } }
             onMouseUp = { (e) => { e.preventDefault(); e.stopPropagation(); endDrawRect(e); } }
             onMouseMove = { (e) => { drawRect(e); } }
@@ -21,10 +22,10 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                 return (
                     <g className = { styles.qubit }>
                         <line
-                            x1 = { 48 }
-                            y1 = { 48 * (rowIndex + 1) }
-                            x2 = { 48 * row.length}
-                            y2 = { 48 * (rowIndex + 1) }
+                            x1 = { 58 }
+                            y1 = { 58 * (rowIndex + 1) }
+                            x2 = { 58 * row.length}
+                            y2 = { 58 * (rowIndex + 1) }
                             key = { rowIndex }
                             id = { rowIndex }
                         />
@@ -34,8 +35,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                 return (
                                 <g>
                                     <image
-                                        x = { 48 * colIndex + 12 }
-                                        y = { 48 * rowIndex + 33 }
+                                        x = { 58 * colIndex + 12 }
+                                        y = { 58 * rowIndex + 43 }
                                         key = { rowIndex + "." + colIndex }
                                         id = { rowIndex + "." + colIndex }
                                         href={circle}
@@ -49,10 +50,10 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                 return (
                                     <g>
                                         <text
-                                            x = { 48 * colIndex + 12 }
-                                            y = { 48 * rowIndex + 48 }
-                                            width = { 48 }
-                                            height = { 48 }
+                                            x = { 58 * colIndex + 12 }
+                                            y = { 58 * rowIndex + 62 }
+                                            width = { 58 }
+                                            height = { 58 }
                                             className = {styles.disableTextSelection}
                                         >
                                             {"q[" + rowIndex + "]"}
@@ -65,10 +66,10 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                         {
                                             !col.hasGate ?
                                             <rect
-                                                x = { 48 * colIndex }
-                                                y = { 48 * rowIndex + 24}
-                                                width = { 48 }
-                                                height = { 48 }
+                                                x = { 58 * colIndex }
+                                                y = { 58 * rowIndex + 24}
+                                                width = { 58 }
+                                                height = { 58 }
                                                 key = { "Empty cell: " + rowIndex + "." + colIndex }
                                                 id = { rowIndex + "." + colIndex }
                                                 row = { rowIndex }
@@ -81,8 +82,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                             :
                                             <>
                                                 <rect
-                                                    x = { 48 * colIndex }
-                                                    y = { 48 * rowIndex + 24}
+                                                    x = { 58 * colIndex }
+                                                    y = { 58 * rowIndex + 36}
                                                     key={rowIndex + "." + colIndex}
                                                     ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                     width = { 40 }
@@ -95,18 +96,53 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 {
                                                     col.gate !== "CNOT Target" &&
                                                     <image
-                                                        x = { 48 * colIndex }
-                                                        y = { 48 * rowIndex + 24}
+                                                        x = { 58 * colIndex }
+                                                        y = { 58 * rowIndex + 36}
                                                         key={col.gate.qid}
-                                                        id={ col.gate.id }
                                                         gate={JSON.stringify(col.gate)}
                                                         row = { rowIndex }
                                                         col = { colIndex }
                                                         inqubit = {"true"}
-                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); }}
-                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); if(e.button === 0) {setDraggingGate(col.gate); startDraggingGate(e);} }}
+                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
+                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
+                                                        onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
                                                         href={require(`../../assets/${col.gate.img}`)}
                                                     />
+                                                }
+                                                {
+                                                    col.gate.qid === "xrot" &&
+                                                    <text
+                                                        x = { 58 * colIndex }
+                                                        y = { 58 * rowIndex + 12}
+                                                        fontSize={ "12px"}
+                                                        fontWeight={"bold"}
+                                                        dx = { 8 }
+                                                        dy = { 75 }
+                                                    >
+                                                        { col.gate.theta }
+                                                    </text>
+                                                }
+                                                {
+                                                    col.gate.qid === "zrot" &&
+                                                    <text
+                                                        x = { 58 * colIndex + 8}
+                                                        y = { 58 * rowIndex + 87}
+                                                        fontSize={ "12px"}
+                                                        fontWeight={"bold"}
+                                                    >
+                                                        { col.gate.theta }
+                                                    </text>
+                                                }
+                                                {
+                                                    col.gate.qid === "yrot" &&
+                                                    <text
+                                                        x = { 58 * colIndex + 8}
+                                                        y = { 58 * rowIndex + 87}
+                                                        fontSize={ "12px"}
+                                                        fontWeight={"bold"}
+                                                    >
+                                                        { col.gate.theta }
+                                                    </text>
                                                 }
                                             </>
                                         }

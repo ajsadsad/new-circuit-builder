@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-export default function useUndoRedoCBState(initialCBState, setQubitOp) {
+export default function useUndoRedoCBState(initialCBState) {
 
     const [states, setStates] = useState([initialCBState]);
     const [index, setIndex] = useState(0);
@@ -22,6 +22,7 @@ export default function useUndoRedoCBState(initialCBState, setQubitOp) {
     }
 
     const redo = (steps = 1) => {
+        console.log("click")
         setIndex(Math.min(states.length - 1, Number(index) + (Number(steps) || 1)));
     };
 
