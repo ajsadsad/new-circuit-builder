@@ -27,6 +27,7 @@ export default function CircuitBuilderPage () {
         setGateClicked,
         gateClickedThetaVal,
         gatesSelected,
+        favGates,
         deleteGate,
         clearSelectedGates,
         showMeasModal,
@@ -49,6 +50,8 @@ export default function CircuitBuilderPage () {
         clearAllGates,
         compress,
         lineRef, circleRef,
+        setLastClicked,
+        addToFavGates
     } = useCircuitBuilderViewModel();
 
 
@@ -62,6 +65,16 @@ export default function CircuitBuilderPage () {
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
                             gates={gates}
+                            setLastClicked={setLastClicked}
+                            addToFavGates={addToFavGates}
+                        />
+                    </div>
+                    <div class="col-12">
+                        <FaveGatesMenu
+                            setDraggingGate={setDraggingGate}
+                            setDraggingGateNode={setDraggingGateNode}
+                            gates={favGates}
+                
                         />
                     </div>
                     <CircuitCode

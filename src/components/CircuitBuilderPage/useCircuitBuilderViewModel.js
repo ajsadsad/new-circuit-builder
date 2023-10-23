@@ -41,9 +41,36 @@ const useCircuitBuilderViewModel = () => {
     const imgRef = useRef(null);
     const qubitCellRef = useRef(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ("")})));
     const [isDroppingCNOT, setIsDroppingCNOT] = useState({isDropping : false, row : 0, col : 0});
+    
+    const [favGates, setFavGates] = useState([]);
+    const [lastClicked, setLastClicked] = useState(null);
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
+
+
+
+    function addToFavGates() {
+        if (!favGatesContains()) {
+            setFavGates(state => [...state, lastClicked]);
+        }
+    }
+
+
+
+    function favGatesContains() {
+        for (let favGate of favGates) {
+            if (JSON.stringify(favGate) === JSON.stringify(lastClicked)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -482,6 +509,7 @@ const useCircuitBuilderViewModel = () => {
         gateClickedThetaVal,
         gatesSelected,
         circuitCode,
+        favGates,
         setCircuitCode,
         deleteGate,
         clearSelectedGates,
@@ -501,7 +529,9 @@ const useCircuitBuilderViewModel = () => {
         clearAllGates,
         compress,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
-        startDraggingGate, qubitCellRef
+        startDraggingGate, qubitCellRef,
+        setLastClicked,
+        addToFavGates
     }
 
 }

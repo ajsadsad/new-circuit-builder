@@ -15,38 +15,12 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import contextStyles from '../css/ContextMenu.module.css';
 import { useState } from "react";
 
-export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNode }) {
+export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNode, setLastClicked, addToFavGates }) {
 
 
     const standardGates = gates.map((index) => {
         return (JSON.parse([index]));
     })
-
-
-    const [favGates, setFavGates] = useState([]);
-    const [lastClicked, setLastClicked] = useState(null);
-
-    function addToFavGates(){
-        let found = false;
-        for(let gate of favGates){
-            console.log(gate + ", " + lastClicked);
-            if(gate.name === lastClicked.name){
-                found = true;
-                
-            }
-        }
-        if(found == false){
-            let temp = favGates;
-            temp.push(lastClicked);
-            setFavGates(temp);
-        }
-        console.log(favGates);
-        }
-        
-    
-    
-    
-
     
 
     const gateImgs = standardGates.map((gate) => {
@@ -94,10 +68,10 @@ export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNo
                                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                             </svg>
                         </span>
-
                     </MenuItem>
-
                 </ContextMenu>
         </div>
+        
     );
+    
 }
