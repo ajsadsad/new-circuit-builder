@@ -16,7 +16,6 @@
 import { useState, useRef, useEffect, createElement } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
-import styles from '../css/CircuitBuilder.module.css';
 import { type } from '@testing-library/user-event/dist/type';
 
 const useCircuitBuilderViewModel = () => {
@@ -273,37 +272,34 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
-    //dragging CNOT gate is not working because when you call removeCnotPath and update state of QBcircuit it is not ready or updated within the handleChange funciton
-    // probably just have to get rid of the removeCnotPath and put it inside of handeChange.
     function handleChange(e) {
         //if gate is being dragged from circuit
         if(isDragging) {
             if(draggingGate.current.qid === "cnot") {
                 let gate = JSON.parse(draggingGateNode.current.target.getAttributeNS(null, "gate"));
-                removeCnotPath(gate, draggingGateNode.current.target.getAttributeNS(null, "col"));
+                let gateCol = draggingGateNode.current.target.getAttributeNS(null, "col");
                 let copy = getQubitStateDeepCopy();
+
+                if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
+                    for(var i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
+                        console.log("test")
+                        copy[i][gateCol] = { hasGate : false, gate : undefined }
+                    }
+                } else {
+                    for(var i = parseFloat(gate.q_control); i <= gate.q_target; i++) {
+                        copy[i][gateCol] = { hasGate : false, gate : undefined }
+                    }
+                }
+
                 let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
                 copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
                 let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 20;
                 let midY = parseFloat(e.target.getAttributeNS(null, "y")) + 24;
                 let row = e.target.getAttributeNS(null, "row");
                 let col = e.target.getAttributeNS(null, "col")
-                setIsDroppingCNOT({isDropping : true, row : row, col : col});
-                const newCnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                const newCnotCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                newCnotLine.setAttributeNS(null,"x1", midX);
-                newCnotLine.setAttributeNS(null,"y1", midY);
-                newCnotLine.setAttributeNS(null,"x2", midX);
-                newCnotLine.setAttributeNS(null,"y2", midY);
-                newCnotLine.setAttributeNS(null, "id", "cnotLine:" + row + "." + col);
-                newCnotLine.setAttributeNS(null, "pointer-events", "none");
-                newCnotCircle.setAttributeNS(null, "cx", midX);
-                newCnotCircle.setAttributeNS(null, "cy", midY);
-                newCnotCircle.setAttributeNS(null, "id", "cnotCircle:" + row + "." + col);
-                newCnotCircle.setAttributeNS(null, "pointer-events", "none");
 
-                svgRef.current.appendChild(newCnotLine);
-                svgRef.current.appendChild(newCnotCircle );
+                setIsDroppingCNOT({isDropping : true, row : row, col : col});
+                createCnotSVGElements(row, col, midX, midY);
                 setIsDragging(false);
                 setState(copy);
             } else {
@@ -324,22 +320,7 @@ const useCircuitBuilderViewModel = () => {
                 let row = e.target.getAttributeNS(null, "row");
                 let col = e.target.getAttributeNS(null, "col")
                 setIsDroppingCNOT({isDropping : true, row : row, col : col});
-
-                const cnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                const cnotCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                cnotLine.setAttributeNS(null,"x1", midX);
-                cnotLine.setAttributeNS(null,"y1", midY);
-                cnotLine.setAttributeNS(null,"x2", midX);
-                cnotLine.setAttributeNS(null,"y2", midY);
-                cnotLine.setAttributeNS(null, "id", "cnotLine:" + row + "." + col);
-                cnotLine.setAttributeNS(null, "pointer-events", "none");
-                cnotCircle.setAttributeNS(null, "cx", midX);
-                cnotCircle.setAttributeNS(null, "cy", midY);
-                cnotCircle.setAttributeNS(null, "id", "cnotCircle:" + row + "." + col);
-                cnotCircle.setAttributeNS(null, "pointer-events", "none");
-
-                svgRef.current.appendChild(cnotLine);
-                svgRef.current.appendChild(cnotCircle);
+                createCnotSVGElements(row, col, midX, midY);
             }
 
             let copy = getQubitStateDeepCopy();
@@ -350,21 +331,21 @@ const useCircuitBuilderViewModel = () => {
         draggingGate.current = null;
     }
 
-    function removeCnotPath(gate, gateCol) {
-        let copy = getQubitStateDeepCopy();
-        console.log(gate);
-        if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
-            for(var i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
-                console.log("test")
-                copy[i][gateCol] = { hasGate : false, gate : undefined }
-            }
-        } else {
-            for(var i = parseFloat(gate.q_control); i <= gate.q_target; i++) {
-                copy[i][gateCol] = { hasGate : false, gate : undefined }
-            }
-        }
-        setState(copy);
-    }
+    // function removeCnotPath(gate, gateCol) {
+    //     let copy = getQubitStateDeepCopy();
+    //     console.log(gate);
+    //     if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
+    //         for(var i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
+    //             console.log("test")
+    //             copy[i][gateCol] = { hasGate : false, gate : undefined }
+    //         }
+    //     } else {
+    //         for(var i = parseFloat(gate.q_control); i <= gate.q_target; i++) {
+    //             copy[i][gateCol] = { hasGate : false, gate : undefined }
+    //         }
+    //     }
+    //     setState(copy);
+    // }
 
     function addCnotPath(target) {
         let copy = getQubitStateDeepCopy();
@@ -378,6 +359,27 @@ const useCircuitBuilderViewModel = () => {
             }
         }
         return copy;
+    }
+
+
+    // Adds SVG elements for the CNOT gate target and path to the SVG DOM
+    function createCnotSVGElements(row, col, midX, midY) {
+
+        const cnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        const cnotCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        cnotLine.setAttributeNS(null,"x1", midX);
+        cnotLine.setAttributeNS(null,"y1", midY);
+        cnotLine.setAttributeNS(null,"x2", midX);
+        cnotLine.setAttributeNS(null,"y2", midY);
+        cnotLine.setAttributeNS(null, "id", "cnotLine:" + row + "." + col);
+        cnotLine.setAttributeNS(null, "pointer-events", "none");
+        cnotCircle.setAttributeNS(null, "cx", midX);
+        cnotCircle.setAttributeNS(null, "cy", midY);
+        cnotCircle.setAttributeNS(null, "id", "cnotCircle:" + row + "." + col);
+        cnotCircle.setAttributeNS(null, "pointer-events", "none");
+
+        svgRef.current.appendChild(cnotLine);
+        svgRef.current.appendChild(cnotCircle);
     }
 
     function updateThetaModal(value) {
