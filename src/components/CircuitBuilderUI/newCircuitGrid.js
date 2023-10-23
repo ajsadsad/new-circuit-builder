@@ -22,10 +22,10 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                 return (
                     <g className = { styles.qubit }>
                         <line
-                            x1 = { 48 }
-                            y1 = { 48 * (rowIndex + 1) }
-                            x2 = { 48 * row.length}
-                            y2 = { 48 * (rowIndex + 1) }
+                            x1 = { 58 }
+                            y1 = { 58 * (rowIndex + 1) }
+                            x2 = { 58 * row.length}
+                            y2 = { 58 * (rowIndex + 1) }
                             key = { rowIndex }
                             id = { rowIndex }
                         />
@@ -35,8 +35,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                 return (
                                 <g>
                                     <image
-                                        x = { 48 * colIndex + 12 }
-                                        y = { 48 * rowIndex + 33 }
+                                        x = { 58 * colIndex + 12 }
+                                        y = { 58 * rowIndex + 43 }
                                         key = { rowIndex + "." + colIndex }
                                         id = { rowIndex + "." + colIndex }
                                         href={circle}
@@ -50,10 +50,10 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                 return (
                                     <g>
                                         <text
-                                            x = { 48 * colIndex + 12 }
-                                            y = { 48 * rowIndex + 48 }
-                                            width = { 48 }
-                                            height = { 48 }
+                                            x = { 58 * colIndex + 12 }
+                                            y = { 58 * rowIndex + 62 }
+                                            width = { 58 }
+                                            height = { 58 }
                                             className = {styles.disableTextSelection}
                                         >
                                             {"q[" + rowIndex + "]"}
@@ -66,10 +66,10 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                         {
                                             !col.hasGate ?
                                             <rect
-                                                x = { 48 * colIndex }
-                                                y = { 48 * rowIndex + 24}
-                                                width = { 48 }
-                                                height = { 48 }
+                                                x = { 58 * colIndex }
+                                                y = { 58 * rowIndex + 24}
+                                                width = { 58 }
+                                                height = { 58 }
                                                 key = { "Empty cell: " + rowIndex + "." + colIndex }
                                                 id = { rowIndex + "." + colIndex }
                                                 row = { rowIndex }
@@ -82,8 +82,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                             :
                                             <>
                                                 <rect
-                                                    x = { 48 * colIndex }
-                                                    y = { 48 * rowIndex + 24}
+                                                    x = { 58 * colIndex }
+                                                    y = { 58 * rowIndex + 36}
                                                     key={rowIndex + "." + colIndex}
                                                     ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                     width = { 40 }
@@ -96,8 +96,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 {
                                                     col.gate !== "CNOT Target" &&
                                                     <image
-                                                        x = { 48 * colIndex }
-                                                        y = { 48 * rowIndex + 24}
+                                                        x = { 58 * colIndex }
+                                                        y = { 58 * rowIndex + 36}
                                                         key={col.gate.qid}
                                                         gate={JSON.stringify(col.gate)}
                                                         row = { rowIndex }
@@ -112,8 +112,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 {
                                                     col.gate.qid === "xrot" &&
                                                     <text
-                                                        x = { 48 * colIndex }
-                                                        y = { 48 * rowIndex }
+                                                        x = { 58 * colIndex }
+                                                        y = { 58 * rowIndex + 12}
                                                         fontSize={ "12px"}
                                                         fontWeight={"bold"}
                                                         dx = { 8 }
@@ -125,8 +125,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 {
                                                     col.gate.qid === "zrot" &&
                                                     <text
-                                                        x = { 48 * colIndex + 8}
-                                                        y = { 48 * rowIndex + 75}
+                                                        x = { 58 * colIndex + 8}
+                                                        y = { 58 * rowIndex + 87}
                                                         fontSize={ "12px"}
                                                         fontWeight={"bold"}
                                                     >
@@ -136,8 +136,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 {
                                                     col.gate.qid === "yrot" &&
                                                     <text
-                                                        x = { 48 * colIndex + 8}
-                                                        y = { 48 * rowIndex + 75}
+                                                        x = { 58 * colIndex + 8}
+                                                        y = { 58 * rowIndex + 87}
                                                         fontSize={ "12px"}
                                                         fontWeight={"bold"}
                                                     >

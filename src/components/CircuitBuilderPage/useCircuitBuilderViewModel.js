@@ -273,6 +273,8 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
+    //dragging CNOT gate is not working because when you call removeCnotPath and update state of QBcircuit it is not ready or updated within the handleChange funciton
+    // probably just have to get rid of the removeCnotPath and put it inside of handeChange.
     function handleChange(e) {
         //if gate is being dragged from circuit
         if(isDragging) {
