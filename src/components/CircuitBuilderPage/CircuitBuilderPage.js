@@ -50,7 +50,8 @@ export default function CircuitBuilderPage () {
         compress,
         setLastClicked,
         addToFavGates,
-        lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick
+        lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
+        makeCompoundGate,
     } = useCircuitBuilderViewModel();
 
 
@@ -146,7 +147,7 @@ export default function CircuitBuilderPage () {
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={() => { console.log("Compound!") }}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={(e) => { e.stopPropagation(); makeCompoundGate() }}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }

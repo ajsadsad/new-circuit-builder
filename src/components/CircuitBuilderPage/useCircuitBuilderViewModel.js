@@ -58,15 +58,11 @@ const useCircuitBuilderViewModel = () => {
         }, 100)
     }
 
-
-
     function addToFavGates() {
         if (!favGatesContains()) {
             setFavGates(state => [...state, lastClicked]);
         }
     }
-
-
 
     function favGatesContains() {
         for (let favGate of favGates) {
@@ -76,11 +72,6 @@ const useCircuitBuilderViewModel = () => {
         }
         return false;
     }
-
-
-
-
-
 
     function setDraggingGate(gate) {
         draggingGate.current = gate;
@@ -170,7 +161,7 @@ const useCircuitBuilderViewModel = () => {
                                 } else {
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
                                     if(!(gate.gateName === "cnot_target" || gate.gateName === "cnot_path")) {
-                                        qRefCol.setAttributeNS(null, "style", "stroke : black; stroke-width : 5");
+                                        qRefCol.setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5");
                                         highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
                                     }
                                 }
@@ -275,7 +266,7 @@ const useCircuitBuilderViewModel = () => {
                                 } else {
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
                                     if(gate.gate !== "cnot_target" && gate.gate !== "cnot_path") {
-                                        qRefCol.setAttributeNS(null, "style", "stroke : black; stroke-width : 5");
+                                        qRefCol.setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5");
                                         highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
                                     }
                                 }
@@ -309,7 +300,6 @@ const useCircuitBuilderViewModel = () => {
 
                 if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
                     for(var i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
-                        console.log("test")
                         copy[i][gateCol] = { hasGate : false, gate : undefined }
                     }
                 } else {
@@ -371,7 +361,6 @@ const useCircuitBuilderViewModel = () => {
         }
         return copy;
     }
-
 
     // Adds SVG elements for the CNOT gate target and path to the SVG DOM
     function createCnotSVGElements(row, col, midX, midY) {
@@ -438,6 +427,68 @@ const useCircuitBuilderViewModel = () => {
             }
         }
         setState(copy);
+    }
+
+    function makeCompoundGate() {
+
+        let copy = getQubitStateDeepCopy();
+        var lowestQubit = gatesSelected[0].row;
+        var highestQubit = gatesSelected[0].row;
+        var lowestQubitCell = gatesSelected[0].col
+        gatesSelected.forEach((gate) => {
+            if(gate.row < lowestQubit) {
+                lowestQubit = gate.row;
+            } else if (gate.row > highestQubit) {
+                highestQubit = gate.row;
+            }
+            if(gate.col < lowestQubitCell) {
+                lowestQubitCell = gate.col;
+            }
+            copy[gate.row][gate.col] = { hasGate : false, gate : undefined };
+        })
+
+        let stdGates = [];
+        gatesSelected.forEach((gate) =>  {
+            stdGates.push(JSON.parse(gate.e.getAttributeNS(null, "gate")));
+        })
+
+        for(var i = lowestQubit; i <= highestQubit; i++) {
+            copy[i][lowestQubitCell] = { hasGate : true, gate : {gateName : "Compound Gate", img : "cnot_path.svg"}}
+        }
+
+        let compoundGate = {
+            "gateName" : "Compound Gate",
+            "qid" : "compound_gate",
+            "qasmid" : "compound_gate",
+            "description" : "User Created Compound Gate",
+            "gates" : stdGates
+        }
+        console.log(compoundGate);
+        setState(copy);
+        /*
+            "gateName": "Compound Gate",
+            "qid": "name given to compound gate by user",
+            "qasmid" : "compound_gate",
+            "description": "Compound Gate",
+            "gates:" [
+                    {
+                        "gateName": "Rotated Pauli X gate",
+                        "qid": "xrot",
+                        "qasmid" : "rx",
+                        "description": "RX (Rotated Pauli X gate) is a single-qubit rotation through an angle of π/2 around the x-axis.",
+                        "img" : "x_gate.svg",
+                        "theta" : "0.35",
+                    },
+                    {
+                        "gateName": "Rotated Pauli X gate",
+                        "qid": "xrot",
+                        "qasmid" : "rx",
+                        "description": "RX (Rotated Pauli X gate) is a single-qubit rotation through an angle of π/2 around the x-axis.",
+                        "img" : "x_gate.svg",
+                        "theta" : "0.35"
+                    }
+            ]
+        */
     }
 
     function convertCircuit() {
@@ -553,6 +604,7 @@ const useCircuitBuilderViewModel = () => {
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
         addToFavGates,
+        makeCompoundGate,
     }
 
 }

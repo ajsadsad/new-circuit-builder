@@ -62,13 +62,6 @@
   z-index: 1;
   opacity: 0.2;
 }
-.qubitCell .hover {
-  fill: #B5C2D7;
-  stroke: none;
-  stroke-width: 3;
-  stroke-dasharray: 3, 3;
-  stroke-linejoin: round;
-}
 
 .disableTextSelection{
   -moz-user-select:none; /* firefox */
