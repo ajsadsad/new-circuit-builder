@@ -331,22 +331,6 @@ const useCircuitBuilderViewModel = () => {
         draggingGate.current = null;
     }
 
-    // function removeCnotPath(gate, gateCol) {
-    //     let copy = getQubitStateDeepCopy();
-    //     console.log(gate);
-    //     if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
-    //         for(var i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
-    //             console.log("test")
-    //             copy[i][gateCol] = { hasGate : false, gate : undefined }
-    //         }
-    //     } else {
-    //         for(var i = parseFloat(gate.q_control); i <= gate.q_target; i++) {
-    //             copy[i][gateCol] = { hasGate : false, gate : undefined }
-    //         }
-    //     }
-    //     setState(copy);
-    // }
-
     function addCnotPath(target) {
         let copy = getQubitStateDeepCopy();
         if(target.row > isDroppingCNOT.row ) {
@@ -440,6 +424,8 @@ const useCircuitBuilderViewModel = () => {
                     vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
                 } else if(v.gate.id === 'cnot') {
                     vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                } else if(v.gate.gateName === "cnot_path" || v.gate.gateNAme === "cnot_target") {
+                    return;
                 } else {
                     if(v.gate.qid === 'measure') {
                         vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "] -> c[" + cregMeasure + "];\n")
@@ -465,6 +451,8 @@ const useCircuitBuilderViewModel = () => {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
                     } else if(v.gate.qid === 'cnot') {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'q_control' : rowIndex, 'q_target' : v.gate.q_target})
+                    } else if(v.gate.gateName === "cnot_path" || v.gate.gateNAme === "cnot_target") {
+                        return;
                     } else {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex })
                     }
