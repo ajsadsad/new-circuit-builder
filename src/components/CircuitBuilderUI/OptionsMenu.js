@@ -22,7 +22,7 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                     <li><a class="dropdown-item" onClick={clearAllGates}>Clear All</a></li>
                     <li><a class="dropdown-item" onClick={processCircuit}>Process Circuit</a></li>
                     <li><a class="dropdown-item" onClick={undo} disabled = { !canUndo }>Undo</a></li>
-                    <li><a class="dropdown-item" onClick={redo} disabled = {!canRedo }>Redo</a></li>
+                    <li><a class="dropdown-item" onClick={redo} disabled = { !canRedo }>Redo</a></li>
                 </ul>
             </div>
         </div>

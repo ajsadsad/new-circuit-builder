@@ -34,7 +34,6 @@ export default function CircuitBuilderPage () {
         setDraggingGate,
         setDraggingGateNode,
         showNoParamModal,
-        updateSlider,
         updateThetaModal,
         addQubit,
         processCircuit,
@@ -46,12 +45,13 @@ export default function CircuitBuilderPage () {
         currQBState, index, lastIndex, undo, redo,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, draggingGate,
         Box, Container,
-        startDraggingGate, imgRef, qubitCellRef,
+        startDraggingGate, imgRef, qubitCellRef, thetaModalRef,
         clearAllGates,
         compress,
-        lineRef, circleRef,
+        favGates
         setLastClicked,
         addToFavGates
+        lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick
     } = useCircuitBuilderViewModel();
 
 
@@ -117,6 +117,9 @@ export default function CircuitBuilderPage () {
                             qubitCellRef = { qubitCellRef }
                             lineRef = { lineRef }
                             circleRef = { circleRef }
+                            handleOnMouseDown = { handleOnMouseDown }
+                            handleOnMouseUp = { handleOnMouseUp }
+                            handleOnClick = { handleOnClick }
                         />
                 </ContextMenuTrigger>
             </div >
@@ -155,8 +158,8 @@ export default function CircuitBuilderPage () {
                 updateThetaModal={updateThetaModal}
                 gateClickedName={gateClickedName}
                 gateClickedDesc={gateClickedDesc}
-                updateSlider={updateSlider}
                 gateClickedThetaVal={gateClickedThetaVal}
+                thetaModalRef = { thetaModalRef }
             />
             <NoParamModal
                 gateClickedName={gateClickedName}

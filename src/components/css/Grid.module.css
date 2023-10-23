@@ -30,7 +30,7 @@
   position: absolute;
 }
 .qubit line {
-  stroke: #6076A0;
+  stroke: black;
   stroke-width: 2;
   z-index: 1;
   position: relative;
