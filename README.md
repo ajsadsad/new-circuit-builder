@@ -43,5 +43,3 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
 
 ### Features / Bugs still to be Implemented / Fix
-- CNOT gate path and not allowing gates to be dropped between the control qubit and the target qubit.
-- CNOT gate tail and target not being compressed with compress feature.

@@ -103,7 +103,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                         row = { rowIndex }
                                                         col = { colIndex }
                                                         inqubit = {"true"}
-                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp()}}
+                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
                                                         onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
                                                         onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
                                                         href={require(`../../assets/${col.gate.img}`)}

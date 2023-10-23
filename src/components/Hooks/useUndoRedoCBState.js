@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-export default function useUndoRedoCBState(initialCBState, setQubitOp) {
+export default function useUndoRedoCBState(initialCBState) {
 
     const [states, setStates] = useState([initialCBState]);
     const [index, setIndex] = useState(0);
