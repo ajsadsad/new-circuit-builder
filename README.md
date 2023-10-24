@@ -43,3 +43,5 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
 
 ### Features / Bugs still to be Implemented / Fix
+- Moving a compound gate after creating it.
+- Selecting a compound gate as one etity.

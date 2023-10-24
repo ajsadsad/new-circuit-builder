@@ -31,6 +31,8 @@ const useCircuitBuilderViewModel = () => {
     const [isDrawing, setIsDrawing] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [isDroppingCNOT, setIsDroppingCNOT] = useState({isDropping : false, row : 0, col : 0});
+    const [compoundGateModal, showCompoundGateModal] = useState(false);
+    const [compoundGate, setCompoundGateClicked] = useState();
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -92,7 +94,7 @@ const useCircuitBuilderViewModel = () => {
 
     function clearSelectedGates() {
         gatesSelected.forEach((g) => {
-            g.e.setAttributeNS(null, "style", "stroke : none;");
+            g.e.setAttributeNS(null, "style", "stroke : none; fill : none");
         });
         setGatesSelected([]);
     }
@@ -156,12 +158,12 @@ const useCircuitBuilderViewModel = () => {
                             let col = qRefCol.getAttributeNS(null, "col");
                             if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
                                 if(gatesSelected.filter( g => g.e === qRefCol).length > 0) {
-                                    qRefCol.setAttributeNS(null, "style", "stroke : none;")
+                                    qRefCol.setAttributeNS(null, "style", "stroke : none; fill : none")
                                     highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol)
                                 } else {
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
                                     if(!(gate.gateName === "cnot_target" || gate.gateName === "cnot_path")) {
-                                        qRefCol.setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5");
+                                        qRefCol.setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5; fill : none");
                                         highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
                                     }
                                 }
@@ -227,11 +229,11 @@ const useCircuitBuilderViewModel = () => {
 
             if(gate.gate.qid === "cnot") {
                 if(gate.gate.q_target < gate.row) {
-                    for(var i = gate.gate.q_target; i <= gate.row; i++) {
+                    for(let i = gate.gate.q_target; i <= gate.row; i++) {
                         copy[i][gate.col] = { hasGate : false, gate : undefined }
                     }
                 } else {
-                    for(var i = gate.row; i <= gate.gate.q_target; i++) {
+                    for(let i = gate.row; i <= gate.gate.q_target; i++) {
                         copy[i][gate.col] = { hasGate : false, gate : undefined }
                     }
                 }
@@ -261,12 +263,12 @@ const useCircuitBuilderViewModel = () => {
                             let col = qRefCol.getAttributeNS(null, "col");
                             if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
                                 if(gatesSelected.filter( g => g.e === qRefCol).length > 0) {
-                                    qRefCol.setAttributeNS(null, "style", "stroke : none;")
+                                    qRefCol.setAttributeNS(null, "style", "stroke : none; fill : none;")
                                     highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol)
                                 } else {
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
                                     if(gate.gate !== "cnot_target" && gate.gate !== "cnot_path") {
-                                        qRefCol.setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5");
+                                        qRefCol.setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5; fill : none");
                                         highlightedGates.push({ row : row, col : col, gate : gate, e : qRefCol});
                                     }
                                 }
@@ -284,6 +286,10 @@ const useCircuitBuilderViewModel = () => {
             setGateClicked(e, gateLocation.row, gateLocation.col);
             if(gate.qid === 'xrot' || gate.qid === 'yrot' || gate.qid === 'zrot') {
                 showThetaModal(true);
+            } else if(gate.gateName === "Compound Gate"){
+                console.log(gate);
+                setCompoundGateClicked(gate);
+                showCompoundGateModal(true);
             } else {
                 showNoParamModal(true);
             }
@@ -299,11 +305,11 @@ const useCircuitBuilderViewModel = () => {
                 let copy = getQubitStateDeepCopy();
 
                 if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
-                    for(var i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
+                    for(let i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
                         copy[i][gateCol] = { hasGate : false, gate : undefined }
                     }
                 } else {
-                    for(var i = parseFloat(gate.q_control); i <= gate.q_target; i++) {
+                    for(let i = parseFloat(gate.q_control); i <= gate.q_target; i++) {
                         copy[i][gateCol] = { hasGate : false, gate : undefined }
                     }
                 }
@@ -429,11 +435,12 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
+    //Have to change it so that the ID is the name provided by the user so that it is unique.
     function makeCompoundGate() {
 
         let copy = getQubitStateDeepCopy();
         var lowestQubit = gatesSelected[0].row;
-        var highestQubit = gatesSelected[0].row;
+        var highestQubit = 0;
         var lowestQubitCell = gatesSelected[0].col
         gatesSelected.forEach((gate) => {
             if(gate.row < lowestQubit) {
@@ -452,18 +459,24 @@ const useCircuitBuilderViewModel = () => {
             stdGates.push(JSON.parse(gate.e.getAttributeNS(null, "gate")));
         })
 
-        for(var i = lowestQubit; i <= highestQubit; i++) {
-            copy[i][lowestQubitCell] = { hasGate : true, gate : {gateName : "Compound Gate", img : "cnot_path.svg"}}
-        }
-
         let compoundGate = {
             "gateName" : "Compound Gate",
             "qid" : "compound_gate",
             "qasmid" : "compound_gate",
             "description" : "User Created Compound Gate",
+            "location" : {
+                "rowStart" : lowestQubit,
+                "rowEnd" : highestQubit,
+                "col" : lowestQubitCell,
+            },
             "gates" : stdGates
         }
-        console.log(compoundGate);
+
+        for(let i = lowestQubit; i <= highestQubit; i++) {
+            copy[i][lowestQubitCell] = { hasGate : true, gate : compoundGate }
+        }
+
+        clearSelectedGates();
         setState(copy);
         /*
             "gateName": "Compound Gate",
@@ -568,6 +581,7 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
+
     return {
         gates,
         draggingGateNode,
@@ -604,7 +618,7 @@ const useCircuitBuilderViewModel = () => {
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate,
+        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate
     }
 
 }

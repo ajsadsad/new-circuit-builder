@@ -13,6 +13,7 @@ import NoParamModal from '../Modals/NoParamModal';
 import MeasurementModal from '../Modals/MeasurementModal';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import { clear } from '@testing-library/user-event/dist/clear';
+import CompoundGateModal from '../Modals/CompoundGateModal';
 
 export default function CircuitBuilderPage () {
 
@@ -51,7 +52,7 @@ export default function CircuitBuilderPage () {
         setLastClicked,
         addToFavGates,
         lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
-        makeCompoundGate,
+        makeCompoundGate, compoundGate, showCompoundGateModal, compoundGateModal
     } = useCircuitBuilderViewModel();
 
 
@@ -171,6 +172,12 @@ export default function CircuitBuilderPage () {
             <MeasurementModal
                 hasMeasure={hasMeasure}
                 showMeasModal={showMeasModal}
+            />
+
+            <CompoundGateModal
+                compoundGate = { compoundGate }
+                showCompoundGateModal = { showCompoundGateModal }
+                compoundGateModal = { compoundGateModal }
             />
         </div>
     )
