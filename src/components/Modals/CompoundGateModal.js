@@ -20,7 +20,7 @@ export default function CompoundGateModal( { compoundGate, showCompoundGateModal
         >
         <Modal.Header closeButton>
                 <Modal.Title id="example-modal-sizes-title-sm">
-                    No Measurement Gate
+                    Compound Gate
                 </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -28,35 +28,43 @@ export default function CompoundGateModal( { compoundGate, showCompoundGateModal
                 height = { "500px" }
                 width = { "500px" }
                 id = "circuit-grid"
-                className = { styles.grid }
             >
                 {
                     !compoundGate ?
                     <>
-                        herro
+                        <text>
+                            Hello
+                        </text>
                     </>
                     :
                     <>
                     {
-                        compoundGate.gates.forEach((gate, index) => {
-                            for(var i = compoundGate.location.rowStart; i < compoundGate.location.rowEnd; i++) {
-                                return (
-                                    <g key = { index } className = { styles.qubit }>
-                                        <line
-                                            x1 = { 58 }
-                                            y1 = { 57 * (i + 1) }
-                                            x2 = { 58 * compoundGate.gates}
-                                            y2 = { 57 * (i + 1) }
-                                        />
-                                        <image
-                                            x = { 58 * index + 9.5}
-                                            y = { 58 * i + 37}
-                                            gate={JSON.stringify(gate)}
-                                            href={require(`../../assets/${gate.img}`)}
-                                        />
-                                    </g>
-                                )
-                            }
+                        compoundGate.gates.map((row, rowIndex) => {
+                            return (
+                                <g key = { rowIndex } className = { styles.qubit }>
+                                    <line
+                                        x1 = { 0 }
+                                        y1 = { 57 * (rowIndex + 1) }
+                                        x2 = { 58 * compoundGate.length}
+                                        y2 = { 57 * (rowIndex + 1) }
+                                        id = { rowIndex }
+                                    />
+                                {
+                                    row.map((col, colIndex) => {
+                                        return (
+                                            <g>
+                                                <image
+                                                    x = { 58 * col.col + 9.5}
+                                                    y = { 58 * col.row + 37}
+                                                    gate={JSON.stringify(col.gate)}
+                                                    href={require(`../../assets/${col.gate.img}`)}
+                                                />
+                                            </g>
+                                        )
+                                    })
+                                }
+                                </g>
+                            )
                         })
                     }
                     </>

@@ -287,8 +287,12 @@ const useCircuitBuilderViewModel = () => {
             if(gate.qid === 'xrot' || gate.qid === 'yrot' || gate.qid === 'zrot') {
                 showThetaModal(true);
             } else if(gate.gateName === "Compound Gate"){
-                console.log(gate);
-                setCompoundGateClicked(gate);
+                let compoundGateGates = Array.from({length: Math.floor(gate.gates.length)},()=> Array.from({length: gate.gates.length}, () => {return ("")}));
+                gate.gates.forEach((g) => {
+                    compoundGateGates[g.location.row][g.location.col] = g;
+                })
+                console.log(compoundGateGates);
+                setCompoundGateClicked(compoundGateGates);
                 showCompoundGateModal(true);
             } else {
                 showNoParamModal(true);
@@ -456,7 +460,7 @@ const useCircuitBuilderViewModel = () => {
 
         let stdGates = [];
         gatesSelected.forEach((gate) =>  {
-            stdGates.push(JSON.parse(gate.e.getAttributeNS(null, "gate")));
+            stdGates.push({ gate : JSON.parse(gate.e.getAttributeNS(null, "gate")), location : { row: gate.row, col : gate.col } });
         })
 
         let compoundGate = {
@@ -464,11 +468,6 @@ const useCircuitBuilderViewModel = () => {
             "qid" : "compound_gate",
             "qasmid" : "compound_gate",
             "description" : "User Created Compound Gate",
-            "location" : {
-                "rowStart" : lowestQubit,
-                "rowEnd" : highestQubit,
-                "col" : lowestQubitCell,
-            },
             "gates" : stdGates
         }
 
@@ -478,30 +477,6 @@ const useCircuitBuilderViewModel = () => {
 
         clearSelectedGates();
         setState(copy);
-        /*
-            "gateName": "Compound Gate",
-            "qid": "name given to compound gate by user",
-            "qasmid" : "compound_gate",
-            "description": "Compound Gate",
-            "gates:" [
-                    {
-                        "gateName": "Rotated Pauli X gate",
-                        "qid": "xrot",
-                        "qasmid" : "rx",
-                        "description": "RX (Rotated Pauli X gate) is a single-qubit rotation through an angle of π/2 around the x-axis.",
-                        "img" : "x_gate.svg",
-                        "theta" : "0.35",
-                    },
-                    {
-                        "gateName": "Rotated Pauli X gate",
-                        "qid": "xrot",
-                        "qasmid" : "rx",
-                        "description": "RX (Rotated Pauli X gate) is a single-qubit rotation through an angle of π/2 around the x-axis.",
-                        "img" : "x_gate.svg",
-                        "theta" : "0.35"
-                    }
-            ]
-        */
     }
 
     function convertCircuit() {
