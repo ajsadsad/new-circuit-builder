@@ -287,9 +287,19 @@ const useCircuitBuilderViewModel = () => {
             if(gate.qid === 'xrot' || gate.qid === 'yrot' || gate.qid === 'zrot') {
                 showThetaModal(true);
             } else if(gate.gateName === "Compound Gate"){
-                let compoundGateGates = Array.from({length: Math.floor(gate.gates.length)},()=> Array.from({length: gate.gates.length}, () => {return ("")}));
+                let compoundGateGates = Array.from({length: Math.floor(gate.gates.length)},()=> Array.from({length: gate.gates.length}, () => {return (undefined)}));
+                let currRowIndex = 0;
+                let currColIndex = 0; 
+                let originalRow = gate.gates[0].location.row; 
                 gate.gates.forEach((g) => {
-                    compoundGateGates[g.location.row][g.location.col] = g;
+                    if(originalRow !== g.location.row) {
+                        currColIndex = 0; 
+                        currRowIndex = currRowIndex + 1; 
+                    }
+                    g.location.row = currRowIndex; 
+                    g.location.col = currColIndex; 
+                    compoundGateGates[currRowIndex][currColIndex] = g; 
+                    currColIndex =  currColIndex + 1; 
                 })
                 console.log(compoundGateGates);
                 setCompoundGateClicked(compoundGateGates);
@@ -475,6 +485,7 @@ const useCircuitBuilderViewModel = () => {
             copy[i][lowestQubitCell] = { hasGate : true, gate : compoundGate }
         }
 
+        console.log(compoundGate)
         clearSelectedGates();
         setState(copy);
     }

@@ -123,6 +123,10 @@ export default function CircuitBuilderPage () {
                             handleOnClick = { handleOnClick }
                         />
                 </ContextMenuTrigger>
+
+                {/* <div style = {{"height" : "100%", "width" : "50%", "background" : "black"}}>
+                    
+                </div> */}
             </div >
 
             <div className={styles.optionsBar}>
@@ -140,7 +144,7 @@ export default function CircuitBuilderPage () {
                 <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation();  undo() }} disabled = { !(index > 0)}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => {e.stopPropagation(); redo() }} disabled = {!index < lastIndex}>
+                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => {e.stopPropagation(); redo() }} disabled = {!(index < lastIndex)}>
                     <span>Redo</span>
                 </MenuItem>
                 <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation(); deleteGate() }}>
@@ -148,7 +152,7 @@ export default function CircuitBuilderPage () {
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={(e) => { e.stopPropagation(); makeCompoundGate() }}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation(); makeCompoundGate() }}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }

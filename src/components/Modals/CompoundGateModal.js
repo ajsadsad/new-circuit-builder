@@ -30,18 +30,13 @@ export default function CompoundGateModal( { compoundGate, showCompoundGateModal
                 id = "circuit-grid"
             >
                 {
-                    !compoundGate ?
-                    <>
-                        <text>
-                            Hello
-                        </text>
-                    </>
-                    :
+                    compoundGate &&
                     <>
                     {
-                        compoundGate.gates.map((row, rowIndex) => {
+                        compoundGate.map((row, rowIndex) => {
                             return (
-                                <g key = { rowIndex } className = { styles.qubit }>
+                                row &&
+                                    <g key = { rowIndex } className = { styles.qubit }>
                                     <line
                                         x1 = { 0 }
                                         y1 = { 57 * (rowIndex + 1) }
@@ -52,12 +47,13 @@ export default function CompoundGateModal( { compoundGate, showCompoundGateModal
                                 {
                                     row.map((col, colIndex) => {
                                         return (
+                                            col && 
                                             <g>
                                                 <image
-                                                    x = { 58 * col.col + 9.5}
-                                                    y = { 58 * col.row + 37}
-                                                    gate={JSON.stringify(col.gate)}
-                                                    href={require(`../../assets/${col.gate.img}`)}
+                                                    x = { 58 * col.location.col + 9.5}
+                                                    y = { 58 * col.location.row + 37}
+                                                    gate = { JSON.stringify(col.gate) }
+                                                    href = { require(`../../assets/${col.gate.img}`) }
                                                 />
                                             </g>
                                         )
