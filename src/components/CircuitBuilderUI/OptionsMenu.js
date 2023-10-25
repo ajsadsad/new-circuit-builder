@@ -3,7 +3,7 @@ import React from 'react'
 import styles from "../css/OptionsMenu.module.css";
 import { Dropdown } from 'react-bootstrap';
 
-export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, compress }) {
+export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, strongCompress, weakCompress }) {
 
     const canUndo = index > 0;
     const canRedo = index < lastIndex;
@@ -18,7 +18,8 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                 </button>
                 <ul class="dropdown-menu dropdown-menu-dark ">
                     <li><a class="dropdown-item">Save</a></li>
-                    <li><a class="dropdown-item" onClick={compress}>Compress</a></li>
+                    <li><a class="dropdown-item" onClick={weakCompress}>Weak Compress</a></li>
+                    <li><a class="dropdown-item" onClick={strongCompress}>Strong Compress</a></li>
                     <li><a class="dropdown-item" onClick={clearAllGates}>Clear All</a></li>
                     <li><a class="dropdown-item" onClick={processCircuit}>Process Circuit</a></li>
                     <li><a class="dropdown-item" onClick={undo} disabled = { !canUndo }>Undo</a></li>

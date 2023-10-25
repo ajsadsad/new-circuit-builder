@@ -412,7 +412,7 @@ const useCircuitBuilderViewModel = () => {
         gateClicked.current = null;
     }
 
-    function compress() {
+    function weakCompress() {
         let copy = getQubitStateDeepCopy();
         let lastEmptycolumn = null;
         let columnHasGate = false;
@@ -445,6 +445,45 @@ const useCircuitBuilderViewModel = () => {
                 lastEmptycolumn++;
                 columnHasGate = false;
             }
+        }
+        setState(copy);
+    }
+
+    function strongCompress() {
+        let copy = getQubitStateDeepCopy();
+        let lastEmptycolumn = null;
+        let columnHasGate = false;
+
+        for (let row in copy) {
+            
+            for (let column in copy[0]) {
+                if (column < 1) continue;
+                //Checks if column has a gate in it
+                if (copy[row][column].hasGate) {
+                    columnHasGate = true;
+                }
+
+
+                  //If column has no gate in it and lastEmpty column is null, make that column last empty column
+            if (columnHasGate == false && lastEmptycolumn == null) {
+                lastEmptycolumn = column;
+            }
+
+            if (columnHasGate == true && lastEmptycolumn == null) {
+                columnHasGate = false;
+            }
+            //If column has a gate and lastEmptycolumn not null, swap that values of the current column, with that of the lastEmptyColumn
+            if (columnHasGate == true && lastEmptycolumn != null) {
+                    //If the cell has a gate, change the contents of the cell to match the new location
+                        copy[row][lastEmptycolumn] =  copy[row][column];
+                        copy[row][column] = {hasGate: false, gate: null}
+            
+                lastEmptycolumn++;
+                columnHasGate = false;
+            }
+            }
+            lastEmptycolumn = null
+          
         }
         setState(copy);
     }
@@ -599,7 +638,8 @@ const useCircuitBuilderViewModel = () => {
         convertCircuit,
         currQBState, setState, index, lastIndex, undo, redo,
         clearAllGates,
-        compress,
+        strongCompress,
+        weakCompress,
         startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,

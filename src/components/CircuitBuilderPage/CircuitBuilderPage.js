@@ -48,7 +48,8 @@ export default function CircuitBuilderPage () {
         Box, Container,
         startDraggingGate, imgRef, qubitCellRef, thetaModalRef,
         clearAllGates,
-        compress,
+        weakCompress,
+        strongCompress,
         setLastClicked,
         addToFavGates,
         lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
@@ -137,7 +138,8 @@ export default function CircuitBuilderPage () {
                         index = { index }
                         lastIndex = { lastIndex }
                         clearAllGates={clearAllGates}
-                        compress={compress}
+                        strongCompress={strongCompress}
+                        weakCompress={weakCompress}
                     />
             </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
