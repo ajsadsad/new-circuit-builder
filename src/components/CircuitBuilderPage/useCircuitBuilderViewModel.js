@@ -33,6 +33,8 @@ const useCircuitBuilderViewModel = () => {
     const [isDroppingCNOT, setIsDroppingCNOT] = useState({isDropping : false, row : 0, col : 0});
     const [compoundGateModal, showCompoundGateModal] = useState(false);
     const [compoundGate, setCompoundGateClicked] = useState();
+    const [favGates, setFavGates] = useState([]);
+    const [lastClicked, setLastClicked] = useState(null);
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -41,9 +43,8 @@ const useCircuitBuilderViewModel = () => {
     const rectRef = useRef(null);
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
-    const [favGates, setFavGates] = useState([]);
+    const keysPressed = useRef(new Map());
 
-    const [lastClicked, setLastClicked] = useState(null);
     const qubitCellRef = useRef(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ("")})));
     const timerRef = useRef(null);
     const isMouseDown = useRef(null);
@@ -51,6 +52,13 @@ const useCircuitBuilderViewModel = () => {
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
+    function setKeysPressed(e, key) {
+        if(e.type === "keydown") {
+            keysPressed.current.set(key, true);
+        } else if (e.type === "keyup") {
+            keysPressed.current.set(key, false);
+        }
+    }
 
     function startPressTimer(e, gate) {
         isMouseDown.current = false;
@@ -289,17 +297,17 @@ const useCircuitBuilderViewModel = () => {
             } else if(gate.gateName === "Compound Gate"){
                 let compoundGateGates = Array.from({length: Math.floor(gate.gates.length)},()=> Array.from({length: gate.gates.length}, () => {return (undefined)}));
                 let currRowIndex = 0;
-                let currColIndex = 0; 
-                let originalRow = gate.gates[0].location.row; 
+                let currColIndex = 0;
+                let originalRow = gate.gates[0].location.row;
                 gate.gates.forEach((g) => {
                     if(originalRow !== g.location.row) {
-                        currColIndex = 0; 
-                        currRowIndex = currRowIndex + 1; 
+                        currColIndex = 0;
+                        currRowIndex = currRowIndex + 1;
                     }
-                    g.location.row = currRowIndex; 
-                    g.location.col = currColIndex; 
-                    compoundGateGates[currRowIndex][currColIndex] = g; 
-                    currColIndex =  currColIndex + 1; 
+                    g.location.row = currRowIndex;
+                    g.location.col = currColIndex;
+                    compoundGateGates[currRowIndex][currColIndex] = g;
+                    currColIndex =  currColIndex + 1;
                 })
                 console.log(compoundGateGates);
                 setCompoundGateClicked(compoundGateGates);
@@ -359,10 +367,13 @@ const useCircuitBuilderViewModel = () => {
                 setIsDroppingCNOT({isDropping : true, row : row, col : col});
                 createCnotSVGElements(row, col, midX, midY);
             }
-
-            let copy = getQubitStateDeepCopy();
-            copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
-            setState(copy);
+            if(isMeasureInQubit(gateLocation)) {
+                alert("Cannot place gate in qubit after Measurement");
+            } else {
+                let copy = getQubitStateDeepCopy();
+                copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
+                setState(copy);
+            }
         }
         draggingGateNode.current = null;
         draggingGate.current = null;
@@ -455,7 +466,7 @@ const useCircuitBuilderViewModel = () => {
         let columnHasGate = false;
 
         for (let row in copy) {
-            
+
             for (let column in copy[0]) {
                 if (column < 1) continue;
                 //Checks if column has a gate in it
@@ -477,13 +488,13 @@ const useCircuitBuilderViewModel = () => {
                     //If the cell has a gate, change the contents of the cell to match the new location
                         copy[row][lastEmptycolumn] =  copy[row][column];
                         copy[row][column] = {hasGate: false, gate: null}
-            
+
                 lastEmptycolumn++;
                 columnHasGate = false;
             }
             }
             lastEmptycolumn = null
-          
+
         }
         setState(copy);
     }
@@ -592,6 +603,21 @@ const useCircuitBuilderViewModel = () => {
         return hasMeasure
     }
 
+    function isMeasureInQubit(target) {
+        let canDrop = false;
+        let measureGateCol = 0;
+        currQBState[target.row].forEach((cell) => {
+            if(cell.hasGate) {
+                if(cell.gate.qid === "measure" && target.col > measureGateCol) {
+                    canDrop = true;
+                }
+            }
+            measureGateCol = measureGateCol + 1;
+        })
+
+        return canDrop;
+    }
+
     function addQubit() {
         if(currQBState.length < 31) {
             let copy = getQubitStateDeepCopy();
@@ -603,6 +629,29 @@ const useCircuitBuilderViewModel = () => {
             copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
+        }
+    }
+
+    function handleKeyPress(e) {
+        setKeysPressed(e, e.key);
+        if(keysPressed.current.get("Control") && keysPressed.current.get("z") || keysPressed.current.get("Z")) {
+            if(keysPressed.current.get("Shift")) {
+                if(!(index < lastIndex)) {
+                    alert("Nothing to redo");
+                } else {
+                    redo();
+                }
+                keysPressed.current.set("Shift", false);
+            } else {
+                if(!(index > 0)) {
+                    alert("Nothing to undo");
+                } else {
+                    undo();
+                }
+            }
+            keysPressed.current.set("Control", false);
+            keysPressed.current.set("z", false);
+            keysPressed.current.set("Z", false);
         }
     }
 
@@ -644,7 +693,7 @@ const useCircuitBuilderViewModel = () => {
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate
+        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress,
     }
 
 }
