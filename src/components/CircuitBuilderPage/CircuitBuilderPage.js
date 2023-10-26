@@ -53,13 +53,18 @@ export default function CircuitBuilderPage () {
         setLastClicked,
         addToFavGates,
         lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
-        makeCompoundGate, compoundGate, showCompoundGateModal, compoundGateModal
+        makeCompoundGate, compoundGate, showCompoundGateModal, compoundGateModal, handleKeyPress,
     } = useCircuitBuilderViewModel();
 
 
 
     return (
-        <div onClick={ (e) => { if(e.button === 0) {clearSelectedGates()}}}>
+        <div
+            onClick={ (e) => { if(e.button === 0) {clearSelectedGates()}}}
+            onKeyDown = { (e) => { handleKeyPress(e) } }
+            onKeyUp = { (e) => { handleKeyPress(e) } }
+            tabIndex = {0}
+        >
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
                     <div class="col-12">
@@ -95,7 +100,7 @@ export default function CircuitBuilderPage () {
             </div>
 
             <div class="container text-center" className={styles.middle}>
-                <ContextMenuTrigger id="contextmenu" style = {"padding-left : 25%"}>
+                <ContextMenuTrigger id="contextmenu" style = {"padding-left : 25%"} >
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             currQBState={currQBState}
@@ -122,11 +127,12 @@ export default function CircuitBuilderPage () {
                             handleOnMouseDown = { handleOnMouseDown }
                             handleOnMouseUp = { handleOnMouseUp }
                             handleOnClick = { handleOnClick }
+
                         />
                 </ContextMenuTrigger>
 
                 {/* <div style = {{"height" : "100%", "width" : "50%", "background" : "black"}}>
-                    
+
                 </div> */}
             </div >
 
