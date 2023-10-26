@@ -43,7 +43,7 @@ const useCircuitBuilderViewModel = () => {
     const rectRef = useRef(null);
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
-    const keysPressed = useRef(() => new Map());
+    const keysPressed = useRef(new Map());
 
     const qubitCellRef = useRef(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ("")})));
     const timerRef = useRef(null);
@@ -53,9 +53,9 @@ const useCircuitBuilderViewModel = () => {
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
     function setKeysPressed(e, key) {
-        if(e.type === "mousedown") {
+        if(e.type === "keydown") {
             keysPressed.current.set(key, true);
-        } else if (e.type === "mouseup") {
+        } else if (e.type === "keyup") {
             keysPressed.current.set(key, false);
         }
     }
@@ -634,9 +634,24 @@ const useCircuitBuilderViewModel = () => {
 
     function handleKeyPress(e) {
         setKeysPressed(e, e.key);
-        console.log(keysPressed.current);
-        if(keysPressed.current.get("Control") && keysPressed.current.get("z")) {
-            console.log("test");
+        if(keysPressed.current.get("Control") && keysPressed.current.get("z") || keysPressed.current.get("Z")) {
+            if(keysPressed.current.get("Shift")) {
+                if(!(index < lastIndex)) {
+                    alert("Nothing to redo");
+                } else {
+                    redo();
+                }
+                keysPressed.current.set("Shift", false);
+            } else {
+                if(!(index > 0)) {
+                    alert("Nothing to undo");
+                } else {
+                    undo();
+                }
+            }
+            keysPressed.current.set("Control", false);
+            keysPressed.current.set("z", false);
+            keysPressed.current.set("Z", false);
         }
     }
 

@@ -63,7 +63,8 @@ export default function CircuitBuilderPage () {
             onClick={ (e) => { if(e.button === 0) {clearSelectedGates()}}}
             onKeyDown = { (e) => { handleKeyPress(e) } }
             onKeyUp = { (e) => { handleKeyPress(e) } }
-            tabIndex = {0}
+            tabIndex = {-1}
+            style={ {"outline" : "none"} }
         >
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">

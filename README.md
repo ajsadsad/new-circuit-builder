@@ -45,3 +45,7 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
 ### Features / Bugs still to be Implemented / Fix
 - Moving a compound gate after creating it.
 - Selecting a compound gate as one etity.
+- Key Recognition doesn't work with consecutive inputs.
+    e.g. holding down ctrl and repeatedly pressing keydown keyup on 'z' will not trigger multiple actions. Will only trigger once until both have key up
+         and represessed in same combination.
+-
