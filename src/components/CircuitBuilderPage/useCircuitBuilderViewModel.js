@@ -49,6 +49,7 @@ const useCircuitBuilderViewModel = () => {
     const qubitCellRef = useRef(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ("")})));
     const timerRef = useRef(null);
     const isMouseDown = useRef(null);
+    const hoveringCell = useRef(null);
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
@@ -122,6 +123,14 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
+    function handleHover(e) {
+        if(e.type === "dragover") {
+            e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25")
+        } else if (e.type === "dragleave") {
+            e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;")
+        }
+    }
+
     function clearAllGates() {
         setState(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
     }
@@ -144,27 +153,20 @@ const useCircuitBuilderViewModel = () => {
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
         } else if(isDroppingCNOT.isDropping) {
-            let updatedGate = currQBState[isDroppingCNOT.row][isDroppingCNOT.col].gate;
-            updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
-            updatedGate.q_control = isDroppingCNOT.row;
-            let targetLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
-            let copy = addCnotPath(targetLocation);
-            copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
-            setState(copy);
-            const cnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            cnotLine.setAttributeNS(null, "style", "stroke : black; stroke-width : 5px;");
-            if(updatedGate.q_target > updatedGate.q_control) {
-                let qubitCell = qubitCellRef.current[isDroppingCNOT.row][isDroppingCNOT.col];
-                let qubitCellParent = qubitCell.parentNode;
-                cnotLine.setAttributeNS(null,"x1", parseFloat(qubitCell.getAttributeNS(null, "x")) + 22.5);
-                cnotLine.setAttributeNS(null,"y1", parseFloat(qubitCell.getAttributeNS(null, "y")) + 43);
-                cnotLine.setAttributeNS(null,"x2", parseFloat(qubitCell.getAttributeNS(null, "x")) + 22.5);
-                cnotLine.setAttributeNS(null,"y2", parseFloat(qubitCell.getAttributeNS(null, "y")) + 60);
-                qubitCellParent.appendChild(cnotLine);
+            if(e.target.getAttributeNS(null, "col") !== isDroppingCNOT.col) {
+                alert("Target column must be equal to control column");
+            } else {
+                let updatedGate = currQBState[isDroppingCNOT.row][isDroppingCNOT.col].gate;
+                updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
+                updatedGate.q_control = isDroppingCNOT.row;
+                let targetLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
+                let copy = addCnotPath(targetLocation);
+                copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
+                setState(copy);
+                setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
+                pathRef.current.setAttributeNS(null, 'display', "none");
+                circleRef.current.setAttributeNS(null, "display", "none");
             }
-            setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
-            pathRef.current.setAttributeNS(null, 'display', "none");
-            circleRef.current.setAttributeNS(null, "display", "none");
         } else {
             let highlightedGates = [...gatesSelected];
             qubitCellRef.current.forEach((qRefRow) => {
@@ -223,7 +225,6 @@ const useCircuitBuilderViewModel = () => {
         } else if (isDragging) {
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
             const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
-
             imgRef.current.setAttributeNS(null,"x", newMouseX);
             imgRef.current.setAttributeNS(null,"y", newMouseY);
             imgRef.current.setAttributeNS(null, 'width', "38");
@@ -256,8 +257,6 @@ const useCircuitBuilderViewModel = () => {
                     for(let i = gate.row; i <= gate.gate.q_target; i++) {
                         copy[i][gate.col] = { hasGate : false, gate : undefined }
                     }
-                    let cellParentNode = qubitCellRef.current[gate.row][gate.col].parentNode;
-                    cellParentNode.removeChild(cellParentNode.lastChild);
                 }
             }
             copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
@@ -339,11 +338,6 @@ const useCircuitBuilderViewModel = () => {
                 let gate = JSON.parse(draggingGateNode.current.target.getAttributeNS(null, "gate"));
                 let gateCol = draggingGateNode.current.target.getAttributeNS(null, "col");
                 let copy = getQubitStateDeepCopy();
-
-                if(gate.q_target > gate.q_control) {
-                    let cellParentNode = qubitCellRef.current[draggingGateNode.current.target.getAttributeNS(null, "row")][draggingGateNode.current.target.getAttributeNS(null, "col")].parentNode;
-                    cellParentNode.removeChild(cellParentNode.lastChild);
-                }
 
                 if(parseFloat(gate.q_target) < parseFloat(gate.q_control)) {
                     for(let i = parseFloat(gate.q_target); i <= parseFloat(gate.q_control); i++) {
@@ -707,7 +701,7 @@ const useCircuitBuilderViewModel = () => {
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress,
+        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover
     }
 
 }

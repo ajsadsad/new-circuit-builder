@@ -1,7 +1,7 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef}) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover}) {
 
     return(
         <svg
@@ -75,7 +75,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                 col = { colIndex }
                                                 className = { styles.qubitCell }
                                                 onDragEnter = {(e) => { e.preventDefault();}}
-                                                onDragOver = {(e) => { e.preventDefault(); }}
+                                                onDragOver = {(e) => { e.preventDefault(); handleHover(e); }}
+                                                onDragLeave = {(e) => { e.preventDefault(); handleHover(e); }}
                                                 onDrop = {(e) => { e.preventDefault(); e.stopPropagation(); handleChange(e); }}
                                             />
                                             :
@@ -116,7 +117,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                         style = {{"fill" : "none"}}
                                                     />
                                                     <rect
-                                                        x = { 58 * colIndex + 7}
+                                                        x = { 58 * colIndex + 6.5}
                                                         y = { 58 * rowIndex + 34.5}
                                                         ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                         width = { 45 }
@@ -153,18 +154,32 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                         >
                                                         </line>
                                                     }
-                                                    <image
-                                                        x = { 58 * colIndex + 9.5}
-                                                        y = { 58 * rowIndex + 37}
-                                                        gate={JSON.stringify(col.gate)}
-                                                        row = { rowIndex }
-                                                        col = { colIndex }
-                                                        inqubit = {"true"}
-                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
-                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
-                                                        onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
-                                                        href={require(`../../assets/${col.gate.img}`)}
-                                                    />
+                                                        <>
+                                                        {
+                                                        col.gate.qid === "cnot" &&
+                                                        col.gate.q_target > col.gate.q_control &&
+                                                        <line
+                                                            x1 = { 58 * colIndex + 29.5}
+                                                            y1 = { 58 * rowIndex + 50 }
+                                                            x2 = { 58 * colIndex + 29.5}
+                                                            y2 = { 58 * (rowIndex + 2) }
+                                                            style = {{"stroke-width" : "5px", "stroke" : "black"}}
+                                                        >
+                                                        </line>
+                                                        }
+                                                            <image
+                                                                x = { 58 * colIndex + 9}
+                                                                y = { 58 * rowIndex + 37}
+                                                                gate={JSON.stringify(col.gate)}
+                                                                row = { rowIndex }
+                                                                col = { colIndex }
+                                                                inqubit = {"true"}
+                                                                onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
+                                                                onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
+                                                                onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
+                                                                href={require(`../../assets/${col.gate.img}`)}
+                                                            />
+                                                        </>
                                                 </>
                                                 :
                                                 <rect
@@ -221,5 +236,6 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                             }})}
                         </g>
             )})}
+        <image ref = {imgRef} pointerEvents={ "none" }> </image>
     </svg>)
 }
