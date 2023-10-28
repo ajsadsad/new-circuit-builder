@@ -1,7 +1,7 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 
-export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, handleMouseClick, setDraggingGate, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, startDraggingGate, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick}) {
+export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover}) {
 
     return(
         <svg
@@ -17,15 +17,17 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
         >
         <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
         <image ref = {imgRef} pointerEvents={ "none" }> </image>
+        <line ref = { pathRef }></line>
+        <circle ref = { circleRef }> </circle>
         {
             qubitStates.map((row, rowIndex) => {
                 return (
                     <g className = { styles.qubit } key = { rowIndex }>
                         <line
                             x1 = { 58 }
-                            y1 = { 57 * (rowIndex + 1) }
+                            y1 = { 58 * (rowIndex + 1) }
                             x2 = { 58 * row.length}
-                            y2 = { 57 * (rowIndex + 1) }
+                            y2 = { 58 * (rowIndex + 1) }
                             id = { rowIndex }
                         />
                     {
@@ -73,7 +75,8 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                 col = { colIndex }
                                                 className = { styles.qubitCell }
                                                 onDragEnter = {(e) => { e.preventDefault();}}
-                                                onDragOver = {(e) => { e.preventDefault(); }}
+                                                onDragOver = {(e) => { e.preventDefault(); handleHover(e); }}
+                                                onDragLeave = {(e) => { e.preventDefault(); handleHover(e); }}
                                                 onDrop = {(e) => { e.preventDefault(); e.stopPropagation(); handleChange(e); }}
                                             />
                                             :
@@ -112,10 +115,9 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                                         row = { rowIndex }
                                                         col = { colIndex }
                                                         style = {{"fill" : "none"}}
-                                                        gate={JSON.stringify(col.gate)}
                                                     />
                                                     <rect
-                                                        x = { 58 * colIndex + 7}
+                                                        x = { 58 * colIndex + 6.5}
                                                         y = { 58 * rowIndex + 34.5}
                                                         ref = { r => (qubitCellRef.current[rowIndex][colIndex] = r) }
                                                         width = { 45 }
@@ -129,18 +131,56 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                                             }
                                             {
                                                 col.gate.gateName !== "Compound Gate" ?
-                                                <image
-                                                    x = { 58 * colIndex + 9.5}
-                                                    y = { 58 * rowIndex + 37}
-                                                    gate={JSON.stringify(col.gate)}
-                                                    row = { rowIndex }
-                                                    col = { colIndex }
-                                                    inqubit = {"true"}
-                                                    onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
-                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
-                                                    onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
-                                                    href={require(`../../assets/${col.gate.img}`)}
-                                                />
+                                                <>
+                                                    {
+                                                        col.gate.gateName === "cnot_target" &&
+                                                        col.gate.q_target > col.gate.q_control ?
+                                                        <line
+                                                            x1 = { 58 * colIndex + 29.5}
+                                                            y1 = { 58 * rowIndex + 50 }
+                                                            x2 = { 58 * colIndex + 29.5}
+                                                            y2 = { 58 * rowIndex + 37 }
+                                                            style = {{"stroke-width" : "5px", "stroke" : "black"}}
+                                                        >
+                                                        </line>
+                                                        :
+                                                        col.gate.gateName === "cnot_target" &&
+                                                        <line
+                                                            x1 = { 58 * colIndex + 29.5}
+                                                            y1 = { 58 * rowIndex + 50 }
+                                                            x2 = { 58 * colIndex + 29.5}
+                                                            y2 = { 58 * (rowIndex + 2) }
+                                                            style = {{"stroke-width" : "5px", "stroke" : "black"}}
+                                                        >
+                                                        </line>
+                                                    }
+                                                        <>
+                                                        {
+                                                        col.gate.qid === "cnot" &&
+                                                        col.gate.q_target > col.gate.q_control &&
+                                                        <line
+                                                            x1 = { 58 * colIndex + 29.5}
+                                                            y1 = { 58 * rowIndex + 50 }
+                                                            x2 = { 58 * colIndex + 29.5}
+                                                            y2 = { 58 * (rowIndex + 2) }
+                                                            style = {{"stroke-width" : "5px", "stroke" : "black"}}
+                                                        >
+                                                        </line>
+                                                        }
+                                                            <image
+                                                                x = { 58 * colIndex + 9}
+                                                                y = { 58 * rowIndex + 37}
+                                                                gate={JSON.stringify(col.gate)}
+                                                                row = { rowIndex }
+                                                                col = { colIndex }
+                                                                inqubit = {"true"}
+                                                                onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
+                                                                onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
+                                                                onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
+                                                                href={require(`../../assets/${col.gate.img}`)}
+                                                            />
+                                                        </>
+                                                </>
                                                 :
                                                 <rect
                                                     x = { 58 * colIndex + 7}
@@ -196,5 +236,6 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, h
                             }})}
                         </g>
             )})}
+        <image ref = {imgRef} pointerEvents={ "none" }> </image>
     </svg>)
 }

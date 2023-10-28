@@ -52,8 +52,9 @@ export default function CircuitBuilderPage () {
         strongCompress,
         setLastClicked,
         addToFavGates,
-        lineRef, circleRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
+        lineRef, circleRef, pathRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         makeCompoundGate, compoundGate, showCompoundGateModal, compoundGateModal, handleKeyPress,
+        handleHover,
     } = useCircuitBuilderViewModel();
 
 
@@ -128,6 +129,8 @@ export default function CircuitBuilderPage () {
                             handleOnMouseDown = { handleOnMouseDown }
                             handleOnMouseUp = { handleOnMouseUp }
                             handleOnClick = { handleOnClick }
+                            pathRef = { pathRef }
+                            handleHover = { handleHover }
 
                         />
                 </ContextMenuTrigger>

@@ -44,10 +44,12 @@ const useCircuitBuilderViewModel = () => {
     const startPts = useRef({x : 0, y : 0});
     const imgRef = useRef(null);
     const keysPressed = useRef(new Map());
-
+    const circleRef  = useRef(null);
+    const pathRef = useRef(null);
     const qubitCellRef = useRef(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ("")})));
     const timerRef = useRef(null);
     const isMouseDown = useRef(null);
+    const hoveringCell = useRef(null);
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
@@ -121,6 +123,14 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
+    function handleHover(e) {
+        if(e.type === "dragover") {
+            e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25")
+        } else if (e.type === "dragleave") {
+            e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;")
+        }
+    }
+
     function clearAllGates() {
         setState(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
     }
@@ -143,18 +153,20 @@ const useCircuitBuilderViewModel = () => {
             handleChange(e);
             imgRef.current.setAttributeNS(null, "display", "none");
         } else if(isDroppingCNOT.isDropping) {
-            let updatedGate = currQBState[isDroppingCNOT.row][isDroppingCNOT.col].gate;
-            updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
-            updatedGate.q_control = isDroppingCNOT.row;
-            let targetLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
-            let copy = addCnotPath(targetLocation);
-            copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg"}};
-            setState(copy);
-            setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
-            let cnotCircle = svgRef.current.getElementById("cnotCircle:" + isDroppingCNOT.row + "." + isDroppingCNOT.col);
-            let cnotLine = svgRef.current.getElementById("cnotLine:" + isDroppingCNOT.row + "." + isDroppingCNOT.col);
-            svgRef.current.removeChild(cnotCircle);
-            svgRef.current.removeChild(cnotLine);
+            if(e.target.getAttributeNS(null, "col") !== isDroppingCNOT.col) {
+                alert("Target column must be equal to control column");
+            } else {
+                let updatedGate = currQBState[isDroppingCNOT.row][isDroppingCNOT.col].gate;
+                updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
+                updatedGate.q_control = isDroppingCNOT.row;
+                let targetLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
+                let copy = addCnotPath(targetLocation);
+                copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
+                setState(copy);
+                setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
+                pathRef.current.setAttributeNS(null, 'display', "none");
+                circleRef.current.setAttributeNS(null, "display", "none");
+            }
         } else {
             let highlightedGates = [...gatesSelected];
             qubitCellRef.current.forEach((qRefRow) => {
@@ -213,7 +225,6 @@ const useCircuitBuilderViewModel = () => {
         } else if (isDragging) {
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
             const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
-
             imgRef.current.setAttributeNS(null,"x", newMouseX);
             imgRef.current.setAttributeNS(null,"y", newMouseY);
             imgRef.current.setAttributeNS(null, 'width', "38");
@@ -221,6 +232,8 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
         } else if (isDroppingCNOT.isDropping) {
+            pathRef.current.setAttributeNS(null, 'display', "block");
+            circleRef.current.setAttributeNS(null, "display", "bock");
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top;
             let cnotLine = svgRef.current.getElementById("cnotLine:" + isDroppingCNOT.row + "." + isDroppingCNOT.col);
             cnotLine.setAttributeNS(null, "y2", newMouseY);
@@ -338,7 +351,7 @@ const useCircuitBuilderViewModel = () => {
 
                 let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
                 copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
-                let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 20;
+                let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 30;
                 let midY = parseFloat(e.target.getAttributeNS(null, "y")) + 24;
                 let row = e.target.getAttributeNS(null, "row");
                 let col = e.target.getAttributeNS(null, "col")
@@ -360,7 +373,7 @@ const useCircuitBuilderViewModel = () => {
             let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
             if(draggingGate.current.qid === "cnot") {
 
-                let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 20;
+                let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 30;
                 let midY = parseFloat(e.target.getAttributeNS(null, "y")) + 24;
                 let row = e.target.getAttributeNS(null, "row");
                 let col = e.target.getAttributeNS(null, "col")
@@ -396,21 +409,17 @@ const useCircuitBuilderViewModel = () => {
     // Adds SVG elements for the CNOT gate target and path to the SVG DOM
     function createCnotSVGElements(row, col, midX, midY) {
 
-        const cnotLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        const cnotCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        cnotLine.setAttributeNS(null,"x1", midX);
-        cnotLine.setAttributeNS(null,"y1", midY);
-        cnotLine.setAttributeNS(null,"x2", midX);
-        cnotLine.setAttributeNS(null,"y2", midY);
-        cnotLine.setAttributeNS(null, "id", "cnotLine:" + row + "." + col);
-        cnotLine.setAttributeNS(null, "pointer-events", "none");
-        cnotCircle.setAttributeNS(null, "cx", midX);
-        cnotCircle.setAttributeNS(null, "cy", midY);
-        cnotCircle.setAttributeNS(null, "id", "cnotCircle:" + row + "." + col);
-        cnotCircle.setAttributeNS(null, "pointer-events", "none");
+        pathRef.current.setAttributeNS(null,"x1", midX);
+        pathRef.current.setAttributeNS(null,"y1", midY);
+        pathRef.current.setAttributeNS(null,"x2", midX);
+        pathRef.current.setAttributeNS(null,"y2", midY);
+        pathRef.current.setAttributeNS(null, "id", "cnotLine:" + row + "." + col);
+        pathRef.current.setAttributeNS(null, "pointer-events", "none");
+        circleRef.current.setAttributeNS(null, "cx", midX);
+        circleRef.current.setAttributeNS(null, "cy", midY);
+        circleRef.current.setAttributeNS(null, "id", "cnotCircle:" + row + "." + col);
+        circleRef.current.setAttributeNS(null, "pointer-events", "none");
 
-        svgRef.current.appendChild(cnotLine);
-        svgRef.current.appendChild(cnotCircle);
     }
 
     function updateThetaModal(value) {
@@ -634,7 +643,7 @@ const useCircuitBuilderViewModel = () => {
 
     function handleKeyPress(e) {
         setKeysPressed(e, e.key);
-        if(keysPressed.current.get("Control") && keysPressed.current.get("z") || keysPressed.current.get("Z")) {
+        if(keysPressed.current.get("Control") && (keysPressed.current.get("z") || keysPressed.current.get("Z"))) {
             if(keysPressed.current.get("Shift")) {
                 if(!(index < lastIndex)) {
                     alert("Nothing to redo");
@@ -654,7 +663,6 @@ const useCircuitBuilderViewModel = () => {
             keysPressed.current.set("Z", false);
         }
     }
-
 
     return {
         gates,
@@ -689,11 +697,11 @@ const useCircuitBuilderViewModel = () => {
         clearAllGates,
         strongCompress,
         weakCompress,
-        startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef,
+        startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef, circleRef, pathRef,
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress,
+        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover
     }
 
 }
