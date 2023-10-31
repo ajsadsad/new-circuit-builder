@@ -47,7 +47,7 @@ export default function AdaptiveTextBox({ width, height, text, col, row, handleO
                     x = {-((row * 58) + 42)}
                     y = {58 * col + 28}
                     textAnchor={"end"}
-                    textLength = { height - text.length}
+                    textLength = { height - text.length - 10}
                     lengthAdjust ={ "spacing" }
                     letterSpacing="1"
                 >

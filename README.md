@@ -42,7 +42,7 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 ## Packages Included
 React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
 
-### Features / Bugs still to be Implemented / Fix
+### Features still to be Implemented/Fixed
 - Moving a compound gate after creating it.
 - Selecting a compound gate as one etity.
 - Key Recognition doesn't work with consecutive inputs.
@@ -50,3 +50,9 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
          and represessed in same combination.
 - Still have to include validity states for creating a compound gate name.
     https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api
+- Dragging compound gate to and from menu and from grid.
+
+### Future Recommendations
+- Persistent memory.
+- Highlighting of gates in real time rather than on mouseUp.
+- Validation on NewCompoundGateModal that validates length of compound gate name.

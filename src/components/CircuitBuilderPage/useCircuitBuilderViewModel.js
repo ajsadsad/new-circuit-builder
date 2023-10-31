@@ -180,8 +180,8 @@ const useCircuitBuilderViewModel = () => {
                             let col = qRefCol.getAttributeNS(null, "col");
                             if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
                                 if(gatesSelected.filter( g => g.e === qRefCol).length > 0) {
-                                    qRefCol.setAttributeNS(null, "style", "stroke : none; fill : none")
-                                    highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol)
+                                    qRefCol.setAttributeNS(null, "style", "stroke : none; fill : none");
+                                    highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol);
                                 } else {
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
                                     if(!(gate.gateName === "cnot_target" || gate.gateName === "cnot_path")) {
@@ -193,6 +193,21 @@ const useCircuitBuilderViewModel = () => {
                         }
                     })
             })
+            let compoundGateIndex = -1;
+            highlightedGates.forEach((gate, index) => {
+                if(gate.gate.qid === "compound_gate") {
+                    compoundGateIndex = index;
+                }
+            })
+
+            if(compoundGateIndex > 0) {
+                let compGate = highlightedGates[compoundGateIndex];
+                for(let i = compGate.gate.location.head; i <= compGate.gate.location.tail; i++) {
+                    qubitCellRef.current[i][compGate.col].setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5; fill : none");
+                    highlightedGates.push({row : i, col : compGate.col, gate : compGate, e : qubitCellRef.current[i][compGate.col]});
+                }
+            }
+
             rectRef.current.setAttributeNS(null, 'display', "none");
             rectRef.current.setAttributeNS(null, 'x', "0");
             rectRef.current.setAttributeNS(null, 'y', "0");

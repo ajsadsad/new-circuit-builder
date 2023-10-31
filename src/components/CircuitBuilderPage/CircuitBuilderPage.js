@@ -71,7 +71,7 @@ export default function CircuitBuilderPage () {
         >
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
-                    <div class="col-12">
+                    <div class="col-6">
                         <AllGatesMenu
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
@@ -80,7 +80,7 @@ export default function CircuitBuilderPage () {
                             addToFavGates={addToFavGates}
                         />
                     </div>
-                    <div class="col-12">
+                    <div class="col-6">
                         <FaveGatesMenu
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
