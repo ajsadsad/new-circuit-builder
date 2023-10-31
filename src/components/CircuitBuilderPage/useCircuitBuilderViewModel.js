@@ -35,6 +35,7 @@ const useCircuitBuilderViewModel = () => {
     const [compoundGate, setCompoundGateClicked] = useState();
     const [favGates, setFavGates] = useState([]);
     const [lastClicked, setLastClicked] = useState(null);
+    const [newCompoundGateModal, showNewCompoundGateModal] = useState(false);
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -49,11 +50,12 @@ const useCircuitBuilderViewModel = () => {
     const qubitCellRef = useRef(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ("")})));
     const timerRef = useRef(null);
     const isMouseDown = useRef(null);
-    const hoveringCell = useRef(null);
+    const newCGNameRef = useRef(null);
+    const newCGDescRef = useRef(null);
+    const formRef = useRef(null);
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
-
     function setKeysPressed(e, key) {
         if(e.type === "keydown") {
             keysPressed.current.set(key, true);
@@ -178,8 +180,8 @@ const useCircuitBuilderViewModel = () => {
                             let col = qRefCol.getAttributeNS(null, "col");
                             if(!(a.y + a.height < b.y || a.y > b.y + b.height || a.x + a.width < b.x || a.x > b.x + b.width)) {
                                 if(gatesSelected.filter( g => g.e === qRefCol).length > 0) {
-                                    qRefCol.setAttributeNS(null, "style", "stroke : none; fill : none")
-                                    highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol)
+                                    qRefCol.setAttributeNS(null, "style", "stroke : none; fill : none");
+                                    highlightedGates = highlightedGates.filter((g) => g.e !== qRefCol);
                                 } else {
                                     let gate = JSON.parse(qRefCol.getAttributeNS(null, "gate"));
                                     if(!(gate.gateName === "cnot_target" || gate.gateName === "cnot_path")) {
@@ -191,6 +193,21 @@ const useCircuitBuilderViewModel = () => {
                         }
                     })
             })
+            let compoundGateIndex = -1;
+            highlightedGates.forEach((gate, index) => {
+                if(gate.gate.qid === "compound_gate") {
+                    compoundGateIndex = index;
+                }
+            })
+
+            if(compoundGateIndex > 0) {
+                let compGate = highlightedGates[compoundGateIndex];
+                for(let i = compGate.gate.location.head; i <= compGate.gate.location.tail; i++) {
+                    qubitCellRef.current[i][compGate.col].setAttributeNS(null, "style", "stroke : #5aa4ff; stroke-width : 5; fill : none");
+                    highlightedGates.push({row : i, col : compGate.col, gate : compGate, e : qubitCellRef.current[i][compGate.col]});
+                }
+            }
+
             rectRef.current.setAttributeNS(null, 'display', "none");
             rectRef.current.setAttributeNS(null, 'x', "0");
             rectRef.current.setAttributeNS(null, 'y', "0");
@@ -222,6 +239,7 @@ const useCircuitBuilderViewModel = () => {
                 rectRef.current.setAttributeNS(null, 'y', newMouseY);
                 rectRef.current.setAttributeNS(null, 'height', startPts.current.y - newMouseY);
             }
+            rectRef.current.setAttributeNS(null, 'rx', "4");
         } else if (isDragging) {
             const newMouseY = e.clientY - e.currentTarget.getBoundingClientRect().top
             const newMouseX = e.clientX - e.currentTarget.getBoundingClientRect().left;
@@ -307,7 +325,7 @@ const useCircuitBuilderViewModel = () => {
             setGateClicked(e, gateLocation.row, gateLocation.col);
             if(gate.qid === 'xrot' || gate.qid === 'yrot' || gate.qid === 'zrot') {
                 showThetaModal(true);
-            } else if(gate.gateName === "Compound Gate"){
+            } else if(gate.qid === "compound_gate"){
                 let compoundGateGates = Array.from({length: Math.floor(gate.gates.length)},()=> Array.from({length: gate.gates.length}, () => {return (undefined)}));
                 let currRowIndex = 0;
                 let currColIndex = 0;
@@ -322,7 +340,6 @@ const useCircuitBuilderViewModel = () => {
                     compoundGateGates[currRowIndex][currColIndex] = g;
                     currColIndex =  currColIndex + 1;
                 })
-                console.log(compoundGateGates);
                 setCompoundGateClicked(compoundGateGates);
                 showCompoundGateModal(true);
             } else {
@@ -533,18 +550,18 @@ const useCircuitBuilderViewModel = () => {
         })
 
         let compoundGate = {
-            "gateName" : "Compound Gate",
+            "gateName" : newCGNameRef.current.value,
             "qid" : "compound_gate",
             "qasmid" : "compound_gate",
-            "description" : "User Created Compound Gate",
-            "gates" : stdGates
+            "description" : newCGDescRef.current.value,
+            "gates" : stdGates,
+            "location" : { head : lowestQubit, tail : highestQubit}
         }
 
         for(let i = lowestQubit; i <= highestQubit; i++) {
             copy[i][lowestQubitCell] = { hasGate : true, gate : compoundGate }
         }
 
-        console.log(compoundGate)
         clearSelectedGates();
         setState(copy);
     }
@@ -701,7 +718,8 @@ const useCircuitBuilderViewModel = () => {
         startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover
+        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover,
+        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef
     }
 
 }
