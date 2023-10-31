@@ -12,12 +12,12 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
             <div className="d-flex justify-content-between">
                 <div className="dropup">
                     <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Settings / View 
+                    Settings / View
                     </button>
                     <ul className="dropdown-menu dropdown-menu-dark">
                         <li><a className="dropdown-item">All Gates</a></li>
-                        <li><a className="dropdown-item" onClick={weakCompress}>My Gates</a></li>
-                        <li><a className="dropdown-item" onClick={strongCompress}>Code</a></li>
+                        <li><a className="dropdown-item">My Gates</a></li>
+                        <li><a className="dropdown-item">Code</a></li>
                     </ul>
                 </div>
                 <div className="dropup">
