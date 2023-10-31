@@ -1,0 +1,17 @@
+.adaptiveTextbox {
+  .textBoxRect {
+    fill: rgb(138, 138, 138);
+  }
+  text {
+    fill: rgb(0, 0, 0);
+    font-size-adjust: 0.58;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+.disableTextSelection{
+  -moz-user-select:none; /* firefox */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE*/
+  user-select: none; /* Standard syntax */
+}

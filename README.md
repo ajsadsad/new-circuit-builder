@@ -48,4 +48,5 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
 - Key Recognition doesn't work with consecutive inputs.
     e.g. holding down ctrl and repeatedly pressing keydown keyup on 'z' will not trigger multiple actions. Will only trigger once until both have key up
          and represessed in same combination.
--
+- Still have to include validity states for creating a compound gate name.
+    https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api

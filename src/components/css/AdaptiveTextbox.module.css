@@ -1,0 +1,9 @@
+.adaptiveTextbox .textBoxRect {
+  fill: black;
+}
+.adaptiveTextbox text {
+  fill: rgb(236, 102, 102);
+  font-size-adjust: 0.58;
+  font-weight: 700;
+  text-align: center;
+}/*# sourceMappingURL=AdaptiveTextbox.module.css.map */

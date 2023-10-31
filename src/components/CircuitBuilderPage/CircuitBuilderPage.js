@@ -14,6 +14,7 @@ import MeasurementModal from '../Modals/MeasurementModal';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import { clear } from '@testing-library/user-event/dist/clear';
 import CompoundGateModal from '../Modals/CompoundGateModal';
+import NewCompoundGateModal from '../Modals/NewCompoundGateModal';
 
 export default function CircuitBuilderPage () {
 
@@ -55,13 +56,14 @@ export default function CircuitBuilderPage () {
         lineRef, circleRef, pathRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         makeCompoundGate, compoundGate, showCompoundGateModal, compoundGateModal, handleKeyPress,
         handleHover,
+        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef,
     } = useCircuitBuilderViewModel();
 
 
 
     return (
         <div
-            onClick={ (e) => { if(e.button === 0) {clearSelectedGates()}}}
+            onClick={ (e) => { if(!newCompoundGateModal) {clearSelectedGates()}}}
             onKeyDown = { (e) => { handleKeyPress(e) } }
             onKeyUp = { (e) => { handleKeyPress(e) } }
             tabIndex = {-1}
@@ -164,7 +166,7 @@ export default function CircuitBuilderPage () {
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation(); makeCompoundGate() }}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.preventDefault(); e.stopPropagation(); showNewCompoundGateModal(true)}}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }
@@ -194,6 +196,18 @@ export default function CircuitBuilderPage () {
                 compoundGate = { compoundGate }
                 showCompoundGateModal = { showCompoundGateModal }
                 compoundGateModal = { compoundGateModal }
+                gateClickedName={gateClickedName}
+                gateClickedDesc={gateClickedDesc}
+            />
+
+            <NewCompoundGateModal
+                newCompoundGateModal = { newCompoundGateModal }
+                showNewCompoundGateModal = { showNewCompoundGateModal }
+                newCGNameRef = { newCGNameRef }
+                newCGDescRef = { newCGDescRef }
+                makeCompoundGate = { makeCompoundGate }
+                handleOnClick = { (e) => { e.preventDefault(); e.stopPropagation();}}
+                formRef = { formRef }
             />
         </div>
     )

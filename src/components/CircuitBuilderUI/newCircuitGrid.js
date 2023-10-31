@@ -1,5 +1,6 @@
 import styles from '../css/Grid.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
+import AdaptiveTextBox from '../CompoundGates/AdaptiveTextBox'
 
 export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover}) {
 
@@ -82,7 +83,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                             :
                                             <>
                                             {
-                                                col.gate.gateName === "Compound Gate" ?
+                                                col.gate.qid === "compound_gate" ?
                                                 <>
                                                     <rect
                                                         x = { 58 * colIndex }
@@ -130,7 +131,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                 </>
                                             }
                                             {
-                                                col.gate.gateName !== "Compound Gate" ?
+                                                col.gate.qid !== "compound_gate" ?
                                                 <>
                                                     {
                                                         col.gate.gateName === "cnot_target" &&
@@ -182,19 +183,22 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                         </>
                                                 </>
                                                 :
-                                                <rect
-                                                    x = { 58 * colIndex + 7}
-                                                    y = { 58 * rowIndex + 34.5}
-                                                    width = { 45 }
-                                                    height = { 54 }
-                                                    row = { rowIndex }
-                                                    col = { colIndex }
-                                                    style = {{"fill" : "black"}}
-                                                    onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
-                                                    onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
-                                                    onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
-                                                    gate={JSON.stringify(col.gate)}
-                                                />
+                                                <>
+                                                    {
+                                                        parseInt(col.gate.location.tail) === rowIndex &&
+                                                        <AdaptiveTextBox
+                                                            row = { col.gate.location.head}
+                                                            col = { colIndex }
+                                                            width = { 45 }
+                                                            height = { 56 * (col.gate.location.tail - col.gate.location.head + 1)}
+                                                            text = { col.gate.gateName }
+                                                            handleOnMouseDown = { handleOnMouseDown }
+                                                            handleOnMouseUp = { handleOnMouseUp }
+                                                            handleOnClick = { handleOnClick }
+                                                            gate = { JSON.stringify(col.gate) }
+                                                        />
+                                                    }
+                                                </>
                                             }
                                             {
                                                 col.gate.qid === "xrot" &&
@@ -229,6 +233,23 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                     { col.gate.theta }
                                                 </text>
                                             }
+                                            {/* {
+                                                col.gate.qid === "compound_gate" &&
+                                                col.gate.location.head &&
+                                                    <rect
+                                                        x = { 58 * colIndex + 7}
+                                                        y = { 58 * rowIndex + 34.5}
+                                                        width = { 45 }
+                                                        height = { 58 }
+                                                        row = { rowIndex }
+                                                        col = { colIndex }
+                                                        style = {{"fill" : "blue"}}
+                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
+                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
+                                                        onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
+                                                        gate={JSON.stringify(col.gate)}
+                                                    />
+                                            } */}
                                         </>
                                         }
                                     </g>
