@@ -54,6 +54,8 @@ const useCircuitBuilderViewModel = () => {
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
+    useEffect(()=>{convertCircuit()},[currQBState]);
+
     function setKeysPressed(e, key) {
         if(e.type === "keydown") {
             keysPressed.current.set(key, true);
@@ -550,32 +552,86 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function convertCircuit() {
-        let vcode = [];
-        let line = 6;
-        let cregMeasure = 1;
-        vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + (currQBState.length-1) + "];\n", "4: creg c[" + (currQBState.length-1) + "];\n" + "5: ")
-        currQBState.forEach((row, rowIndex) => row.map((v, i) => {
-            if(v.hasGate) {
-                if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
-                    vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
-                } else if(v.gate.id === 'cnot') {
-                    vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
-                } else if(v.gate.gateName === "cnot_path" || v.gate.gateNAme === "cnot_target") {
-                    return;
-                } else {
-                    if(v.gate.qid === 'measure') {
-                        vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "] -> c[" + cregMeasure + "];\n")
-                        cregMeasure += 1;
+        // let vcode = [];
+        // let line = 6;
+        // let cregMeasure = 1;
+        // vcode.push("1: OPENQASM 2.0;\n", "2: include \"qelibl.inc\";\n", "3: qreg q[" + (currQBState.length-1) + "];\n", "4: creg c[" + (currQBState.length-1) + "];\n" + "5: ")
+        // currQBState.forEach((row, rowIndex) => row.map((v, i) => {
+        //     if(v.hasGate) {
+        //         if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
+        //             vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+        //         } else if(v.gate.id === 'cnot') {
+        //             vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+        //         } else if(v.gate.gateName === "cnot_path" || v.gate.gateNAme === "cnot_target") {
+        //             return;
+        //         } else {
+        //             if(v.gate.qid === 'measure') {
+        //                 vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "] -> c[" + cregMeasure + "];\n")
+        //                 cregMeasure += 1;
+        //             }
+        //             else {
+        //                 vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+        //             }
+        //         }
+        //         line++;
+        //     }
+        // }));
+        // return vcode;
+        let copy = getQubitStateDeepCopy();
+        let code = [];
+        //let cregMeasure = 1;
+        code.push("OPENQASM 2.0", "include \"qelibl.inc\";","qreg q[" + (currQBState.length-1) + "]");
+
+        for (let column in copy[0]) {
+            if (column < 1) continue;
+            for (let row in copy) {
+                
+                if(copy[row][column].hasGate){
+                    let gate = copy[row][column].gate;
+                    //if measure gate
+                    if(gate.qid === "measure"){
+                        // code.push(gate.qid + " q[" + row + "] c[" + cregMeasure + "]");
+                        // cregMeasure += 1;
+                        code.push(gate.qid + " q[" + row + "]");
+
                     }
-                    else {
-                        vcode.push(line + ": " + v.gate.qasmid + " q[" + rowIndex + "];\n")
+                    //if rotated gate 
+                    else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
+                        code.push(gate.qasmid + "(pi/2) q[" + row + "]");
+
                     }
+                    //if cnot gate
+                    else if(gate.qid === "cnot"){
+                        
+                        code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "]");
+                    }
+                    //if normal gate
+                    else if(gate.qid != undefined){
+                        
+                        code.push(gate.qid + " q[" + row + "]");
+                    }
+
+
+
+                    
                 }
-                line++;
             }
-        }));
-        return vcode;
+        }
+
+
+
+        setCircuitCode(code);
+
     }
+
+    // function format(column, row, type){
+    //     let copy = getQubitStateDeepCopy();
+    //     if(type == 0){
+
+    //     }
+    //     return (copy[row][column].gate.qid + " q[" + row + "]")
+
+    // }
 
     function processCircuit() {
         let json = [];
