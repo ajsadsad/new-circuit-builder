@@ -52,7 +52,13 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
     https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api
 - Dragging compound gate to and from menu and from grid.
 - Selecting compound gate with Shift + click
-
+- When creating compound gates, gates do not compress upwards if they have been placed on qubits one apart.
+    --------[ ]----------------                   --------[ ]----------------               --------[ ]----------------
+    ---------------------------                   --------[ ]----------------               --------[ ]----------------
+    --------[ ]----------------  expectation ->   --------[ ]----------------  reality ->   --------[ ]----------------
+    ---------------------------                   ---------------------------               --------[ ]----------------
+    --------[ ]----------------                   ---------------------------               --------[ ]----------------
+    ---------------------------                   ---------------------------               ---------------------------
 ### Future Recommendations
 - Persistent memory.
 - Highlighting of gates in real time rather than on mouseUp.
