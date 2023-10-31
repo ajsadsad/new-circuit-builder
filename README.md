@@ -51,6 +51,7 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
 - Still have to include validity states for creating a compound gate name.
     https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api
 - Dragging compound gate to and from menu and from grid.
+- Selecting compound gate with Shift + click
 
 ### Future Recommendations
 - Persistent memory.
