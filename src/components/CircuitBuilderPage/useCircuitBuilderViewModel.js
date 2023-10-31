@@ -660,7 +660,7 @@ const useCircuitBuilderViewModel = () => {
 
     function handleKeyPress(e) {
         setKeysPressed(e, e.key);
-        if(keysPressed.current.get("Control") && (keysPressed.current.get("z") || keysPressed.current.get("Z"))) {
+        if((keysPressed.current.get("Control") || keysPressed.current.get("metaKey")) && (keysPressed.current.get("z") || keysPressed.current.get("Z"))) {
             if(keysPressed.current.get("Shift")) {
                 if(!(index < lastIndex)) {
                     alert("Nothing to redo");
