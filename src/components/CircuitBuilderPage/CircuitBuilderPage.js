@@ -16,7 +16,7 @@ import { clear } from '@testing-library/user-event/dist/clear';
 import CompoundGateModal from '../Modals/CompoundGateModal';
 import NewCompoundGateModal from '../Modals/NewCompoundGateModal';
 
-export default function CircuitBuilderPage () {
+export default function CircuitBuilderPage() {
 
     const {
         gates,
@@ -63,96 +63,88 @@ export default function CircuitBuilderPage () {
 
     return (
         <div
-            onClick={ (e) => { if(!newCompoundGateModal) {clearSelectedGates()}}}
-            onKeyDown = { (e) => { handleKeyPress(e) } }
-            onKeyUp = { (e) => { handleKeyPress(e) } }
-            tabIndex = {-1}
-            style={ {"outline" : "none"} }
-        >
-            <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
-                <div class="row gx-0 gy-3 ">
-                    <div class="col-6">
-                        <AllGatesMenu
-                            setDraggingGate={setDraggingGate}
-                            setDraggingGateNode={setDraggingGateNode}
-                            gates={gates}
-                            setLastClicked={setLastClicked}
-                            addToFavGates={addToFavGates}
-                        />
-                    </div>
-                    <div class="col-6">
-                        <FaveGatesMenu
-                            setDraggingGate={setDraggingGate}
-                            setDraggingGateNode={setDraggingGateNode}
-                            gates={favGates}
+            onClick={(e) => { if (e.button === 0) { clearSelectedGates() } }}
+            onKeyDown={(e) => { handleKeyPress(e) }}
+            onKeyUp={(e) => { handleKeyPress(e) }}
+            tabIndex={-1}
+            style={{ "outline": "none" }}
 
-                        />
-                    </div>
-                    <CircuitCode
-                        currQBState = { currQBState }
-                        convertCircuit = { convertCircuit }
-                        circuitCode = { circuitCode }
-                        setCircuitCode = { setCircuitCode }
+        >
+
+            <div class="row gx-0">
+                <div class="col-6">
+                    <AllGatesMenu
+                        setDraggingGate={setDraggingGate}
+                        setDraggingGateNode={setDraggingGateNode}
+                        gates={gates}
+                        setLastClicked={setLastClicked}
+                        addToFavGates={addToFavGates}
                     />
-                    {/* <div class="col-6">
-                        <FaveGatesMenu
-                            faveGatesView={faveGatesViewable}
-                            setFaveGateView={updateFaveGatesView}
-                        />
-                    </div> */}
                 </div>
+                <div class="col-6">
+
+                    <FaveGatesMenu
+                        setDraggingGate={setDraggingGate}
+                        setDraggingGateNode={setDraggingGateNode}
+                        gates={favGates}
+                    />
+                </div>
+
             </div>
 
-            <div class="container text-center" className={styles.middle}>
-                <ContextMenuTrigger id="contextmenu" style = {"padding-left : 25%"} >
-                    <ReactiveCircuitBuilderUI
-                            addQubit={addQubit}
-                            currQBState={currQBState}
-                            gateFromQubit={gateFromQubit}
-                            handleChange={handleChange}
-                            handleClick={handleClick}
-                            setGateClicked={setGateClicked}
-                            setDraggingGate={setDraggingGate}
-                            setDraggingGateNode={setDraggingGateNode}
-                            startDrawRect = { startDrawRect }
-                            endDrawRect = { endDrawRect }
-                            drawRect = { drawRect }
-                            isDrawing = { isDrawing }
-                            svgRef = { svgRef }
-                            rectRef = { rectRef }
-                            draggingGate = {draggingGate}
-                            Box = { Box }
-                            Container = { Container }
-                            startDraggingGate = { startDraggingGate }
-                            imgRef = { imgRef }
-                            qubitCellRef = { qubitCellRef }
-                            lineRef = { lineRef }
-                            circleRef = { circleRef }
-                            handleOnMouseDown = { handleOnMouseDown }
-                            handleOnMouseUp = { handleOnMouseUp }
-                            handleOnClick = { handleOnClick }
-                            pathRef = { pathRef }
-                            handleHover = { handleHover }
 
-                        />
+
+
+            <div class="container text-center" className={styles.middle}>
+                <ContextMenuTrigger id="contextmenu" style={"padding-left : 25%"} >
+                    <ReactiveCircuitBuilderUI
+                        addQubit={addQubit}
+                        currQBState={currQBState}
+                        gateFromQubit={gateFromQubit}
+                        handleChange={handleChange}
+                        handleClick={handleClick}
+                        setGateClicked={setGateClicked}
+                        setDraggingGate={setDraggingGate}
+                        setDraggingGateNode={setDraggingGateNode}
+                        startDrawRect={startDrawRect}
+                        endDrawRect={endDrawRect}
+                        drawRect={drawRect}
+                        isDrawing={isDrawing}
+                        svgRef={svgRef}
+                        rectRef={rectRef}
+                        draggingGate={draggingGate}
+                        Box={Box}
+                        Container={Container}
+                        startDraggingGate={startDraggingGate}
+                        imgRef={imgRef}
+                        qubitCellRef={qubitCellRef}
+                        lineRef={lineRef}
+                        circleRef={circleRef}
+                        handleOnMouseDown={handleOnMouseDown}
+                        handleOnMouseUp={handleOnMouseUp}
+                        handleOnClick={handleOnClick}
+                        pathRef={pathRef}
+                        handleHover={handleHover}
+
+                    />
                 </ContextMenuTrigger>
 
-                {/* <div style = {{"height" : "100%", "width" : "50%", "background" : "black"}}>
 
-                </div> */}
+
             </div >
-
             <div className={styles.optionsBar}>
-                    <OptionsMenu
-                        processCircuit = { processCircuit }
-                        redo = { redo }
-                        undo = { undo }
-                        index = { index }
-                        lastIndex = { lastIndex }
-                        clearAllGates={clearAllGates}
-                        strongCompress={strongCompress}
-                        weakCompress={weakCompress}
-                    />
+                <OptionsMenu
+                    processCircuit={processCircuit}
+                    redo={redo}
+                    undo={undo}
+                    index={index}
+                    lastIndex={lastIndex}
+                    clearAllGates={clearAllGates}
+                    strongCompress={strongCompress}
+                    weakCompress={weakCompress}
+                    circuitCode={circuitCode}
+                />
+
             </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
                 {
@@ -172,7 +164,7 @@ export default function CircuitBuilderPage () {
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.preventDefault(); e.stopPropagation(); showNewCompoundGateModal(true)}}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={(e) => { e.preventDefault(); e.stopPropagation(); showNewCompoundGateModal(true) }}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }
@@ -184,7 +176,7 @@ export default function CircuitBuilderPage () {
                 gateClickedName={gateClickedName}
                 gateClickedDesc={gateClickedDesc}
                 gateClickedThetaVal={gateClickedThetaVal}
-                thetaModalRef = { thetaModalRef }
+                thetaModalRef={thetaModalRef}
             />
             <NoParamModal
                 gateClickedName={gateClickedName}
@@ -199,22 +191,23 @@ export default function CircuitBuilderPage () {
             />
 
             <CompoundGateModal
-                compoundGate = { compoundGate }
-                showCompoundGateModal = { showCompoundGateModal }
-                compoundGateModal = { compoundGateModal }
+                compoundGate={compoundGate}
+                showCompoundGateModal={showCompoundGateModal}
+                compoundGateModal={compoundGateModal}
                 gateClickedName={gateClickedName}
                 gateClickedDesc={gateClickedDesc}
             />
 
             <NewCompoundGateModal
-                newCompoundGateModal = { newCompoundGateModal }
-                showNewCompoundGateModal = { showNewCompoundGateModal }
-                newCGNameRef = { newCGNameRef }
-                newCGDescRef = { newCGDescRef }
-                makeCompoundGate = { makeCompoundGate }
-                handleOnClick = { (e) => { e.preventDefault(); e.stopPropagation();}}
-                formRef = { formRef }
+                newCompoundGateModal={newCompoundGateModal}
+                showNewCompoundGateModal={showNewCompoundGateModal}
+                newCGNameRef={newCGNameRef}
+                newCGDescRef={newCGDescRef}
+                makeCompoundGate={makeCompoundGate}
+                handleOnClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                formRef={formRef}
             />
         </div>
+
     )
 }

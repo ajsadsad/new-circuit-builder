@@ -1,1 +1,1 @@
-{"version":3,"sources":["AdaptiveTextbox.module.scss","AdaptiveTextbox.module.css"],"names":[],"mappings":"AACE;EACE,iBAAA;ACAJ;ADEE;EACE,WAAA;EACA,sBAAA;EACA,gBAAA;EACA,kBAAA;ACAJ","file":"AdaptiveTextbox.module.css"}
+{"version":3,"sourceRoot":"","sources":["../sass/AdaptiveTextbox.module.scss"],"names":[],"mappings":"AACE,8BACE,aAEF,sBACE,UACA,qBACA,gBACA,kBAGJ,sBACE,sBACA,yBACA,qBACA","file":"AdaptiveTextbox.module.css"}

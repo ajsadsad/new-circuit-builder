@@ -2,17 +2,23 @@ import React from 'react';
 import styles from "../css/OptionsMenu.module.css";
 import { Dropdown } from 'react-bootstrap';
 
-export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, strongCompress, weakCompress }) {
+export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, strongCompress, weakCompress, circuitCode }) {
 
     const canUndo = index > 0;
     const canRedo = index < lastIndex;
 
+    const displayCode = circuitCode.map((line, index) => {
+        return (
+            <p>{(index + 1)}: {line}</p>
+        )
+    })
+
     return (
         <div className={styles.OptionsMenu}>
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-end">
                 <div className="dropup">
                     <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Settings / View
+                        Settings / View
                     </button>
                     <ul className="dropdown-menu dropdown-menu-dark">
                         <li><a className="dropdown-item">All Gates</a></li>
@@ -20,6 +26,16 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                         <li><a className="dropdown-item">Code</a></li>
                     </ul>
                 </div>
+                <div className="dropup">
+                    <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Code Output
+                    </button>
+                    <ul className="dropdown-menu dropdown-menu-dark">
+                        {displayCode}
+                    </ul>
+
+                </div>
+
                 <div className="dropup">
                     <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">

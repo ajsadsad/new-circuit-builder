@@ -5,18 +5,34 @@
  *  @param {boolean} allGatesView - True if all gates menu is viewable.
  */
 import React, { useEffect } from 'react';
-import styles from '../css/CircuitBuilder.module.css';
+import styles from '../css/OptionsMenu.module.css';
 
 export default function CircuitCode({ currQBState, convertCircuit, circuitCode, setCircuitCode }) {
 
-    useEffect(() => {
-        setCircuitCode(convertCircuit)
-        // toString()
-    }, [currQBState]);
+    const displayCode = circuitCode.map((line, index) => {
+        return (
+            <p>{(index + 1)}: {line}</p>
+        )
+    })
 
-   return(
-    <div class="text-white">
-        {circuitCode}
-    </div>
-   )
+    return (
+
+       
+            <div className={styles.OptionsMenu}>
+                <div className="d-flex justify-content-between">
+                    <div className="dropup">
+                        <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Code Output
+                        </button>
+                        <ul className="dropdown-menu dropdown-menu-dark">
+                            {displayCode}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+       
+
+
+    )
 }
