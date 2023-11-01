@@ -1,9 +1,1 @@
-.adaptiveTextbox .textBoxRect {
-  fill: black;
-}
-.adaptiveTextbox text {
-  fill: rgb(236, 102, 102);
-  font-size-adjust: 0.58;
-  font-weight: 700;
-  text-align: center;
-}/*# sourceMappingURL=AdaptiveTextbox.module.css.map */
+.adaptiveTextbox .textBoxRect{fill:#8a8a8a}.adaptiveTextbox text{fill:#000;font-size-adjust:.58;font-weight:700;text-align:center}.disableTextSelection{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}/*# sourceMappingURL=AdaptiveTextbox.module.css.map */

@@ -9,7 +9,7 @@
  */
 
 import React, { useRef } from 'react';
-import styles from '../css/AllGatesMenu.module.css';
+import styles from '../css/FavGatesMenu.module.css';
 import { Collapse } from 'bootstrap';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import contextStyles from '../css/ContextMenu.module.css';
@@ -50,7 +50,7 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
     });
 
     return (
-        <div class=" accordion accordion-flush d-grid" id="accordionPanelsStayOpenExample" className={styles.AllGatesMenu} >
+        <div class=" accordion accordion-flush d-grid" id="accordionPanelsStayOpenExample" >
             <div class="accordion-item d-grid" >
                 <button class="btn btn-secondary rounded-0 collapsed" className={styles.button} type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
                     Fav Gates <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
@@ -64,9 +64,7 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                         </div>
                     </div>
                 </div>
-            </div>
-        
-               
+            </div>       
         </div>
     );
 }

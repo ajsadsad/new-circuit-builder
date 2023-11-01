@@ -68,16 +68,29 @@ export default function CircuitBuilderPage() {
             onKeyUp={(e) => { handleKeyPress(e) }}
             tabIndex={-1}
             style={{ "outline": "none" }}
+
         >
 
+            <div class="row gx-0">
+                <div class="col-6">
+                    <AllGatesMenu
+                        setDraggingGate={setDraggingGate}
+                        setDraggingGateNode={setDraggingGateNode}
+                        gates={gates}
+                        setLastClicked={setLastClicked}
+                        addToFavGates={addToFavGates}
+                    />
+                </div>
+                <div class="col-6">
 
-            <AllGatesMenu
-                setDraggingGate={setDraggingGate}
-                setDraggingGateNode={setDraggingGateNode}
-                gates={gates}
-                setLastClicked={setLastClicked}
-                addToFavGates={addToFavGates}
-            />
+                    <FaveGatesMenu
+                        setDraggingGate={setDraggingGate}
+                        setDraggingGateNode={setDraggingGateNode}
+                        gates={favGates}
+                    />
+                </div>
+
+            </div>
 
 
 
@@ -139,12 +152,7 @@ export default function CircuitBuilderPage() {
                 setCircuitCode={setCircuitCode}
             />
 
-            <FaveGatesMenu
-                setDraggingGate={setDraggingGate}
-                setDraggingGateNode={setDraggingGateNode}
-                gates={favGates}
 
-            />
 
 
             <ContextMenu id="contextmenu" className={contextStyles.ContextMenu}>
@@ -159,7 +167,7 @@ export default function CircuitBuilderPage() {
                 </MenuItem>
                 {
                     gatesSelected.length > 1 &&
-                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.preventDefault(); e.stopPropagation(); showNewCompoundGateModal(true)}}>
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={(e) => { e.preventDefault(); e.stopPropagation(); showNewCompoundGateModal(true) }}>
                         <span>Make Compound Gate</span>
                     </MenuItem>
                 }
@@ -186,21 +194,21 @@ export default function CircuitBuilderPage() {
             />
 
             <CompoundGateModal
-                compoundGate = { compoundGate }
-                showCompoundGateModal = { showCompoundGateModal }
-                compoundGateModal = { compoundGateModal }
+                compoundGate={compoundGate}
+                showCompoundGateModal={showCompoundGateModal}
+                compoundGateModal={compoundGateModal}
                 gateClickedName={gateClickedName}
                 gateClickedDesc={gateClickedDesc}
             />
 
             <NewCompoundGateModal
-                newCompoundGateModal = { newCompoundGateModal }
-                showNewCompoundGateModal = { showNewCompoundGateModal }
-                newCGNameRef = { newCGNameRef }
-                newCGDescRef = { newCGDescRef }
-                makeCompoundGate = { makeCompoundGate }
-                handleOnClick = { (e) => { e.preventDefault(); e.stopPropagation();}}
-                formRef = { formRef }
+                newCompoundGateModal={newCompoundGateModal}
+                showNewCompoundGateModal={showNewCompoundGateModal}
+                newCGNameRef={newCGNameRef}
+                newCGDescRef={newCGDescRef}
+                makeCompoundGate={makeCompoundGate}
+                handleOnClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                formRef={formRef}
             />
         </div>
 
