@@ -88,18 +88,7 @@ export default function CircuitBuilderPage () {
 
                         />
                     </div>
-                    <CircuitCode
-                        currQBState = { currQBState }
-                        convertCircuit = { convertCircuit }
-                        circuitCode = { circuitCode }
-                        setCircuitCode = { setCircuitCode }
-                    />
-                    {/* <div class="col-6">
-                        <FaveGatesMenu
-                            faveGatesView={faveGatesViewable}
-                            setFaveGateView={updateFaveGatesView}
-                        />
-                    </div> */}
+           
                 </div>
             </div>
 
@@ -152,6 +141,7 @@ export default function CircuitBuilderPage () {
                         clearAllGates={clearAllGates}
                         strongCompress={strongCompress}
                         weakCompress={weakCompress}
+                        circuitCode = { circuitCode }
                     />
             </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
