@@ -142,15 +142,11 @@ export default function CircuitBuilderPage() {
                     clearAllGates={clearAllGates}
                     strongCompress={strongCompress}
                     weakCompress={weakCompress}
+                    circuitCode={circuitCode}
                 />
 
             </div>
-            <CircuitCode
-                currQBState={currQBState}
-                convertCircuit={convertCircuit}
-                circuitCode={circuitCode}
-                setCircuitCode={setCircuitCode}
-            />
+          
 
 
 
