@@ -155,12 +155,18 @@ export default function CircuitBuilderPage () {
                     />
             </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation();  undo() }} disabled = { !(index > 0)}>
+                {
+                    (index > 0) &&
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.preventDefault(); e.stopPropagation();  undo() }} disabled = { !(index > 0)}>
                     <span>Undo</span>
                 </MenuItem>
-                <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => {e.stopPropagation(); redo() }} disabled = {!(index < lastIndex)}>
+                }
+                {
+                    (index < lastIndex) &&
+                    <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => {e.preventDefault(); e.stopPropagation(); redo() }} disabled = {!(index < lastIndex)}>
                     <span>Redo</span>
-                </MenuItem>
+                    </MenuItem>
+                }
                 <MenuItem className={contextStyles.contextMenu__item} onClick={ (e) => { e.stopPropagation(); deleteGate() }}>
                     <span>Delete</span>
                 </MenuItem>

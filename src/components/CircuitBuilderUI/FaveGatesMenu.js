@@ -5,7 +5,7 @@
  * @param {array[]} gates - Array of standard gates.
  * @param {function} setDraggingGate - Function used to track state of current gate being dragged from menu.
  * @param {function} setDraggingGateNode - Function used to track state of current gate being dragged from menu as a HTML Node.
- * 
+ *
  */
 
 import React, { useRef } from 'react';
@@ -14,36 +14,40 @@ import { Collapse } from 'bootstrap';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import contextStyles from '../css/ContextMenu.module.css';
 import { useState } from "react";
+import AdaptiveTextBox from '../CompoundGates/AdaptiveTextBox';
+import CGImg from '../../assets/compound_gate.svg';
 
 export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateNode }) {
 
 
-    // const standardGates = gates.map((index) => {
-    //     return (JSON.parse([index]));
-    // })
-
-        
-    
-    
-    
-
-    
-
     const gateImgs = gates.map((gate) => {
         return (
-            <div class="col" style={{ minHeight: 120 }}>
-              
-                    <img
-                        className={styles.GateImg}
-                        key={gate.qid}
-                        id={gate.qid}
-                        gate={JSON.stringify(gate)}
-                        src={require(`../../assets/${gate.img}`)}
-                        draggable={true}
-                        onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
-                    />
-                    <p> {gate.gateName} </p>
-  
+            <div class="col" style={{ minHeight: 120}}>
+                    {
+                        gate.qid === "compound_gate" ?
+                        <>
+                            <img
+                                key = { gate.qid }
+                                id = { gate.qid }
+                                gate = { JSON.stringify(gate) }
+                                src ={ CGImg }
+                            />
+                            <p> { gate.gateName } </p>
+                        </>
+                    :
+                    <>
+                        <img
+                            className={styles.GateImg}
+                            key={gate.qid}
+                            id={gate.qid}
+                            gate={JSON.stringify(gate)}
+                            src={require(`../../assets/${gate.img}`)}
+                            draggable={true}
+                            onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
+                        />
+                        <p> {gate.gateName} </p>
+                    </>
+                    }
             </div>
 
         )
@@ -65,8 +69,8 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                     </div>
                 </div>
             </div>
-        
-               
+
+
         </div>
     );
 }

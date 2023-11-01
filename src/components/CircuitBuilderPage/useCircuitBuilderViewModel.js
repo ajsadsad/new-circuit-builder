@@ -562,6 +562,7 @@ const useCircuitBuilderViewModel = () => {
             copy[i][lowestQubitCell] = { hasGate : true, gate : compoundGate }
         }
 
+        setFavGates(state => [...state, compoundGate]);
         clearSelectedGates();
         setState(copy);
     }

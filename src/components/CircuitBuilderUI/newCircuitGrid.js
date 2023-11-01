@@ -6,7 +6,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
 
     return(
         <svg
-            height = { "1600" }
+            height = { 70 * (qubitStates.length + 1) }
             width = { "100%" }
             id = "circuit-grid"
             ref = { svgRef }
@@ -57,7 +57,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                             height = { 58 }
                                             className = {styles.disableTextSelection}
                                         >
-                                            {"q[" + rowIndex + "]"}
+                                            {"q[" + (rowIndex + 1) + "]"}
                                         </text>
                                     </g>
                                 )
@@ -233,23 +233,6 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                                     { col.gate.theta }
                                                 </text>
                                             }
-                                            {/* {
-                                                col.gate.qid === "compound_gate" &&
-                                                col.gate.location.head &&
-                                                    <rect
-                                                        x = { 58 * colIndex + 7}
-                                                        y = { 58 * rowIndex + 34.5}
-                                                        width = { 45 }
-                                                        height = { 58 }
-                                                        row = { rowIndex }
-                                                        col = { colIndex }
-                                                        style = {{"fill" : "blue"}}
-                                                        onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
-                                                        onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
-                                                        onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
-                                                        gate={JSON.stringify(col.gate)}
-                                                    />
-                                            } */}
                                         </>
                                         }
                                     </g>

@@ -28,7 +28,7 @@ export default function AdaptiveTextBox({ width, height, text, col, row, handleO
     }
 
     return (
-        <g height = { height } width = { width } className={styles.adaptiveTextbox} fill="transparent">
+        <g height = { height } width = { width } className={styles.adaptiveTextbox}>
             <rect
                 className={styles.textBoxRect}
                 width = { width }
