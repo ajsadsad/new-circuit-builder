@@ -9,7 +9,7 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
 
     const displayCode = circuitCode.map((line, index) => {
         return (
-            <p>{(index + 1)}: {line}</p>
+            <p >{(index + 1)}: {line}</p>
         )
     })
 
@@ -26,13 +26,21 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                         <li><a className="dropdown-item">Code</a></li>
                     </ul>
                 </div>
-                <div className="dropup">
+                <div className="dropup" >
                     <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Code Ouput
+                        Code Ouput
                     </button>
-                    <ul className="dropdown-menu dropdown-menu-dark">
-                    {displayCode}
-                    </ul>
+          
+                        <ul class="dropdown-menu dropdown-menu-dark" >
+                        <p style={{width: "250px"}}/>
+                        <div className={styles.CodeOuput}>
+                            {displayCode}
+
+                        </div>
+                            
+                        </ul>
+                
+
                 </div>
                 <div className="dropup">
                     <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
