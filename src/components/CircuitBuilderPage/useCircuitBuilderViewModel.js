@@ -252,6 +252,9 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null, 'height', "38");
             imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
+            if(draggingGate.current.qid === "measure") {
+                removeMeasureGate( {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")})
+            }
         } else if (isDroppingCNOT.isDropping) {
             pathRef.current.setAttributeNS(null, 'display', "block");
             circleRef.current.setAttributeNS(null, "display", "bock");
@@ -280,9 +283,10 @@ const useCircuitBuilderViewModel = () => {
                     }
                 }
             } else if(gate.gate.qid === "measure") {
-                // add the line back after the measurement gate
+                removeMeasureGate({row : gate.row, col : gate.col})
+            } else {
+                copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
             }
-            copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
         })
         setGatesSelected([]);
         setState(copy);
@@ -383,13 +387,18 @@ const useCircuitBuilderViewModel = () => {
                 setIsDragging(false);
                 setState(copy);
             } else {
-                let copy = getQubitStateDeepCopy();
                 let originalLocation = {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")};
                 let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
-                copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
-                copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
-                setIsDragging(false);
-                setState(copy);
+                if(draggingGate.current.qid === "measure") {
+                    addMeasureGate(newLocation);
+                    setIsDragging(false);
+                } else {
+                    let copy = getQubitStateDeepCopy();
+                    copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
+                    copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
+                    setIsDragging(false);
+                    setState(copy);
+                }
             }
         } else {
             let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
@@ -700,7 +709,12 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function removeMeasureGate(pos) {
-
+        let copy = getQubitStateDeepCopy();
+        for(var i = pos.col; i < 50; i++) {
+            copy[pos.row].push({ hasGate : false, gate : null});
+        }
+        copy[pos.row][pos.col] = { hasGate : false , gate : undefined};
+        setState(copy);
     }
 
     function addMeasureGate(pos) {
