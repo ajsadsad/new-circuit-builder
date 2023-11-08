@@ -130,7 +130,16 @@ const useCircuitBuilderViewModel = () => {
 
     function handleHover(e) {
         if(e.type === "dragover") {
-            e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25")
+            if(draggingGate.current.qid === "compound_gate") {
+                console.log(e.target);
+                for(var i = draggingGate.current.location.head; i < draggingGate.current.location.tail; i++) {
+                    let test = svgRef.current.getElementById("id", draggingGate.current.location.head + "." + i);
+                    console.log(test);
+                    test.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
+                }
+            } else {
+                e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
+            }
         } else if (e.type === "dragleave") {
             e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;")
         }
@@ -165,12 +174,17 @@ const useCircuitBuilderViewModel = () => {
                 updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
                 updatedGate.q_control = isDroppingCNOT.row;
                 let targetLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
-                let copy = addCnotPath(targetLocation);
-                copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
-                setState(copy);
-                setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
-                pathRef.current.setAttributeNS(null, 'display', "none");
-                circleRef.current.setAttributeNS(null, "display", "none");
+                if(canAddCNot(targetLocation)) {
+                    let copy = addCnotPath(targetLocation);
+                    copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
+                    setState(copy);
+                    setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
+                    pathRef.current.setAttributeNS(null, 'display', "none");
+                    circleRef.current.setAttributeNS(null, "display", "none");
+                } else {
+                    alert("No other gates must be present between control and target");
+                    setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
+                }
             }
         } else {
             let highlightedGates = [...gatesSelected];
@@ -426,6 +440,19 @@ const useCircuitBuilderViewModel = () => {
         }
         draggingGateNode.current = null;
         draggingGate.current = null;
+    }
+
+    function canAddCNot(target) {
+        if(target.row > isDroppingCNOT.row ) {
+            for(let i = parseFloat(isDroppingCNOT.row) + 1 ; i < parseFloat(target.row) ; ++i) {
+                return !currQBState[i][target.col].hasGate
+            }
+        } else {
+            for(let i = parseFloat(target.row) + 1 ; i < parseFloat(isDroppingCNOT.row) ; ++i) {
+                return !currQBState[i][target.col].hasGate
+            }
+        }
+        return true;
     }
 
     function addCnotPath(target) {

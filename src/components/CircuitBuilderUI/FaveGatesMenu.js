@@ -26,6 +26,8 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                                 id = { gate.qid }
                                 gate = { JSON.stringify(gate) }
                                 src ={ CGImg }
+                                draggable={true}
+                                onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                             />
                             <p> { gate.gateName } </p>
                         </>
