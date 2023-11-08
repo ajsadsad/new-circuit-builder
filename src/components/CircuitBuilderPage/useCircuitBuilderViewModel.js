@@ -53,16 +53,12 @@ const useCircuitBuilderViewModel = () => {
     const newCGNameRef = useRef(null);
     const newCGDescRef = useRef(null);
     const formRef = useRef(null);
-    
+
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
-
-
     useEffect(()=>{convertCircuit()},[currQBState]);
 
-
-    
     function setKeysPressed(e, key) {
         if(e.type === "keydown") {
             keysPressed.current.set(key, true);
@@ -134,7 +130,16 @@ const useCircuitBuilderViewModel = () => {
 
     function handleHover(e) {
         if(e.type === "dragover") {
-            e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25")
+            if(draggingGate.current.qid === "compound_gate") {
+                console.log(e.target);
+                for(var i = draggingGate.current.location.head; i < draggingGate.current.location.tail; i++) {
+                    let test = svgRef.current.getElementById("id", draggingGate.current.location.head + "." + i);
+                    console.log(test);
+                    test.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
+                }
+            } else {
+                e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
+            }
         } else if (e.type === "dragleave") {
             e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;")
         }
@@ -169,12 +174,17 @@ const useCircuitBuilderViewModel = () => {
                 updatedGate.q_target = parseFloat(e.target.getAttributeNS(null, "row"));
                 updatedGate.q_control = isDroppingCNOT.row;
                 let targetLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
-                let copy = addCnotPath(targetLocation);
-                copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
-                setState(copy);
-                setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
-                pathRef.current.setAttributeNS(null, 'display', "none");
-                circleRef.current.setAttributeNS(null, "display", "none");
+                if(canAddCNot(targetLocation)) {
+                    let copy = addCnotPath(targetLocation);
+                    copy[targetLocation.row][targetLocation.col] = { hasGate : true, gate : { gateName : "cnot_target", img : "cnot_target.svg", q_control : isDroppingCNOT.row, q_target : targetLocation.row}};
+                    setState(copy);
+                    setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
+                    pathRef.current.setAttributeNS(null, 'display', "none");
+                    circleRef.current.setAttributeNS(null, "display", "none");
+                } else {
+                    alert("No other gates must be present between control and target");
+                    setIsDroppingCNOT({ isDropping : false, row : 0, col : 0});
+                }
             }
         } else {
             let highlightedGates = [...gatesSelected];
@@ -256,6 +266,9 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null, 'height', "38");
             imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
+            if(draggingGate.current.qid === "measure") {
+                removeMeasureGate( {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")})
+            }
         } else if (isDroppingCNOT.isDropping) {
             pathRef.current.setAttributeNS(null, 'display', "block");
             circleRef.current.setAttributeNS(null, "display", "bock");
@@ -283,8 +296,11 @@ const useCircuitBuilderViewModel = () => {
                         copy[i][gate.col] = { hasGate : false, gate : undefined }
                     }
                 }
+            } else if(gate.gate.qid === "measure") {
+                removeMeasureGate({row : gate.row, col : gate.col})
+            } else {
+                copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
             }
-            copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
         })
         setGatesSelected([]);
         setState(copy);
@@ -385,13 +401,18 @@ const useCircuitBuilderViewModel = () => {
                 setIsDragging(false);
                 setState(copy);
             } else {
-                let copy = getQubitStateDeepCopy();
                 let originalLocation = {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")};
                 let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
-                copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
-                copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
-                setIsDragging(false);
-                setState(copy);
+                if(draggingGate.current.qid === "measure") {
+                    addMeasureGate(newLocation);
+                    setIsDragging(false);
+                } else {
+                    let copy = getQubitStateDeepCopy();
+                    copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
+                    copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current };
+                    setIsDragging(false);
+                    setState(copy);
+                }
             }
         } else {
             let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
@@ -406,14 +427,39 @@ const useCircuitBuilderViewModel = () => {
             }
             if(isMeasureInQubit(gateLocation)) {
                 alert("Cannot place gate in qubit after Measurement");
+                e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;");
             } else {
-                let copy = getQubitStateDeepCopy();
-                copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
-                setState(copy);
+                if(draggingGate.current.qid === "measure") {
+                    addMeasureGate(gateLocation);
+                } else if(parseInt(gateLocation.row) === currQBState.length -1) {
+                    let copy = getQubitStateDeepCopy();
+                    copy.push(Array(currQBState[0].length));
+                    copy[currQBState.length].fill({hasGate : false, gate : null});
+                    copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
+                    setState(copy);
+                    qubitCellRef.current.push(Array(currQBState[0].length));
+                } else {
+                    let copy = getQubitStateDeepCopy();
+                    copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
+                    setState(copy);
+                }
             }
         }
         draggingGateNode.current = null;
         draggingGate.current = null;
+    }
+
+    function canAddCNot(target) {
+        if(target.row > isDroppingCNOT.row ) {
+            for(let i = parseFloat(isDroppingCNOT.row) + 1 ; i < parseFloat(target.row) ; ++i) {
+                return !currQBState[i][target.col].hasGate
+            }
+        } else {
+            for(let i = parseFloat(target.row) + 1 ; i < parseFloat(isDroppingCNOT.row) ; ++i) {
+                return !currQBState[i][target.col].hasGate
+            }
+        }
+        return true;
     }
 
     function addCnotPath(target) {
@@ -470,15 +516,15 @@ const useCircuitBuilderViewModel = () => {
                 }
             }
             //If column has no gate in it and lastEmpty column is null, make that column last empty column
-            if (columnHasGate == false && lastEmptycolumn == null) {
+            if (columnHasGate === false && lastEmptycolumn === null) {
                 lastEmptycolumn = column;
             }
 
-            if (columnHasGate == true && lastEmptycolumn == null) {
+            if (columnHasGate === true && lastEmptycolumn === null) {
                 columnHasGate = false;
             }
             //If column has a gate and lastEmptycolumn not null, swap that values of the current column, with that of the lastEmptyColumn
-            if (columnHasGate == true && lastEmptycolumn != null) {
+            if (columnHasGate === true && lastEmptycolumn !== null) {
                 for (let row in copy) {
                     //If the cell has a gate, change the contents of the cell to match the new location
                     if (copy[row][column].hasGate) {
@@ -509,15 +555,15 @@ const useCircuitBuilderViewModel = () => {
 
 
                   //If column has no gate in it and lastEmpty column is null, make that column last empty column
-            if (columnHasGate == false && lastEmptycolumn == null) {
+            if (columnHasGate === false && lastEmptycolumn === null) {
                 lastEmptycolumn = column;
             }
 
-            if (columnHasGate == true && lastEmptycolumn == null) {
+            if (columnHasGate === true && lastEmptycolumn === null) {
                 columnHasGate = false;
             }
             //If column has a gate and lastEmptycolumn not null, swap that values of the current column, with that of the lastEmptyColumn
-            if (columnHasGate == true && lastEmptycolumn != null) {
+            if (columnHasGate === true && lastEmptycolumn !== null) {
                     //If the cell has a gate, change the contents of the cell to match the new location
                         copy[row][lastEmptycolumn] =  copy[row][column];
                         copy[row][column] = {hasGate: false, gate: null}
@@ -579,36 +625,29 @@ const useCircuitBuilderViewModel = () => {
         let code = [];
         //let cregMeasure = 1;
         code.push("OPENQASM 2.0", "include \"qelibl.inc\";","qreg q[" + (currQBState.length-1) + "]");
-        for (let column in copy[0]) {
-            if (column < 1) continue;
-            for (let row in copy) {
-                
-                if(copy[row][column].hasGate){
-                    let gate = copy[row][column].gate;
-                    //if measure gate
-                    if(gate.qid === "measure"){
-                        // code.push(gate.qid + " q[" + row + "] c[" + cregMeasure + "]");
-                        // cregMeasure += 1;
-                        code.push(gate.qid + " q[" + row + "]");
-                    }
-                    //if rotated gate 
-                    else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
-                        code.push(gate.qasmid + "(pi/2) q[" + row + "]");
-                    }
-                    //if cnot gate
-                    else if(gate.qid === "cnot"){
-                        
-                        code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "]");
-                    }
-                    //if normal gate
-                    else if(gate.qid != undefined){
-                        
-                        code.push(gate.qid + " q[" + row + "]");
-                    }
-                    
+        currQBState.forEach((row, rowIndex) => row.forEach((col, colIndex) => {
+            if(col.hasGate) {
+                let gate = copy[rowIndex][colIndex].gate;
+                //if measure gate
+                if(gate.qid === "measure"){
+                    // code.push(gate.qid + " q[" + row + "] c[" + cregMeasure + "]");
+                    // cregMeasure += 1;
+                    code.push(gate.qid + " q[" + rowIndex + "]");
+                }
+                //if rotated gate
+                else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
+                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "]");
+                }
+                //if cnot gate
+                else if(gate.qid === "cnot"){
+                    code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "]");
+                }
+                //if normal gate
+                else if(gate.qid !== undefined){
+                    code.push(gate.qid + " q[" + rowIndex + "]");
                 }
             }
-        }
+        }))
         setCircuitCode(code);
     }
 
@@ -616,7 +655,7 @@ const useCircuitBuilderViewModel = () => {
         let json = [];
         if(checkMeasurementGate()) {
             json.push({'operation' : 'create_circuit', 'num_qubits' : currQBState.length});
-            currQBState.forEach((row, rowIndex) => row.map((v, i) => {
+            currQBState.forEach((row, rowIndex) => row.forEach((v) => {
                 if(v.hasGate) {
                     if(v.gate.qid === 'xrot' || v.gate.qid === 'yrot' || v.gate.qid === 'zrot' ) {
                         json.push({'operation' : 'gate', 'gate' : v.gate.qid, 'q' : rowIndex, 'theta' : v.gate.theta })
@@ -637,7 +676,7 @@ const useCircuitBuilderViewModel = () => {
 
     function checkMeasurementGate() {
         let hasMeasure = false;
-        currQBState.forEach((row) => row.map((v, i) => {
+        currQBState.forEach((row, rowIndex) => row.forEach((v, colIndex) => {
             if(v.hasGate) {
                 if(v.gate.qid === 'measure') {
                     hasMeasure = true;
@@ -670,7 +709,7 @@ const useCircuitBuilderViewModel = () => {
             setState(copy);
 
             qubitCellRef.current.push(Array(currQBState[0].length));
-            copy[currQBState.length].fill("");
+            // copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
         }
@@ -697,6 +736,26 @@ const useCircuitBuilderViewModel = () => {
             keysPressed.current.set("z", false);
             keysPressed.current.set("Z", false);
         }
+    }
+
+    function saveCircuit() {
+
+    }
+
+    function removeMeasureGate(pos) {
+        let copy = getQubitStateDeepCopy();
+        for(var i = pos.col; i < 50; i++) {
+            copy[pos.row].push({ hasGate : false, gate : null});
+        }
+        copy[pos.row][pos.col] = { hasGate : false , gate : undefined};
+        setState(copy);
+    }
+
+    function addMeasureGate(pos) {
+        let copy = getQubitStateDeepCopy();
+        copy[pos.row] = copy[pos.row].slice(0, parseInt(pos.col) + 1);
+        copy[pos.row][pos.col] = { hasGate : true, gate : draggingGate.current};
+        setState(copy);
     }
 
     return {
@@ -737,7 +796,8 @@ const useCircuitBuilderViewModel = () => {
         setLastClicked,
         addToFavGates,
         makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover,
-        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef
+        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef,
+        saveCircuit,
     }
 
 }

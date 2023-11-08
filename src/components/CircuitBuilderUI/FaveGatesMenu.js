@@ -8,13 +8,8 @@
  *
  */
 
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from '../css/AllGatesMenu.module.css';
-import { Collapse } from 'bootstrap';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import contextStyles from '../css/ContextMenu.module.css';
-import { useState } from "react";
-import AdaptiveTextBox from '../CompoundGates/AdaptiveTextBox';
 import CGImg from '../../assets/compound_gate.svg';
 
 export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateNode }) {
@@ -31,6 +26,8 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                                 id = { gate.qid }
                                 gate = { JSON.stringify(gate) }
                                 src ={ CGImg }
+                                draggable={true}
+                                onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                             />
                             <p> { gate.gateName } </p>
                         </>
