@@ -59,6 +59,9 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
     ---------------------------                   ---------------------------               --------[ ]----------------
     --------[ ]----------------                   ---------------------------               --------[ ]----------------
     ---------------------------                   ---------------------------               ---------------------------
+- Dragging Compound Gate from menu to circuit
+- Zoom in/out feature of the grid
+- Do not allow gates to be placed at all after a measurement gate.
 ### Future Recommendations
 - Persistent memory.
 - Highlighting of gates in real time rather than on mouseUp.
