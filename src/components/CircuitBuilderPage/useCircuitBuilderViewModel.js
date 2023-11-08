@@ -431,6 +431,13 @@ const useCircuitBuilderViewModel = () => {
             } else {
                 if(draggingGate.current.qid === "measure") {
                     addMeasureGate(gateLocation);
+                } else if(parseInt(gateLocation.row) === currQBState.length -1) {
+                    let copy = getQubitStateDeepCopy();
+                    copy.push(Array(currQBState[0].length));
+                    copy[currQBState.length].fill({hasGate : false, gate : null});
+                    copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
+                    setState(copy);
+                    qubitCellRef.current.push(Array(currQBState[0].length));
                 } else {
                     let copy = getQubitStateDeepCopy();
                     copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
@@ -702,7 +709,7 @@ const useCircuitBuilderViewModel = () => {
             setState(copy);
 
             qubitCellRef.current.push(Array(currQBState[0].length));
-            copy[currQBState.length].fill("");
+            // copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
         }

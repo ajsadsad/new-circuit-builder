@@ -61,6 +61,8 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
     ---------------------------                   ---------------------------               ---------------------------
 - Dragging Compound Gate from menu to circuit
 - Zoom in/out feature of the grid
+- Measure gate is laggy when being moved from one qubit to another
+    - Probably due to too many rerenders when being dragged.
 ### Future Recommendations
 - Persistent memory.
 - Highlighting of gates in real time rather than on mouseUp.
