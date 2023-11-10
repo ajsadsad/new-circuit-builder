@@ -17,6 +17,7 @@ import { useState, useRef, useEffect, createElement } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
 import { type } from '@testing-library/user-event/dist/type';
+import CGImg from '../../assets/compound_gate.svg';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -271,8 +272,12 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null,"y", newMouseY);
             imgRef.current.setAttributeNS(null, 'width', "38");
             imgRef.current.setAttributeNS(null, 'height', "38");
-            imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
+            if(draggingGate.current.qid === "compound_gate") {
+                imgRef.current.setAttributeNS(null, "href", `${CGImg}`);
+            } else {
+                imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
+            }
         } else if (isDroppingCNOT.isDropping) {
             pathRef.current.setAttributeNS(null, 'display', "block");
             circleRef.current.setAttributeNS(null, "display", "bock");
