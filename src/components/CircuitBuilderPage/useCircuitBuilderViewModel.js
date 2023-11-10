@@ -266,9 +266,6 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null, 'height', "38");
             imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
-            // if(draggingGate.current.qid === "measure") {
-            //     removeMeasureGate( {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")})
-            // }
         } else if (isDroppingCNOT.isDropping) {
             pathRef.current.setAttributeNS(null, 'display', "block");
             circleRef.current.setAttributeNS(null, "display", "bock");
@@ -660,7 +657,7 @@ const useCircuitBuilderViewModel = () => {
 
     function processCircuit() {
         let json = [];
-        if(checkMeasurementGate()) {
+        if(checkMeasureGateInQubits(currQBState.length - 2)) {
             json.push({'operation' : 'create_circuit', 'num_qubits' : currQBState.length});
             currQBState.forEach((row, rowIndex) => row.forEach((v) => {
                 if(v.hasGate) {
@@ -678,19 +675,46 @@ const useCircuitBuilderViewModel = () => {
             json.push({'operation' : 'destroy_circuit'});
             sendCircuitData(json);
             return json
-        } else {showMeasModal(true)};
+        } else {
+            showMeasModal(true);
+        }
     }
 
-    function checkMeasurementGate() {
+    //checks to see if there is a measurement gate in each qubit that has a non-measurement gate.
+    function checkMeasureGateInQubits(index) {
+        let checkMeasure = false;
         let hasMeasure = false;
-        currQBState.forEach((row, rowIndex) => row.forEach((v, colIndex) => {
-            if(v.hasGate) {
-                if(v.gate.qid === 'measure') {
-                    hasMeasure = true;
+        if(index === 0) {
+            currQBState[index].forEach((col) => {
+                if(col.hasGate) {
+                    checkMeasure = true;
                 }
+                if(col.hasGate && checkMeasure) {
+                    if(col.gate.qid === "measure") {
+                        hasMeasure = true;
+                    }
+                }
+            })
+            if(!checkMeasure) {
+                hasMeasure = true;
             }
-        }));
-        return hasMeasure
+            return hasMeasure;
+        } else {
+            currQBState[index].forEach((col) => {
+                if(col.hasGate) {
+                    checkMeasure = true;
+                }
+                if(col.hasGate && checkMeasure) {
+                    if(col.gate.qid === "measure") {
+                        hasMeasure = true;
+                    }
+                }
+            })
+            if(!checkMeasure) {
+                hasMeasure = true;
+            }
+            return hasMeasure && checkMeasureGateInQubits(index - 1);
+        }
     }
 
     function isMeasureInQubit(target) {
@@ -716,7 +740,6 @@ const useCircuitBuilderViewModel = () => {
             setState(copy);
 
             qubitCellRef.current.push(Array(currQBState[0].length));
-            // copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
         }
