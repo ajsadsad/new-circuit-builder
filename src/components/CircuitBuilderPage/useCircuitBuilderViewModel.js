@@ -266,9 +266,9 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null, 'height', "38");
             imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
-            if(draggingGate.current.qid === "measure") {
-                removeMeasureGate( {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")})
-            }
+            // if(draggingGate.current.qid === "measure") {
+            //     removeMeasureGate( {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")})
+            // }
         } else if (isDroppingCNOT.isDropping) {
             pathRef.current.setAttributeNS(null, 'display', "block");
             circleRef.current.setAttributeNS(null, "display", "bock");
@@ -404,8 +404,15 @@ const useCircuitBuilderViewModel = () => {
                 let originalLocation = {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")};
                 let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
                 if(draggingGate.current.qid === "measure") {
-                    addMeasureGate(newLocation);
+                    let copy = getQubitStateDeepCopy();
+                    for(var i = originalLocation.col; i < 50; i++) {
+                        copy[originalLocation.row].push({ hasGate : false, gate : null});
+                    }
+                    copy[originalLocation.row][originalLocation.col] = { hasGate : false , gate : undefined};
+                    copy[newLocation.row] = copy[newLocation.row].slice(0, parseInt(newLocation.col) + 1);
+                    copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current};
                     setIsDragging(false);
+                    setState(copy);
                 } else {
                     let copy = getQubitStateDeepCopy();
                     copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
