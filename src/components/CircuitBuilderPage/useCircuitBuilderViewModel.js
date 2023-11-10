@@ -131,17 +131,24 @@ const useCircuitBuilderViewModel = () => {
     function handleHover(e) {
         if(e.type === "dragover") {
             if(draggingGate.current.qid === "compound_gate") {
-                console.log(e.target);
-                for(var i = draggingGate.current.location.head; i < draggingGate.current.location.tail; i++) {
-                    let test = svgRef.current.getElementById("id", draggingGate.current.location.head + "." + i);
-                    console.log(test);
-                    test.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
+                let compoundGateSize = parseInt(draggingGate.current.location.tail - draggingGate.current.location.head);
+                for(var i = 0; i <= compoundGateSize; i++) {
+                    let compoundGateArea = svgRef.current.getElementById((parseInt(e.target.getAttributeNS(null, "row")) + i) + "." + e.target.getAttributeNS(null, "col"));
+                    compoundGateArea.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
                 }
             } else {
                 e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
             }
         } else if (e.type === "dragleave") {
-            e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;")
+            if(draggingGate.current.qid === "compound_gate") {
+                let compoundGateSize = parseInt(draggingGate.current.location.tail - draggingGate.current.location.head);
+                for(var i = 0; i <= compoundGateSize; i++) {
+                    let compoundGateArea = svgRef.current.getElementById((parseInt(e.target.getAttributeNS(null, "row")) + i) + "." + e.target.getAttributeNS(null, "col"));
+                    compoundGateArea.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;");
+                }
+            } else {
+                e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;");
+            }
         }
     }
 
@@ -419,7 +426,7 @@ const useCircuitBuilderViewModel = () => {
                 }
             }
         } else {
-            let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
+            let gateLocation = {row : parseInt(e.target.getAttributeNS(null, "row")), col : parseInt(e.target.getAttributeNS(null, "col"))};
             if(draggingGate.current.qid === "cnot") {
 
                 let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 30;
@@ -442,6 +449,15 @@ const useCircuitBuilderViewModel = () => {
                     copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
                     setState(copy);
                     qubitCellRef.current.push(Array(currQBState[0].length));
+                } else if(draggingGate.current.qid === "compound_gate") {
+                    let copy = getQubitStateDeepCopy();
+                    let compoundGateSize = parseInt(draggingGate.current.location.tail - draggingGate.current.location.head);
+                    draggingGate.current.location.tail = gateLocation.row + compoundGateSize;
+                    draggingGate.current.location.head = gateLocation.row;
+                    for(var i = 0; i <= compoundGateSize; i++) {
+                        copy[gateLocation.row + i][gateLocation.col] = { hasGate : true, gate : draggingGate.current }
+                    }
+                    setState(copy);
                 } else {
                     let copy = getQubitStateDeepCopy();
                     copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
@@ -582,7 +598,6 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
-    //Have to change it so that the ID is the name provided by the user so that it is unique.
     function makeCompoundGate() {
 
         let copy = getQubitStateDeepCopy();

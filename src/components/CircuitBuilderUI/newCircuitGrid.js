@@ -16,21 +16,33 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
             onMouseUp = { (e) => { e.preventDefault(); e.stopPropagation(); endDrawRect(e); } }
             onMouseMove = { (e) => { drawRect(e); } }
         >
-        <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
-        <image ref = {imgRef} pointerEvents={ "none" }> </image>
-        <line ref = { pathRef }></line>
-        <circle ref = { circleRef }> </circle>
+            <rect ref = {rectRef} className = {styles.selectionBox} pointerEvents ={ "none" }> </rect>
+            <image ref = {imgRef} pointerEvents={ "none" }> </image>
+            <line ref = { pathRef }></line>
+            <circle ref = { circleRef }> </circle>
         {
             qubitStates.map((row, rowIndex) => {
                 return (
                     <g className = { styles.qubit } key = { rowIndex }>
-                        <line
-                            x1 = { 58 }
-                            y1 = { 58 * (rowIndex + 1) }
-                            x2 = { 58 * row.length}
-                            y2 = { 58 * (rowIndex + 1) }
-                            id = { rowIndex }
-                        />
+                        {
+                            rowIndex === qubitStates.length - 1 ?
+                            <line
+                                x1 = { 58 }
+                                y1 = { 58 * (rowIndex + 1) }
+                                x2 = { 58 * row.length}
+                                y2 = { 58 * (rowIndex + 1) }
+                                id = { rowIndex }
+                                style = {{ "stroke": "rgb(192,192,192)", "stroke-width": "2", "z-index": "1", "position": "relative", "stroke-linecap": "square",}}
+                            />
+                            :
+                            <line
+                                x1 = { 58 }
+                                y1 = { 58 * (rowIndex + 1) }
+                                x2 = { 58 * row.length}
+                                y2 = { 58 * (rowIndex + 1) }
+                                id = { rowIndex }
+                            />
+                        }
                     {
                         row.map((col, colIndex) => {
                             if(colIndex === 0 && rowIndex === qubitStates.length - 1) {
