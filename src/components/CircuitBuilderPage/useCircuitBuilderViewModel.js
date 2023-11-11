@@ -218,6 +218,8 @@ const useCircuitBuilderViewModel = () => {
                         }
                     })
             })
+
+            //highlight entirety of compound gate on circuit
             let compoundGateIndex = -1;
             highlightedGates.forEach((gate, index) => {
                 if(gate.gate.qid === "compound_gate") {
@@ -618,12 +620,12 @@ const useCircuitBuilderViewModel = () => {
             if(gate.col < lowestQubitCell) {
                 lowestQubitCell = gate.col;
             }
-            copy[gate.row][gate.col] = { hasGate : false, gate : undefined };
+            if(gate.gate.qid !== "measure") copy[gate.row][gate.col] = { hasGate : false, gate : undefined };
         })
 
         let stdGates = [];
         gatesSelected.forEach((gate) =>  {
-            stdGates.push({ gate : JSON.parse(gate.e.getAttributeNS(null, "gate")), location : { row: gate.row, col : gate.col } });
+            if(gate.gate.qid !== "measure") stdGates.push({ gate : JSON.parse(gate.e.getAttributeNS(null, "gate")), location : { row: gate.row, col : gate.col } });
         })
 
         let compoundGate = {

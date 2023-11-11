@@ -45,8 +45,8 @@
   grid-area: Circuit-Builder;
   /* background-color: rgba(232, 14, 213); */
   width: 100%;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding-left: 5%;
+  padding-right: 5%;
   align-items: center;
   overflow: scroll;
   display: flex;
@@ -110,6 +110,7 @@
   border: 1px solid rgb(0, 0, 0);
   position : fixed;
   bottom : 0;
+  z-index: 2;
 }
 
 .contextMenu {

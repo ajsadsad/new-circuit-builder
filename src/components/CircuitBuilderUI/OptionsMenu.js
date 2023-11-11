@@ -30,16 +30,16 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                     <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Code Ouput
                     </button>
-          
+
                         <ul class="dropdown-menu dropdown-menu-dark" >
                         <p style={{width: "250px"}}/>
                         <div className={styles.CodeOuput}>
                             {displayCode}
 
                         </div>
-                            
+
                         </ul>
-                
+
 
                 </div>
                 <div className="dropup">

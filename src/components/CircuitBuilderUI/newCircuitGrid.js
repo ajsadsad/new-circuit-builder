@@ -64,7 +64,7 @@ export default function NewCircuitGrid ({ qubitStates, handleChange, addQubit, s
                                     <g key = { "Qubit num: " + rowIndex + "." + colIndex }>
                                         <text
                                             x = { 58 * colIndex + 12 }
-                                            y = { 58 * rowIndex + 62 }
+                                            y = { 58 * rowIndex + 63 }
                                             width = { 58 }
                                             height = { 58 }
                                             className = {styles.disableTextSelection}

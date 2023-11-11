@@ -71,7 +71,7 @@ export default function CircuitBuilderPage () {
         >
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
-                    <div class="col-6">
+                    <div class="col-12">
                         <AllGatesMenu
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
@@ -80,7 +80,7 @@ export default function CircuitBuilderPage () {
                             addToFavGates={addToFavGates}
                         />
                     </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <FaveGatesMenu
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
@@ -88,8 +88,22 @@ export default function CircuitBuilderPage () {
 
                         />
                     </div>
-           
+
                 </div>
+            </div>
+
+            <div className={styles.optionsBar}>
+                    <OptionsMenu
+                        processCircuit = { processCircuit }
+                        redo = { redo }
+                        undo = { undo }
+                        index = { index }
+                        lastIndex = { lastIndex }
+                        clearAllGates={clearAllGates}
+                        strongCompress={strongCompress}
+                        weakCompress={weakCompress}
+                        circuitCode = { circuitCode }
+                    />
             </div>
 
             <div class="container text-center" className={styles.middle}>
@@ -130,20 +144,6 @@ export default function CircuitBuilderPage () {
 
                 </div> */}
             </div >
-
-            <div className={styles.optionsBar}>
-                    <OptionsMenu
-                        processCircuit = { processCircuit }
-                        redo = { redo }
-                        undo = { undo }
-                        index = { index }
-                        lastIndex = { lastIndex }
-                        clearAllGates={clearAllGates}
-                        strongCompress={strongCompress}
-                        weakCompress={weakCompress}
-                        circuitCode = { circuitCode }
-                    />
-            </div>
             <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
                 {
                     (index > 0) &&
