@@ -760,7 +760,7 @@ const useCircuitBuilderViewModel = () => {
     function addQubit() {
         if(currQBState.length < 31) {
             let copy = getQubitStateDeepCopy();
-            copy.push(Array(currQBState[0].length));
+            copy.push(Array(currQBState[currQBState.length-1].length));
             copy[currQBState.length].fill({hasGate : false, gate : null});
             setState(copy);
 
