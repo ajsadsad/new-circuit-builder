@@ -1,0 +1,10 @@
+.codeConsole {
+    background-color: beige;
+    left : 0;
+}
+
+.codeLines {
+    padding-top: 5%;
+    padding-left: 10%;
+    text-align: left;
+}

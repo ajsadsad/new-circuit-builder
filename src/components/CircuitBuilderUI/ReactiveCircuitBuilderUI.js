@@ -18,13 +18,30 @@
 
 import React from 'react'
 import gridStyle from '../css/Grid.module.css'
+import style from '../css/ReactiveCircuitBuilderUI.module.css'
 import circle from '../../assets/plus-circle-dotted.svg'
 import AdaptiveTextBox from '../CompoundGates/AdaptiveTextBox'
 import qubitSymbol from '../../assets/qubitSymbol.svg'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button';
+import Collapse from 'react-bootstrap/Collapse';
 
-export default function ReactiveCircuitBuilderUI({currQBState, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef,  handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover, circuitBuilderHeight}) {
+export default function ReactiveCircuitBuilderUI({currQBState, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef,  handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover, circuitBuilderHeight, showCodeView, setCodeView, circuitCode, testVar, setTestVar}) {
+
+    const displayCode = circuitCode.map((line, index) => {
+        return (
+            <>
+                {(index + 1)}. {line} <br/>
+            </>
+        )
+    })
 
     return (
+    <Container fluid = { true }>
+        <Row>
+        <Col md={ showCodeView ? 10 : 12 }>
         <svg
             height = { 60 * currQBState.length + 25}
             width = { "100%" }
@@ -82,17 +99,21 @@ export default function ReactiveCircuitBuilderUI({currQBState, handleChange, add
                             } else if(colIndex === 0) {
                                 return (
                                     <g key = { "Qubit num: " + rowIndex + "." + colIndex }>
-                                        <text
+                                        {/* <text
                                             x = { 58 * colIndex + 12 }
                                             y = { 58 * rowIndex + 63 }
                                             width = { 58 }
                                             height = { 58 }
                                             className = {gridStyle.disableTextSelection}
-                                        >
+                                        > */}
                                             <image
                                                 href = { qubitSymbol }
+                                                x = { 58 * colIndex + 11 }
+                                                y = { 58 * rowIndex + 41 }
+                                                height = { 33 }
+                                                width = { 33 }
                                             />
-                                        </text>
+                                        {/* </text> */}
                                     </g>
                                 )
                             } else {
@@ -276,5 +297,30 @@ export default function ReactiveCircuitBuilderUI({currQBState, handleChange, add
             )})}
         <image ref = {imgRef} pointerEvents={ "none" }> </image>
     </svg>
+    </Col>
+    <Col md={showCodeView ? 2 : 0} className = {style.codeConsole}>
+        <>
+            <Collapse in = {showCodeView} onExited={() => setTestVar(12)} timeout = {300} appear = { true }>
+            {
+                showCodeView ?
+                <div className = {style.codeLines}>
+                    {displayCode}
+                </div>
+                :
+                <>
+                </>
+            }
+            </Collapse>
+        </>
+    </Col>
+    </Row>
+    <Row style = {{"padding-top" : "10px", "margin-left" : "0"}}>
+        <Container fluid = {"sm"}>
+            <Row>
+                <Col sm = {{span: 1, offset: 0}}><Button variant="primary">Strong Compress </Button></Col>
+            </Row>
+        </Container>
+    </Row>
+    </Container>
     )
 }

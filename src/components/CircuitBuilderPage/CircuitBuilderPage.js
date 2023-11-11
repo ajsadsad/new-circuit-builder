@@ -2,10 +2,8 @@ import React from 'react';
 import styles from '../css/CircuitBuilder.module.css';
 import contextStyles from '../css/ContextMenu.module.css';
 import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu';
-import CircuitCode from '../CircuitBuilderUI/CircuitCode';
 import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu';
 import OptionsMenu from '../CircuitBuilderUI/OptionsMenu';
-import Output from '../CircuitBuilderUI/Output';
 import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/ReactiveCircuitBuilderUI';
 import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 import ThetaModal from '../Modals/ThetaModal'
@@ -56,7 +54,7 @@ export default function CircuitBuilderPage () {
         lineRef, circleRef, pathRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
         makeCompoundGate, compoundGate, showCompoundGateModal, compoundGateModal, handleKeyPress,
         handleHover,
-        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef,
+        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef, showCodeView, setCodeView, testVar, setTestVar,
     } = useCircuitBuilderViewModel();
 
 
@@ -71,7 +69,7 @@ export default function CircuitBuilderPage () {
         >
             <div class="container-fluid overflow-hidden mt-4" className={styles.top}>
                 <div class="row gx-0 gy-3 ">
-                    <div class="col-12">
+                    <div class="col-6">
                         <AllGatesMenu
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
@@ -80,7 +78,7 @@ export default function CircuitBuilderPage () {
                             addToFavGates={addToFavGates}
                         />
                     </div>
-                    <div class="col-12">
+                    <div class="col-6">
                         <FaveGatesMenu
                             setDraggingGate={setDraggingGate}
                             setDraggingGateNode={setDraggingGateNode}
@@ -103,6 +101,9 @@ export default function CircuitBuilderPage () {
                         strongCompress={strongCompress}
                         weakCompress={weakCompress}
                         circuitCode = { circuitCode }
+                        showCodeView = { showCodeView }
+                        setCodeView = { setCodeView }
+                        setTestVar = { setTestVar }
                     />
             </div>
 
@@ -136,6 +137,11 @@ export default function CircuitBuilderPage () {
                             handleOnClick = { handleOnClick }
                             pathRef = { pathRef }
                             handleHover = { handleHover }
+                            showCodeView = { showCodeView }
+                            setCodeView = { setCodeView }
+                            circuitCode = { circuitCode }
+                            testVar = { testVar }
+                            setTestVar = { setTestVar }
                         />
                 </ContextMenuTrigger>
 

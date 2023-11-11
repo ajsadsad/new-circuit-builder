@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "../css/OptionsMenu.module.css";
 
-export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, strongCompress, weakCompress, circuitCode }) {
+export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, strongCompress, weakCompress, circuitCode, showCodeView, setCodeView, setTestVar }) {
 
     const canUndo = index > 0;
     const canRedo = index < lastIndex;
@@ -22,11 +22,11 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
                     <ul className="dropdown-menu dropdown-menu-dark">
                         <li><a className="dropdown-item">All Gates</a></li>
                         <li><a className="dropdown-item">My Gates</a></li>
-                        <li><a className="dropdown-item">Code</a></li>
+                        <li><a className="dropdown-item" onClick = {() => {setCodeView(!showCodeView); setTestVar(10);}} >Code</a></li>
                     </ul>
                 </div>
                 <div className="dropup" >
-                    <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button className="btn btn-dark rounded-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" onClick = {() => setCodeView(!showCodeView)}>
                         Code Ouput
                     </button>
 

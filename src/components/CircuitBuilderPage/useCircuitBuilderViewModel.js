@@ -37,6 +37,9 @@ const useCircuitBuilderViewModel = () => {
     const [favGates, setFavGates] = useState([]);
     const [lastClicked, setLastClicked] = useState(null);
     const [newCompoundGateModal, showNewCompoundGateModal] = useState(false);
+    const [showCodeView, setCodeView] = useState(false);
+    const [isCodeShowing, updateGrid] = useState(false);
+    const [testVar, setTestVar] = useState(12);
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -849,7 +852,7 @@ const useCircuitBuilderViewModel = () => {
         addToFavGates,
         makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover,
         newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef,
-        saveCircuit,
+        saveCircuit, showCodeView, setCodeView, isCodeShowing, updateGrid, testVar, setTestVar
     }
 
 }
