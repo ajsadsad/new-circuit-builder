@@ -11,6 +11,8 @@
 import React from 'react';
 import styles from '../css/AllGatesMenu.module.css';
 import CGImg from '../../assets/compound_gate.svg';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateNode }) {
 
@@ -21,6 +23,16 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                     {
                         gate.qid === "compound_gate" ?
                         <>
+                        <OverlayTrigger
+                            placement="right"
+                            delay={{ show: 200, hide: 300 }}
+                            overlay={
+                                <Tooltip id="button-tooltip">
+                                    <strong> {gate.gateName} </strong> <br/>
+                                    {gate.description}
+                                </Tooltip>
+                            }
+                        >
                             <img
                                 key = { gate.qid }
                                 id = { gate.qid }
@@ -28,11 +40,23 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                                 src ={ CGImg }
                                 draggable={true}
                                 onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
+                                alt = {"Compound Gate"}
                             />
+                        </OverlayTrigger>
                             <p> { gate.gateName } </p>
                         </>
                     :
                     <>
+                        <OverlayTrigger
+                            placement="right"
+                            delay={{ show: 200, hide: 300 }}
+                            overlay={
+                                <Tooltip id="button-tooltip">
+                                    <strong> {gate.gateName} </strong> <br/>
+                                    {gate.description}
+                                </Tooltip>
+                            }
+                        >
                         <img
                             className={styles.GateImg}
                             key={gate.qid}
@@ -41,7 +65,9 @@ export default function FaveGatesMenu({ gates, setDraggingGate, setDraggingGateN
                             src={require(`../../assets/${gate.img}`)}
                             draggable={true}
                             onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
+                            alt = {"Standard Gate"}
                         />
+                        </OverlayTrigger>
                         <p> {gate.gateName} </p>
                     </>
                     }

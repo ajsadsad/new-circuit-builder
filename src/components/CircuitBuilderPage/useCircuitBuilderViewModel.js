@@ -13,7 +13,7 @@
  * @param {number} value - value that slider is currently at.
  *
  */
-import { useState, useRef, useEffect, createElement } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
 import { type } from '@testing-library/user-event/dist/type';

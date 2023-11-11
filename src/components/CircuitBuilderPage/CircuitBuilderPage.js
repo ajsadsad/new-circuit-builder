@@ -107,7 +107,7 @@ export default function CircuitBuilderPage () {
             </div>
 
             <div class="container text-center" className={styles.middle}>
-                <ContextMenuTrigger id="contextmenu" style = {"padding-left : 25%"} >
+                <ContextMenuTrigger id="contextmenu">
                     <ReactiveCircuitBuilderUI
                             addQubit={addQubit}
                             currQBState={currQBState}
@@ -136,7 +136,6 @@ export default function CircuitBuilderPage () {
                             handleOnClick = { handleOnClick }
                             pathRef = { pathRef }
                             handleHover = { handleHover }
-
                         />
                 </ContextMenuTrigger>
 

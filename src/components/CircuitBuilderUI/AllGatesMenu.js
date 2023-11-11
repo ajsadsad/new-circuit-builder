@@ -8,7 +8,7 @@
  *
  */
 
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from '../css/AllGatesMenu.module.css';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import contextStyles from '../css/ContextMenu.module.css';
@@ -25,11 +25,11 @@ export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNo
 
     const gateImgs = standardGates.map((gate) => {
         return (
-            <div class="col" style={{ minHeight: 120 }}>
-                <ContextMenuTrigger id="gateContextmenu" style={"padding-left : 25%"}>
+            <div class="col" style={{ minHeight: 120 }} key = {gate.qid}>
+                <ContextMenuTrigger id="gateContextmenu" style={{"padding-left" : "25%"}}>
                     <OverlayTrigger
                         placement="right"
-                        delay={{ show: 250, hide: 400 }}
+                        delay={{ show: 250, hide: 300 }}
                         overlay={
                             <Tooltip id="button-tooltip">
                                 <strong> {gate.gateName} </strong> <br/>
@@ -39,13 +39,13 @@ export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNo
                     >
                     <img
                         className={styles.GateImg}
-                        key={gate.qid}
                         id={gate.qid}
                         gate={JSON.stringify(gate)}
                         src={require(`../../assets/${gate.img}`)}
                         draggable={true}
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                         onContextMenu={() => { setLastClicked(gate) }}
+                        alt = {"gate img"}
                     />
                     </OverlayTrigger>
                     <p> {gate.gateName} </p>

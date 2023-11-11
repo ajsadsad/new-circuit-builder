@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from "../css/OptionsMenu.module.css";
-import { Dropdown } from 'react-bootstrap';
 
 export default function OptionsMenu({ processCircuit, redo, undo, index, lastIndex, clearAllGates, strongCompress, weakCompress, circuitCode }) {
 
@@ -9,7 +8,7 @@ export default function OptionsMenu({ processCircuit, redo, undo, index, lastInd
 
     const displayCode = circuitCode.map((line, index) => {
         return (
-            <p >{(index + 1)}: {line}</p>
+            <p key = {index}>{(index + 1)}: {line}</p>
         )
     })
 
