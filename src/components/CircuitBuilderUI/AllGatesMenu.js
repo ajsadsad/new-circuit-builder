@@ -10,10 +10,10 @@
 
 import React, { useRef } from 'react';
 import styles from '../css/AllGatesMenu.module.css';
-import { Collapse } from 'bootstrap';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import contextStyles from '../css/ContextMenu.module.css';
-import { useState } from "react";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNode, setLastClicked, addToFavGates }) {
 
@@ -27,6 +27,16 @@ export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNo
         return (
             <div class="col" style={{ minHeight: 120 }}>
                 <ContextMenuTrigger id="gateContextmenu" style={"padding-left : 25%"}>
+                    <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={
+                            <Tooltip id="button-tooltip">
+                                <strong> {gate.gateName} </strong> <br/>
+                                {gate.description}
+                            </Tooltip>
+                        }
+                    >
                     <img
                         className={styles.GateImg}
                         key={gate.qid}
@@ -37,6 +47,7 @@ export default function AllGatesMenu({ gates, setDraggingGate, setDraggingGateNo
                         onDragStart={(e) => { e.stopPropagation(); setDraggingGateNode(e); setDraggingGate(gate); }}
                         onContextMenu={() => { setLastClicked(gate) }}
                     />
+                    </OverlayTrigger>
                     <p> {gate.gateName} </p>
                 </ContextMenuTrigger>
 
