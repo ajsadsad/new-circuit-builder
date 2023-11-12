@@ -653,7 +653,7 @@ const useCircuitBuilderViewModel = () => {
         let copy = getQubitStateDeepCopy();
         let code = [];
         //let cregMeasure = 1;
-        code.push("OPENQASM 2.0", "include \"qelibl.inc\";","qreg q[" + (currQBState.length-1) + "]");
+        code.push("OPENQASM 2.0", "include \"qelibl.inc\";","qreg q[" + (currQBState.length-1) + "];");
         currQBState.forEach((row, rowIndex) => row.forEach((col, colIndex) => {
             if(col.hasGate) {
                 let gate = copy[rowIndex][colIndex].gate;
@@ -661,19 +661,19 @@ const useCircuitBuilderViewModel = () => {
                 if(gate.qid === "measure"){
                     // code.push(gate.qid + " q[" + row + "] c[" + cregMeasure + "]");
                     // cregMeasure += 1;
-                    code.push(gate.qid + " q[" + rowIndex + "]");
+                    code.push(gate.qid + " q[" + rowIndex + "];");
                 }
                 //if rotated gate
                 else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
-                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "]");
+                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "];");
                 }
                 //if cnot gate
                 else if(gate.qid === "cnot"){
-                    code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "]");
+                    code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "];");
                 }
                 //if normal gate
                 else if(gate.qid !== undefined){
-                    code.push(gate.qid + " q[" + rowIndex + "]");
+                    code.push(gate.qid + " q[" + rowIndex + "];");
                 }
             }
         }))

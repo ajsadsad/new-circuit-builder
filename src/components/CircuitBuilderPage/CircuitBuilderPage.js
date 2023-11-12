@@ -4,7 +4,7 @@ import contextStyles from '../css/ContextMenu.module.css';
 import AllGatesMenu from '../CircuitBuilderUI/AllGatesMenu';
 import FaveGatesMenu from '../CircuitBuilderUI/FaveGatesMenu';
 import OptionsMenu from '../CircuitBuilderUI/OptionsMenu';
-import ReactiveCircuitBuilderUI from '../CircuitBuilderUI/ReactiveCircuitBuilderUI';
+import CircuitGridUI from '../CircuitBuilderUI/CircuitGridUI';
 import useCircuitBuilderViewModel from './useCircuitBuilderViewModel';
 import ThetaModal from '../Modals/ThetaModal'
 import NoParamModal from '../Modals/NoParamModal';
@@ -109,7 +109,7 @@ export default function CircuitBuilderPage () {
 
             <div class="container text-center" className={styles.middle}>
                 <ContextMenuTrigger id="contextmenu">
-                    <ReactiveCircuitBuilderUI
+                    <CircuitGridUI
                             addQubit={addQubit}
                             currQBState={currQBState}
                             gateFromQubit={gateFromQubit}
