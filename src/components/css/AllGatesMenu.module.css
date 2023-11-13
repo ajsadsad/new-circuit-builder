@@ -12,6 +12,7 @@
 .accordionContent {
   padding-top: 10px;
   width : 100%;
+  border: 1px solid rgba(156, 153, 144, 0.438);
   background-color: rgb(156, 153, 144);
   color: white;
   border-bottom-right-radius: 5px;

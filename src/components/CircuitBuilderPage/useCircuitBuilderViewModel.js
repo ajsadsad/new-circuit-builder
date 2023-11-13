@@ -38,8 +38,8 @@ const useCircuitBuilderViewModel = () => {
     const [lastClicked, setLastClicked] = useState(null);
     const [newCompoundGateModal, showNewCompoundGateModal] = useState(false);
     const [showCodeView, setCodeView] = useState(false);
-    const [isCodeShowing, updateGrid] = useState(false);
     const [showOptions, setOptionsView] = useState(false);
+    const [clearCircuit, setClearCircuitModal] = useState(false);
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -160,7 +160,7 @@ const useCircuitBuilderViewModel = () => {
     }
 
     function clearAllGates() {
-        setState(Array.from({length: 4},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
+        setState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
     }
 
     function startDrawRect(e) {
@@ -796,10 +796,6 @@ const useCircuitBuilderViewModel = () => {
         }
     }
 
-    function saveCircuit() {
-
-    }
-
     function removeMeasureGate(pos) {
         let copy = getQubitStateDeepCopy();
         for(var i = pos.col; i < 50; i++) {
@@ -816,8 +812,8 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
-    function updateCodeView(val) {
-
+    function updateCodeViewRef() {
+        setCodeView(!showCodeView);
     }
     return {
         //States
@@ -837,6 +833,7 @@ const useCircuitBuilderViewModel = () => {
         newCompoundGateModal,
         showOptions,
         circuitCode,
+        clearCircuit,
         //Functions
         deleteGate,
         clearSelectedGates,
@@ -857,8 +854,10 @@ const useCircuitBuilderViewModel = () => {
         handleOnMouseDown, handleOnMouseUp, handleOnClick, handleKeyPress, handleHover,
         makeCompoundGate,
         showCompoundGateModal,
-        updateCodeView,
-        //Set States & Refs
+        updateCodeViewRef,
+        checkMeasureGateInQubits,
+        //Set States
+        setClearCircuitModal,
         setCodeView,
         handleCloseOptions,
         handleShowOptions,
@@ -867,7 +866,7 @@ const useCircuitBuilderViewModel = () => {
         setDraggingGateNode,
         showNewCompoundGateModal,
         showNoParamModal,
-        //Refs
+        //Set Refs
         svgRef, rectRef, draggingGate,
         imgRef, qubitCellRef, circleRef, pathRef,
         newCGNameRef, newCGDescRef, formRef,
