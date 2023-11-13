@@ -44,9 +44,10 @@
 .CircuitBuilder {
   grid-area: Circuit-Builder;
   /* background-color: rgba(232, 14, 213); */
+  height : 90vh;
   width: 100%;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding-top : 10px;
+  padding-bottom : 10px;
   align-items: center;
   overflow: scroll;
   display: flex;
@@ -92,24 +93,33 @@
 
 .top {
   padding-top: 1px;
+  background-color: transparent;
 }
 
 .middle {
   background-color: rgb(255, 255, 255);
-  padding-top: 50px;
-  padding-bottom: 50px;
-  height: 100vh;
   width: 100%;
-  overflow: scroll;
+  height : 80vh;
   justify-content: center;
   align-items: center;
+  padding-top : 10px;
+  padding-bottom : 10px;
+  padding-right : 2%;
 }
 
 .optionsBar {
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(0, 0, 0);
+  background-color: transparent;
   position : fixed;
   bottom : 0;
+  z-index: 2;
+}
+
+.rightSide {
+  height : 100%;
+  margin-left : auto;
+  margin-right : 0;
+  background-color: aqua;
+  right : 0;
 }
 
 .contextMenu {

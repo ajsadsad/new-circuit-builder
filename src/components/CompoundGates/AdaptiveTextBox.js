@@ -37,7 +37,7 @@ export default function AdaptiveTextBox({ width, height, text, col, row, handleO
                 y = { (row*58) + 36 }
                 rx = { 4 }
                 onMouseUp={ (e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseUp(e)}}
-                onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, col.gate); }}
+                onMouseDown = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnMouseDown(e, gate); }}
                 onClick = {(e) => { e.preventDefault(); e.stopPropagation(); handleOnClick(e); }}
                 gate = {gate}
             />
@@ -48,7 +48,7 @@ export default function AdaptiveTextBox({ width, height, text, col, row, handleO
                     y = {58 * col + 28}
                     textAnchor={"end"}
                     textLength = { height - text.length - 10}
-                    lengthAdjust ={ "spacing" }
+                    lengthAdjust ={ text.length > 16 ? "spacing" : "none" }
                     letterSpacing="1"
                 >
                     {text}

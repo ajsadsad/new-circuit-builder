@@ -13,10 +13,11 @@
  * @param {number} value - value that slider is currently at.
  *
  */
-import { useState, useRef, useEffect, createElement } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import useCircuitBuilderModel from './useCircuitBuilderModel'
 import useUndoRedoCBState from '../Hooks/useUndoRedoCBState'
 import { type } from '@testing-library/user-event/dist/type';
+import CGImg from '../../assets/compound_gate.svg';
 
 const useCircuitBuilderViewModel = () => {
 
@@ -36,6 +37,9 @@ const useCircuitBuilderViewModel = () => {
     const [favGates, setFavGates] = useState([]);
     const [lastClicked, setLastClicked] = useState(null);
     const [newCompoundGateModal, showNewCompoundGateModal] = useState(false);
+    const [showCodeView, setCodeView] = useState(false);
+    const [isCodeShowing, updateGrid] = useState(false);
+    const [showOptions, setOptionsView] = useState(false);
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -58,6 +62,9 @@ const useCircuitBuilderViewModel = () => {
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
     useEffect(()=>{convertCircuit()},[currQBState]);
+
+    const handleCloseOptions = () => setOptionsView(false);
+    const handleShowOptions = () => setOptionsView(true);
 
     function setKeysPressed(e, key) {
         if(e.type === "keydown") {
@@ -131,17 +138,24 @@ const useCircuitBuilderViewModel = () => {
     function handleHover(e) {
         if(e.type === "dragover") {
             if(draggingGate.current.qid === "compound_gate") {
-                console.log(e.target);
-                for(var i = draggingGate.current.location.head; i < draggingGate.current.location.tail; i++) {
-                    let test = svgRef.current.getElementById("id", draggingGate.current.location.head + "." + i);
-                    console.log(test);
-                    test.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
+                let compoundGateSize = parseInt(draggingGate.current.location.tail - draggingGate.current.location.head);
+                for(var i = 0; i <= compoundGateSize; i++) {
+                    let compoundGateArea = svgRef.current.getElementById((parseInt(e.target.getAttributeNS(null, "row")) + i) + "." + e.target.getAttributeNS(null, "col"));
+                    compoundGateArea.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
                 }
             } else {
                 e.target.setAttributeNS(null, "style", "fill : #5aa4ff; opacity : 0.25");
             }
         } else if (e.type === "dragleave") {
-            e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;")
+            if(draggingGate.current.qid === "compound_gate") {
+                let compoundGateSize = parseInt(draggingGate.current.location.tail - draggingGate.current.location.head);
+                for(var i = 0; i <= compoundGateSize; i++) {
+                    let compoundGateArea = svgRef.current.getElementById((parseInt(e.target.getAttributeNS(null, "row")) + i) + "." + e.target.getAttributeNS(null, "col"));
+                    compoundGateArea.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;");
+                }
+            } else {
+                e.target.setAttributeNS(null, "style", "fill: white; z-index: 1; opacity: 0;");
+            }
         }
     }
 
@@ -210,6 +224,8 @@ const useCircuitBuilderViewModel = () => {
                         }
                     })
             })
+
+            //highlight entirety of compound gate on circuit
             let compoundGateIndex = -1;
             highlightedGates.forEach((gate, index) => {
                 if(gate.gate.qid === "compound_gate") {
@@ -264,10 +280,11 @@ const useCircuitBuilderViewModel = () => {
             imgRef.current.setAttributeNS(null,"y", newMouseY);
             imgRef.current.setAttributeNS(null, 'width', "38");
             imgRef.current.setAttributeNS(null, 'height', "38");
-            imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             imgRef.current.setAttributeNS(null, "display", "block");
-            if(draggingGate.current.qid === "measure") {
-                removeMeasureGate( {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")})
+            if(draggingGate.current.qid === "compound_gate") {
+                imgRef.current.setAttributeNS(null, "href", `${CGImg}`);
+            } else {
+                imgRef.current.setAttributeNS(null, "href", `${draggingGateNode.current.target.getAttributeNS(null, "href")}`);
             }
         } else if (isDroppingCNOT.isDropping) {
             pathRef.current.setAttributeNS(null, 'display', "block");
@@ -404,8 +421,15 @@ const useCircuitBuilderViewModel = () => {
                 let originalLocation = {row : draggingGateNode.current.target.getAttributeNS(null, "row"), col : draggingGateNode.current.target.getAttributeNS(null, "col")};
                 let newLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
                 if(draggingGate.current.qid === "measure") {
-                    addMeasureGate(newLocation);
+                    let copy = getQubitStateDeepCopy();
+                    for(var i = originalLocation.col; i < 50; i++) {
+                        copy[originalLocation.row].push({ hasGate : false, gate : null});
+                    }
+                    copy[originalLocation.row][originalLocation.col] = { hasGate : false , gate : undefined};
+                    copy[newLocation.row] = copy[newLocation.row].slice(0, parseInt(newLocation.col) + 1);
+                    copy[newLocation.row][newLocation.col] = { hasGate : true, gate : draggingGate.current};
                     setIsDragging(false);
+                    setState(copy);
                 } else {
                     let copy = getQubitStateDeepCopy();
                     copy[originalLocation.row][originalLocation.col] = { hasGate : false, gate : null};
@@ -415,7 +439,7 @@ const useCircuitBuilderViewModel = () => {
                 }
             }
         } else {
-            let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
+            let gateLocation = {row : parseInt(e.target.getAttributeNS(null, "row")), col : parseInt(e.target.getAttributeNS(null, "col"))};
             if(draggingGate.current.qid === "cnot") {
 
                 let midX = parseFloat(e.target.getAttributeNS(null, "x")) + 30;
@@ -438,6 +462,15 @@ const useCircuitBuilderViewModel = () => {
                     copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
                     setState(copy);
                     qubitCellRef.current.push(Array(currQBState[0].length));
+                } else if(draggingGate.current.qid === "compound_gate") {
+                    let copy = getQubitStateDeepCopy();
+                    let compoundGateSize = parseInt(draggingGate.current.location.tail - draggingGate.current.location.head);
+                    draggingGate.current.location.tail = gateLocation.row + compoundGateSize;
+                    draggingGate.current.location.head = gateLocation.row;
+                    for(var i = 0; i <= compoundGateSize; i++) {
+                        copy[gateLocation.row + i][gateLocation.col] = { hasGate : true, gate : draggingGate.current }
+                    }
+                    setState(copy);
                 } else {
                     let copy = getQubitStateDeepCopy();
                     copy[gateLocation.row][gateLocation.col] = { hasGate : true, gate : draggingGate.current};
@@ -578,7 +611,6 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
-    //Have to change it so that the ID is the name provided by the user so that it is unique.
     function makeCompoundGate() {
 
         let copy = getQubitStateDeepCopy();
@@ -594,12 +626,12 @@ const useCircuitBuilderViewModel = () => {
             if(gate.col < lowestQubitCell) {
                 lowestQubitCell = gate.col;
             }
-            copy[gate.row][gate.col] = { hasGate : false, gate : undefined };
+            if(gate.gate.qid !== "measure") copy[gate.row][gate.col] = { hasGate : false, gate : undefined };
         })
 
         let stdGates = [];
         gatesSelected.forEach((gate) =>  {
-            stdGates.push({ gate : JSON.parse(gate.e.getAttributeNS(null, "gate")), location : { row: gate.row, col : gate.col } });
+            if(gate.gate.qid !== "measure") stdGates.push({ gate : JSON.parse(gate.e.getAttributeNS(null, "gate")), location : { row: gate.row, col : gate.col } });
         })
 
         let compoundGate = {
@@ -624,7 +656,7 @@ const useCircuitBuilderViewModel = () => {
         let copy = getQubitStateDeepCopy();
         let code = [];
         //let cregMeasure = 1;
-        code.push("OPENQASM 2.0", "include \"qelibl.inc\";","qreg q[" + (currQBState.length-1) + "]");
+        code.push("OPENQASM 2.0", "include \"qelibl.inc\";","qreg q[" + (currQBState.length-1) + "];");
         currQBState.forEach((row, rowIndex) => row.forEach((col, colIndex) => {
             if(col.hasGate) {
                 let gate = copy[rowIndex][colIndex].gate;
@@ -632,19 +664,19 @@ const useCircuitBuilderViewModel = () => {
                 if(gate.qid === "measure"){
                     // code.push(gate.qid + " q[" + row + "] c[" + cregMeasure + "]");
                     // cregMeasure += 1;
-                    code.push(gate.qid + " q[" + rowIndex + "]");
+                    code.push(gate.qid + " q[" + rowIndex + "];");
                 }
                 //if rotated gate
                 else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
-                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "]");
+                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "];");
                 }
                 //if cnot gate
                 else if(gate.qid === "cnot"){
-                    code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "]");
+                    code.push(gate.qasmid + " q[" + gate.q_control + "], q[" +  gate.q_target  + "];");
                 }
                 //if normal gate
                 else if(gate.qid !== undefined){
-                    code.push(gate.qid + " q[" + rowIndex + "]");
+                    code.push(gate.qid + " q[" + rowIndex + "];");
                 }
             }
         }))
@@ -653,7 +685,7 @@ const useCircuitBuilderViewModel = () => {
 
     function processCircuit() {
         let json = [];
-        if(checkMeasurementGate()) {
+        if(checkMeasureGateInQubits(currQBState.length - 2)) {
             json.push({'operation' : 'create_circuit', 'num_qubits' : currQBState.length});
             currQBState.forEach((row, rowIndex) => row.forEach((v) => {
                 if(v.hasGate) {
@@ -671,19 +703,46 @@ const useCircuitBuilderViewModel = () => {
             json.push({'operation' : 'destroy_circuit'});
             sendCircuitData(json);
             return json
-        } else {showMeasModal(true)};
+        } else {
+            showMeasModal(true);
+        }
     }
 
-    function checkMeasurementGate() {
+    //checks to see if there is a measurement gate in each qubit that has a non-measurement gate.
+    function checkMeasureGateInQubits(index) {
+        let checkMeasure = false;
         let hasMeasure = false;
-        currQBState.forEach((row, rowIndex) => row.forEach((v, colIndex) => {
-            if(v.hasGate) {
-                if(v.gate.qid === 'measure') {
-                    hasMeasure = true;
+        if(index === 0) {
+            currQBState[index].forEach((col) => {
+                if(col.hasGate) {
+                    checkMeasure = true;
                 }
+                if(col.hasGate && checkMeasure) {
+                    if(col.gate.qid === "measure") {
+                        hasMeasure = true;
+                    }
+                }
+            })
+            if(!checkMeasure) {
+                hasMeasure = true;
             }
-        }));
-        return hasMeasure
+            return hasMeasure;
+        } else {
+            currQBState[index].forEach((col) => {
+                if(col.hasGate) {
+                    checkMeasure = true;
+                }
+                if(col.hasGate && checkMeasure) {
+                    if(col.gate.qid === "measure") {
+                        hasMeasure = true;
+                    }
+                }
+            })
+            if(!checkMeasure) {
+                hasMeasure = true;
+            }
+            return hasMeasure && checkMeasureGateInQubits(index - 1);
+        }
     }
 
     function isMeasureInQubit(target) {
@@ -704,12 +763,11 @@ const useCircuitBuilderViewModel = () => {
     function addQubit() {
         if(currQBState.length < 31) {
             let copy = getQubitStateDeepCopy();
-            copy.push(Array(currQBState[0].length));
+            copy.push(Array(currQBState[currQBState.length-1].length));
             copy[currQBState.length].fill({hasGate : false, gate : null});
             setState(copy);
 
             qubitCellRef.current.push(Array(currQBState[0].length));
-            // copy[currQBState.length].fill("");
         } else {
             alert("Cannot add more than 30 qubits");
         }
@@ -758,46 +816,62 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
+    function updateCodeView(val) {
+
+    }
     return {
+        //States
         gates,
-        draggingGateNode,
-        draggingGate,
+        gateClickedName,
+        gateClickedDesc,
         thetaModal,
         noParamModal,
         hasMeasure,
-        gateClickedName,
-        gateClickedDesc,
-        gateClicked,
         gateClickedThetaVal,
         gatesSelected,
-        circuitCode,
         favGates,
-        setCircuitCode,
-        setGateClicked,
+        currQBState, index, lastIndex,
+        isDrawing,
+        compoundGate,
+        compoundGateModal,
+        newCompoundGateModal,
+        showOptions,
+        circuitCode,
+        //Functions
         deleteGate,
         clearSelectedGates,
         showMeasModal,
-        showThetaModal,
-        showNoParamModal,
         updateThetaModal,
-        handleClick,
         addQubit,
         processCircuit,
         handleChange,
-        setDraggingGate,
-        setDraggingGateNode,
-        convertCircuit,
-        currQBState, setState, index, lastIndex, undo, redo,
+        handleClick,
+        undo, redo,
+        startDrawRect, endDrawRect, drawRect,
+        startDraggingGate,
         clearAllGates,
-        strongCompress,
         weakCompress,
-        startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef, circleRef, pathRef,
-        startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
+        strongCompress,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover,
-        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef,
-        saveCircuit,
+        handleOnMouseDown, handleOnMouseUp, handleOnClick, handleKeyPress, handleHover,
+        makeCompoundGate,
+        showCompoundGateModal,
+        updateCodeView,
+        //Set States & Refs
+        setCodeView,
+        handleCloseOptions,
+        handleShowOptions,
+        setGateClicked,
+        setDraggingGate,
+        setDraggingGateNode,
+        showNewCompoundGateModal,
+        showNoParamModal,
+        //Refs
+        svgRef, rectRef, draggingGate,
+        imgRef, qubitCellRef, circleRef, pathRef,
+        newCGNameRef, newCGDescRef, formRef,
+        showCodeView,
     }
 
 }
