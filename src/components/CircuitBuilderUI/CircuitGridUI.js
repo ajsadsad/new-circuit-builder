@@ -13,7 +13,6 @@
  * @param {function} moveGateFromQubit - function passed in as a prop to CircuitGrid and triggered by onDragStart event when gate is moved from qubit.
  * @param {function} addQubit - function passed in as a prop to CircuitGrid to handle the addition of a qubit.
  * @param {function} handleClick - function passed in as a prop to CircuitGrid to hand the event of when a gate is clicked within the circuit.
- * @param {function} setGateClicked - function passed in as a prop to CircuitGrid to help keep track of current gate being actioned upon.
  */
 
 import React from 'react'
@@ -30,7 +29,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Collapse from 'react-bootstrap/Collapse';
 
-export default function CircuitGridUI({currQBState, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef,  handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover, circuitBuilderHeight, showCodeView, setCodeView, circuitCode,}) {
+export default function CircuitGridUI({currQBState, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef,  handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover, showCodeView, circuitCode, showOptions, handleCloseOptions, strongCompress, weakCompress,}) {
 
     const displayCode = circuitCode.map((line, index) => {
         return (
@@ -41,14 +40,9 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
     })
 
     return (
-        <Container fluid = {true} >
+        <>
+        <Container fluid = {true} style = {{"padding-left" : 0}}>
             <Row>
-                <Col sm={1} style = {{"width" : "3%"}}>
-                    {/* options menu */}
-                    <img
-                        src = {menu}
-                    />
-                </Col>
                 <Col>
                     {/* circuit grid, code console, weak & strong compress */}
                     <Row>
@@ -330,14 +324,15 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
                         <Col sm = {{span: 1, offset: 0}}>
                             {/* Strong & Weak compress */}
                             <ButtonGroup size = {"sm"}>
-                                <Button variant="secondary" style = {{"font-size" : "9px"}}>Strong Compress </Button>
-                                <Button variant="secondary" style = {{"font-size" : "9px"}}>Weak Compress </Button>
+                                <Button variant="secondary" style = {{"font-size" : "9px"}} onClick={strongCompress}>Strong Compress </Button>
+                                <Button variant="secondary" style = {{"font-size" : "9px"}} onClick={weakCompress}>Weak Compress </Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
                 </Col>
             </Row>
         </Container>
+    </>
     )
 
 }

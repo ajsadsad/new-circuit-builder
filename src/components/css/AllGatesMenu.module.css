@@ -1,1 +1,19 @@
-.p{color:#fff}.button{border:1px solid #000;background-color:#272727;color:#fff;padding-top:5px;padding-bottom:5px}.accordionContent{padding-top:10px;border:2px solid #4b4b4b;background-color:#333;color:#fff}/*# sourceMappingURL=AllGatesMenu.module.css.map */
+.p {
+  color: rgb(255, 255, 255);
+}
+.button {
+  border: 1px solid rgb(34 43 61);
+  background-color: rgb(34 43 61);
+  color: white;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+
+.accordionContent {
+  padding-top: 10px;
+  width : 100%;
+  background-color: rgb(156, 153, 144);
+  color: white;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}/*# sourceMappingURL=AllGatesMenu.module.css.map */

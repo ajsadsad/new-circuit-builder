@@ -39,7 +39,7 @@ const useCircuitBuilderViewModel = () => {
     const [newCompoundGateModal, showNewCompoundGateModal] = useState(false);
     const [showCodeView, setCodeView] = useState(false);
     const [isCodeShowing, updateGrid] = useState(false);
-    const [testVar, setTestVar] = useState(12);
+    const [showOptions, setOptionsView] = useState(false);
 
     const draggingGate = useRef(undefined);
     const draggingGateNode = useRef(undefined);
@@ -62,6 +62,9 @@ const useCircuitBuilderViewModel = () => {
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
 
     useEffect(()=>{convertCircuit()},[currQBState]);
+
+    const handleCloseOptions = () => setOptionsView(false);
+    const handleShowOptions = () => setOptionsView(true);
 
     function setKeysPressed(e, key) {
         if(e.type === "keydown") {
@@ -813,46 +816,62 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
+    function updateCodeView(val) {
+
+    }
     return {
+        //States
         gates,
-        draggingGateNode,
-        draggingGate,
+        gateClickedName,
+        gateClickedDesc,
         thetaModal,
         noParamModal,
         hasMeasure,
-        gateClickedName,
-        gateClickedDesc,
-        gateClicked,
         gateClickedThetaVal,
         gatesSelected,
-        circuitCode,
         favGates,
-        setCircuitCode,
-        setGateClicked,
+        currQBState, index, lastIndex,
+        isDrawing,
+        compoundGate,
+        compoundGateModal,
+        newCompoundGateModal,
+        showOptions,
+        circuitCode,
+        //Functions
         deleteGate,
         clearSelectedGates,
         showMeasModal,
-        showThetaModal,
-        showNoParamModal,
         updateThetaModal,
-        handleClick,
         addQubit,
         processCircuit,
         handleChange,
-        setDraggingGate,
-        setDraggingGateNode,
-        convertCircuit,
-        currQBState, setState, index, lastIndex, undo, redo,
+        handleClick,
+        undo, redo,
+        startDrawRect, endDrawRect, drawRect,
+        startDraggingGate,
         clearAllGates,
-        strongCompress,
         weakCompress,
-        startDrawRect, endDrawRect, drawRect, isDrawing, svgRef, rectRef, imgRef, circleRef, pathRef,
-        startDraggingGate, qubitCellRef, handleOnMouseDown, handleOnMouseUp, handleOnClick,
+        strongCompress,
         setLastClicked,
         addToFavGates,
-        makeCompoundGate, showCompoundGateModal, compoundGateModal, compoundGate, handleKeyPress, handleHover,
-        newCompoundGateModal, showNewCompoundGateModal, newCGNameRef, newCGDescRef, formRef,
-        saveCircuit, showCodeView, setCodeView, isCodeShowing, updateGrid, testVar, setTestVar
+        handleOnMouseDown, handleOnMouseUp, handleOnClick, handleKeyPress, handleHover,
+        makeCompoundGate,
+        showCompoundGateModal,
+        updateCodeView,
+        //Set States & Refs
+        setCodeView,
+        handleCloseOptions,
+        handleShowOptions,
+        setGateClicked,
+        setDraggingGate,
+        setDraggingGateNode,
+        showNewCompoundGateModal,
+        showNoParamModal,
+        //Refs
+        svgRef, rectRef, draggingGate,
+        imgRef, qubitCellRef, circleRef, pathRef,
+        newCGNameRef, newCGDescRef, formRef,
+        showCodeView,
     }
 
 }

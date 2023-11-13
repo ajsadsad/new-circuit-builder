@@ -5,6 +5,7 @@ import Header from './components/Header/Header.tsx';
 import LoginCreateAccView from './components/LoginCreateAccPage/LoginCreateAccView';
 import About from './components/AboutPage/About.tsx';
 import Setup from './components/SetupPage/Setup.tsx';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

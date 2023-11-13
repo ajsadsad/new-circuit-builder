@@ -48,8 +48,6 @@
   width: 100%;
   padding-top : 10px;
   padding-bottom : 10px;
-  padding-left: 2%;
-  padding-right: 2%;
   align-items: center;
   overflow: scroll;
   display: flex;
@@ -95,13 +93,13 @@
 
 .top {
   padding-top: 1px;
+  background-color: transparent;
 }
 
 .middle {
   background-color: rgb(255, 255, 255);
   width: 100%;
-  height : 85vh;
-  overflow: scroll;
+  height : 80vh;
   justify-content: center;
   align-items: center;
   padding-top : 10px;
@@ -110,8 +108,7 @@
 }
 
 .optionsBar {
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(0, 0, 0);
+  background-color: transparent;
   position : fixed;
   bottom : 0;
   z-index: 2;
