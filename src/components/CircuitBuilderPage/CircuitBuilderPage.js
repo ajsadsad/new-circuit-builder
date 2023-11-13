@@ -10,6 +10,7 @@ import MeasurementModal from '../Modals/MeasurementModal';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import CompoundGateModal from '../Modals/CompoundGateModal';
 import NewCompoundGateModal from '../Modals/NewCompoundGateModal';
+import ClearCircuitModal from '../Modals/ClearCircuitModal';
 import GatesMenu from '../CircuitBuilderUI/GatesMenu';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -39,6 +40,7 @@ export default function CircuitBuilderPage () {
         newCompoundGateModal,
         showOptions,
         circuitCode,
+        clearCircuit,
         //Functions
         deleteGate,
         clearSelectedGates,
@@ -59,11 +61,12 @@ export default function CircuitBuilderPage () {
         handleOnMouseDown, handleOnMouseUp, handleOnClick, handleKeyPress, handleHover,
         makeCompoundGate,
         showCompoundGateModal,
+        updateCodeViewRef,
+        checkMeasureGateInQubits,
         //Set States & Refs
-        setCodeView,
+        setClearCircuitModal,
         handleCloseOptions,
         handleShowOptions,
-        setGateClicked,
         setDraggingGate,
         setDraggingGateNode,
         showNewCompoundGateModal,
@@ -137,6 +140,7 @@ export default function CircuitBuilderPage () {
                                         showOptions = { showOptions }
                                         strongCompress={strongCompress}
                                         weakCompress={weakCompress}
+                                        showCodeView = { showCodeView }
                                     />
                                 </ContextMenuTrigger>
                                 <ContextMenu id="contextmenu" className = {contextStyles.ContextMenu}>
@@ -173,14 +177,11 @@ export default function CircuitBuilderPage () {
                         <Col md = {{span: 1, offset: 11}} >
                             <OptionsMenu
                                 processCircuit = { processCircuit }
-                                redo = { redo }
-                                undo = { undo }
-                                index = { index }
-                                lastIndex = { lastIndex }
-                                clearAllGates={clearAllGates}
+                                setClearCircuitModal = { setClearCircuitModal }
                                 circuitCode = { circuitCode }
-                                showCodeView = { showCodeView }
-                                setCodeView = { setCodeView }
+                                updateCodeViewRef = { updateCodeViewRef }
+                                checkMeasureGateInQubits = { checkMeasureGateInQubits }
+                                currQBState = { currQBState }
                             />
                         </Col>
 
@@ -225,6 +226,12 @@ export default function CircuitBuilderPage () {
                 makeCompoundGate = { makeCompoundGate }
                 handleOnClick = { (e) => { e.preventDefault(); e.stopPropagation();}}
                 formRef = { formRef }
+            />
+
+            <ClearCircuitModal
+                clearCircuit = { clearCircuit }
+                setClearCircuitModal = { setClearCircuitModal }
+                clearAllGates = { clearAllGates }
             />
 
         <Offcanvas show={showOptions} onHide={handleCloseOptions} style = {{"width" : "12%"}}>

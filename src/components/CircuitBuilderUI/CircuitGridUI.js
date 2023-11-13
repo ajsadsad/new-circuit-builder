@@ -34,7 +34,7 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
     const displayCode = circuitCode.map((line, index) => {
         return (
             <>
-                {(index + 1)}. {line} <br/>
+                <strong> {(index + 1)}.</strong> {line}<br/>
             </>
         )
     })
@@ -321,7 +321,7 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
                     </Row>
                     {/* Strong & Weak compress */}
                     <Row style = {{"padding-top" : "10px"}}>
-                        <Col sm = {{span: 1, offset: 0}}>
+                        <Col md = {{span: 1, offset: 0}} style = {{"padding-left" : "10px"}}>
                             {/* Strong & Weak compress */}
                             <ButtonGroup size = {"sm"}>
                                 <Button variant="secondary" style = {{"font-size" : "9px"}} onClick={strongCompress}>Strong Compress </Button>
