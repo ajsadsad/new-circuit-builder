@@ -324,8 +324,8 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
                         <Col md = {{span: 1, offset: 0}} style = {{"padding-left" : "10px"}}>
                             {/* Strong & Weak compress */}
                             <ButtonGroup size = {"sm"}>
-                                <Button variant="secondary" style = {{"font-size" : "9px"}} onClick={strongCompress}>Strong Compress </Button>
-                                <Button variant="secondary" style = {{"font-size" : "9px"}} onClick={weakCompress}>Weak Compress </Button>
+                                <Button variant="secondary" style = {{"font-size" : "9px", "background-color": "rgb(34 43 61)"}} onClick={strongCompress}>Strong Compress </Button>
+                                <Button variant="secondary" style = {{"font-size" : "9px", "background-color": "rgb(34 43 61)"}} onClick={weakCompress}>Weak Compress </Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
