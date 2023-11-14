@@ -17,7 +17,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import menu from '../../assets/menu.svg';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Form from 'react-bootstrap/Form';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function CircuitBuilderPage () {
@@ -86,7 +85,7 @@ export default function CircuitBuilderPage () {
             onKeyDown = { (e) => { handleKeyPress(e) } }
             onKeyUp = { (e) => { handleKeyPress(e) } }
             tabIndex = {-1}
-            style={ {"outline" : "none", "overflow" : "scroll"} }
+            style={ {"outline" : "none", "overflow" : "scroll", "max-height" : "85vh"} }
         >
             <Container fluid = {true} >
                 <Row>

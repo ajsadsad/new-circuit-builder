@@ -41,7 +41,7 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
 
     return (
         <>
-        <Container fluid = {true} style = {{"padding-left" : 0}}>
+        <Container fluid = {true} style = {{"padding-left" : "0", "padding-right" : "0"}}>
             <Row>
                 <Col>
                     {/* circuit grid, code console, weak & strong compress */}

@@ -18,7 +18,7 @@ export default function GatesMenu({ stdGates, faveGates, setDraggingGate, setDra
                 <ContextMenuTrigger id="gateContextmenu" style={{"padding-left" : "25%"}}>
                     <OverlayTrigger
                         placement="right"
-                        delay={{ show: 250, hide: 300 }}
+                        delay={{ show: 350, hide: 100 }}
                         overlay={
                             <Tooltip id="button-tooltip">
                                 <strong> {gate.gateName} </strong> <br/>
