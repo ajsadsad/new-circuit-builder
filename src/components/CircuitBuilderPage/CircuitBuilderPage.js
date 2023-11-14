@@ -85,7 +85,7 @@ export default function CircuitBuilderPage () {
             onKeyDown = { (e) => { handleKeyPress(e) } }
             onKeyUp = { (e) => { handleKeyPress(e) } }
             tabIndex = {-1}
-            style={ {"outline" : "none", "overflow" : "scroll", "max-height" : "85vh"} }
+            style={ {"outline" : "none", "overflow" : "scroll", "max-height" : "90vh"} }
         >
             <Container fluid = {true} >
                 <Row>
@@ -172,7 +172,7 @@ export default function CircuitBuilderPage () {
             </Container>
 
                 <Container fluid = { true } className={styles.optionsBar}>
-                    <Row>
+                    <Row style = {{ "background-color": "transparent",}}>
                         <Col md = {{span: 1, offset: 11}} >
                             <OptionsMenu
                                 processCircuit = { processCircuit }
@@ -182,10 +182,6 @@ export default function CircuitBuilderPage () {
                                 checkMeasureGateInQubits = { checkMeasureGateInQubits }
                                 currQBState = { currQBState }
                             />
-                        </Col>
-
-                        <Col>
-
                         </Col>
                     </Row>
                 </Container>
