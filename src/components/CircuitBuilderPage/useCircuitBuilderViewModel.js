@@ -668,7 +668,7 @@ const useCircuitBuilderViewModel = () => {
                 }
                 //if rotated gate
                 else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
-                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "];");
+                    code.push(gate.qasmid + "(" + gate.theta + ") " + "q[" + rowIndex + "];");
                 }
                 //if cnot gate
                 else if(gate.qid === "cnot"){

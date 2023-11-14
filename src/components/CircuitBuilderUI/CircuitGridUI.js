@@ -29,7 +29,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Collapse from 'react-bootstrap/Collapse';
 
-export default function CircuitGridUI({currQBState, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef,  handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover, showCodeView, circuitCode, showOptions, handleCloseOptions, strongCompress, weakCompress,}) {
+export default function CircuitGridUI({currQBState, handleChange, addQubit, svgRef, rectRef, startDrawRect, endDrawRect, drawRect, imgRef, qubitCellRef,  handleOnMouseDown, handleOnMouseUp, handleOnClick, pathRef, circleRef, handleHover, showCodeView, circuitCode, strongCompress, weakCompress,}) {
 
     const displayCode = circuitCode.map((line, index) => {
         return (
@@ -41,7 +41,7 @@ export default function CircuitGridUI({currQBState, handleChange, addQubit, svgR
 
     return (
         <>
-        <Container fluid = {true} style = {{"padding-left" : "0", "padding-right" : "0"}}>
+        <Container fluid = {true} style = {showCodeView ?{"padding-left" : "0"} : {"padding-left" : "0", "padding-right" : "0"}}>
             <Row>
                 <Col>
                     {/* circuit grid, code console, weak & strong compress */}
