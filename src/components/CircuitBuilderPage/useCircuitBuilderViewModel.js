@@ -24,7 +24,6 @@ const useCircuitBuilderViewModel = () => {
     const [thetaModal, showThetaModal] = useState(false);
     const [gateClickedName, setGateClickedName] = useState();
     const [gateClickedDesc, setGateClickedDesc] = useState();
-    const [gateClickedThetaVal, setGateClickedThetaVal] = useState();
     const [noParamModal, showNoParamModal] = useState(false);
     const [hasMeasure, showMeasModal] = useState(false);
     const [gatesSelected, setGatesSelected] = useState([]);
@@ -57,6 +56,7 @@ const useCircuitBuilderViewModel = () => {
     const newCGNameRef = useRef(null);
     const newCGDescRef = useRef(null);
     const formRef = useRef(null);
+    const gateClickedThetaVal = useRef(null);
 
     const { gates, sendCircuitData } = useCircuitBuilderModel();
     const { currQBState, setState, index, lastIndex, undo, redo } = useUndoRedoCBState(Array.from({length: 8},()=> Array.from({length: 50}, () => {return ({ hasGate : false, gate : null})})));
@@ -314,7 +314,10 @@ const useCircuitBuilderViewModel = () => {
                     }
                 }
             } else if(gate.gate.qid === "measure") {
-                removeMeasureGate({row : gate.row, col : gate.col})
+                for(var i = gate.col; i < 50; i++) {
+                    copy[gate.row].push({ hasGate : false, gate : null});
+                }
+                copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
             } else {
                 copy[gate.row][gate.col] = { hasGate : false , gate : undefined};
             }
@@ -361,9 +364,9 @@ const useCircuitBuilderViewModel = () => {
             let gateLocation = {row : e.target.getAttributeNS(null, "row"), col : e.target.getAttributeNS(null, "col")};
             setGateClickedName(gate.gateName);
             setGateClickedDesc(gate.description);
-            setGateClickedThetaVal(gate.theta);
             setGateClicked(e, gateLocation.row, gateLocation.col);
             if(gate.qid === 'xrot' || gate.qid === 'yrot' || gate.qid === 'zrot') {
+                gateClickedThetaVal.current = gate.theta;
                 showThetaModal(true);
             } else if(gate.qid === "compound_gate"){
                 let compoundGateGates = Array.from({length: Math.floor(gate.gates.length)},()=> Array.from({length: gate.gates.length}, () => {return (undefined)}));
@@ -572,6 +575,7 @@ const useCircuitBuilderViewModel = () => {
         setState(copy);
     }
 
+    //strong compress will have the compound gate eat any gates next to it if there is no gates present that completely align with the compound gate.
     function strongCompress() {
         let copy = getQubitStateDeepCopy();
         let lastEmptycolumn = null;
@@ -587,7 +591,7 @@ const useCircuitBuilderViewModel = () => {
                 }
 
 
-                  //If column has no gate in it and lastEmpty column is null, make that column last empty column
+            //If column has no gate in it and lastEmpty column is null, make that column last empty column
             if (columnHasGate === false && lastEmptycolumn === null) {
                 lastEmptycolumn = column;
             }
@@ -598,9 +602,25 @@ const useCircuitBuilderViewModel = () => {
             //If column has a gate and lastEmptycolumn not null, swap that values of the current column, with that of the lastEmptyColumn
             if (columnHasGate === true && lastEmptycolumn !== null) {
                     //If the cell has a gate, change the contents of the cell to match the new location
+                    if(copy[row][column].gate.qid === "compound_gate") {
+                        let nextAvailCell = lastEmptycolumn;
+                        for(let i = copy[row][column].gate.location.head; i <= copy[row][column].gate.location.tail; i++) {
+                            for(let j = 1; j <= column; j++) {
+                                if(!copy[i][j].haGate && j > nextAvailCell) {
+                                    nextAvailCell = j;
+                                }
+                            }
+                        }
+                        let head = copy[row][column].gate.location.head;
+                        let tail = copy[row][column].gate.location.tail
+                        for(let i = head; i <= tail; i++) {
+                            copy[i][nextAvailCell + 1] = copy[i][column];
+                            copy[i][column] = {hasGate: false, gate: null}
+                        }
+                    } else {
                         copy[row][lastEmptycolumn] =  copy[row][column];
                         copy[row][column] = {hasGate: false, gate: null}
-
+                    }
                 lastEmptycolumn++;
                 columnHasGate = false;
             }
@@ -610,6 +630,59 @@ const useCircuitBuilderViewModel = () => {
         }
         setState(copy);
     }
+
+        //strong compress will have the compound gate eat any gates next to it if there is no gates present that completely align with the compound gate.
+    // function strongCompress() {
+    //     let copy = getQubitStateDeepCopy();
+    //     let lastEmptycolumn = null;
+    //     let columnHasGate = false;
+
+    //     for (let row in currQBState) {
+
+    //         for (let column in currQBState[0]) {
+    //             if (column < 1) continue;
+    //             //Checks if column has a gate in it
+    //             if (currQBState[row][column].hasGate) {
+    //                 columnHasGate = true;
+    //             }
+    //             //If column has no gate in it and lastEmpty column is null, make that column last empty column
+    //             if (columnHasGate === false && lastEmptycolumn === null) {
+    //                 lastEmptycolumn = column;
+    //             }
+    //             if (columnHasGate === true && lastEmptycolumn === null) {
+    //                 columnHasGate = false;
+    //             }
+    //             //If column has a gate and lastEmptycolumn not null, swap that values of the current column, with that of the lastEmptyColumn
+    //             if (columnHasGate === true && lastEmptycolumn !== null) {
+    //                 //If the cell has a gate, change the contents of the cell to match the new location
+    //                 if(currQBState[row][column].gate.qid === "compound_gate" && currQBState[row][column].gate.location.head === row) {
+    //                     let nextAvailCell = lastEmptycolumn;
+    //                     for(let i = currQBState[row][column].gate.location.head; i <= currQBState[row][column].gate.location.tail; i++) {
+    //                         for(let j = 1; j < column; j++) {
+    //                             if(!currQBState[i][j].haGate && j > nextAvailCell) {
+    //                                 nextAvailCell = j;
+    //                             }
+    //                         }
+    //                     }
+    //                     let head = currQBState[row][column].gate.location.head;
+    //                     let tail = currQBState[row][column].gate.location.tail
+    //                     for(let i = head; i <= tail; i++) {
+    //                         copy[i][nextAvailCell] = currQBState[i][column];
+    //                         copy[i][column] = {hasGate: false, gate: null}
+    //                     }
+    //                 } else {
+    //                     copy[row][lastEmptycolumn] =  currQBState[row][column];
+    //                     copy[row][column] = {hasGate: false, gate: null}
+    //                 }
+    //                 lastEmptycolumn++;
+    //                 columnHasGate = false;
+    //             }
+    //         }
+    //         lastEmptycolumn = null
+
+    //     }
+    //     setState(copy);
+    // }
 
     function makeCompoundGate() {
 
@@ -668,7 +741,7 @@ const useCircuitBuilderViewModel = () => {
                 }
                 //if rotated gate
                 else if(gate.qid === 'xrot' || gate.qid=== 'yrot' || gate.qid === 'zrot' ){
-                    code.push(gate.qasmid + "(pi/2) q[" + rowIndex + "];");
+                    code.push(gate.qasmid + "(" + gate.theta + ") " + "q[" + rowIndex + "];");
                 }
                 //if cnot gate
                 else if(gate.qid === "cnot"){
@@ -794,15 +867,6 @@ const useCircuitBuilderViewModel = () => {
             keysPressed.current.set("z", false);
             keysPressed.current.set("Z", false);
         }
-    }
-
-    function removeMeasureGate(pos) {
-        let copy = getQubitStateDeepCopy();
-        for(var i = pos.col; i < 50; i++) {
-            copy[pos.row].push({ hasGate : false, gate : null});
-        }
-        copy[pos.row][pos.col] = { hasGate : false , gate : undefined};
-        setState(copy);
     }
 
     function addMeasureGate(pos) {

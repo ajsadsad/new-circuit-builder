@@ -26,7 +26,7 @@ export default function MeasurementModal( {hasMeasure, showMeasModal}) {
                 </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            Circuit needs measurement gate
+            Each qubit with an active gate requires a measurement gate.
         </Modal.Body>
         </Modal>
     </>

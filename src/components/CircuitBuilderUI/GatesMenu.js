@@ -15,10 +15,10 @@ export default function GatesMenu({ stdGates, faveGates, setDraggingGate, setDra
     const stdGateImgs = standardGates.map((gate) => {
         return (
             <div class="col" style={{ minHeight: 120 }} key = {gate.qid}>
-                <ContextMenuTrigger id="gateContextmenu" style={{"padding-left" : "25%"}}>
+                <ContextMenuTrigger id="gateContextmenu" style={{"padding-left" : "25%"}} holdToDisplay = {-1}>
                     <OverlayTrigger
                         placement="right"
-                        delay={{ show: 250, hide: 300 }}
+                        delay={{ show: 500, hide: 100 }}
                         overlay={
                             <Tooltip id="button-tooltip">
                                 <strong> {gate.gateName} </strong> <br/>

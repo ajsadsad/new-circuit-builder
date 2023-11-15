@@ -59,6 +59,7 @@ React Bootstrap, Redux (included but not implemented), react-contextmenu, Framer
     ---------------------------                   ---------------------------               ---------------------------
 - Zoom in/out feature of the grid
 - Check if compound gate can be placed from menu.
+- Strong compress not being properly applied to compound and CNOT gates.
 ### Future Recommendations
 - Persistent memory.
 - Highlighting of gates in real time rather than on mouseUp.

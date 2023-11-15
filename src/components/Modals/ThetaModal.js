@@ -2,15 +2,12 @@ import Modal from 'react-bootstrap/Modal';
 import React, { useRef } from 'react';
 
 export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedName, gateClickedDesc, gateClickedThetaVal, updateSlider, thetaModalRef }) {
-
-    const val = useRef(gateClickedThetaVal);
-
     return (
     <>
         <Modal
         size="sm"
         show={thetaModal}
-        onHide={() => { updateThetaModal(val.current) } }
+        onHide={() => { updateThetaModal(gateClickedThetaVal.current) } }
         aria-labelledby="example-modal-sizes-title-sm"
         centered
         >
@@ -26,9 +23,9 @@ export default function ThetaModal( { thetaModal, updateThetaModal, gateClickedN
                 type="number"
                 name="amountInput"
                 ref = { thetaModalRef }
-                placeholder={ val.current ? `${val.current}` : "0.35"}
+                placeholder={ gateClickedThetaVal.current }
                 step="0.01"
-                onChange = {(e) => { val.current = e.target.value; }}
+                onChange = {(e) => { gateClickedThetaVal.current = e.target.value; }}
             />
         </p>
         </Modal.Body>
